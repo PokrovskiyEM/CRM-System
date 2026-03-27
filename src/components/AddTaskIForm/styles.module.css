@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  column-gap: 10px;
+  position: relative;
+}
+
+.input {
+  width: 80%;
+  border: none;
+  border-bottom: 1px solid gray;
+  padding-inline: 5px;
+  background-color: transparent;
+}
+
+.addButton {
+  width: 20%;
+  border-radius: 10px;
+  padding-block: 15px;
+  color: white;
+  background-color: #003cffa2;
+  border: none;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  position: absolute;
+  top: 100%;
+  font-size: 14px;
+}
