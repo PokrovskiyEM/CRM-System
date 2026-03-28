@@ -21,7 +21,8 @@ export const AddTaskForm = ({ onTaskCreated }: Props) => {
     }
 
     try {
-      await todosApi.addTask({ title })
+      const trimTitle = title.trim()
+      await todosApi.addTask({ title: trimTitle })
 
       setTitle('')
       setValidError('')

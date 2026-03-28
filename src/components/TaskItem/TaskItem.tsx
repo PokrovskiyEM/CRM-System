@@ -43,7 +43,8 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
     }
 
     try {
-      await todosApi.updateTask(task.id, { title: newTitle })
+      const trimTitle = newTitle.trim()
+      await todosApi.updateTask(task.id, { title: trimTitle })
       await onTaskUpdated()
       setIsEdit(false)
       setEditError('')
