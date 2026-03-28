@@ -1,6 +1,6 @@
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo.types";
-import { TaskInfo } from "../TaskInfo/TaskInfo";
 import { TaskItem } from "../TaskItem/TaskItem";
+import { TasksInfo } from "../TasksInfo/TasksInfo";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -16,7 +16,7 @@ export const TasksList = ({ tasks, info, onFilterChange, onTaskUpdated, filter }
   return (
     <section className={styles.container}>
       <div className={styles.wrapper}>
-        <TaskInfo info={info} onFilterChanged={onFilterChange} filter={filter} />
+        <TasksInfo info={info} onFilterChanged={onFilterChange} filter={filter} />
         <ul className={styles.list}>
           {tasks.map((task) =>
             <TaskItem key={task.id} task={task} onTaskUpdated={onTaskUpdated} />

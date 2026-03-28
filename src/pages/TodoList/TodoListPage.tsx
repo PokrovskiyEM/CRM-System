@@ -5,7 +5,7 @@ import { useTodos } from "../../hooks/useTodos";
 import type { StatusFilter } from "../../types/todo.types";
 import styles from "./styles.module.css";
 
-function MainPage() {
+export function TodoListPage() {
   const [filter, setFilter] = useState<StatusFilter>('all')
   const { tasks, info, fetchTasks } = useTodos()
 
@@ -29,5 +29,3 @@ function MainPage() {
     </main>
   )
 }
-
-export default MainPage
