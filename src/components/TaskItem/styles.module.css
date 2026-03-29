@@ -2,35 +2,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-}
-
-.controlButton {
-  padding: 5px;
-  border: none;
-  border-radius: 5px;
-  width: 55px;
-  height: 35px;
-  cursor: pointer;
-}
-
-.controlButton.edit {
-  background: #003cffa2 url('../../assets/EditIcon.svg') center / contain no-repeat;
-  background-size: 55% 55%;
-}
-
-.controlButton.delete {
-  background: #ff0000a2 url('../../assets/DeleteIcon.svg') center / contain no-repeat;
-  background-size: 60% 60%;
-}
-
-.controlButton.save {
-  background: #003cffa2 url('../../assets/save.svg') center / contain no-repeat;
-  background-size: 60% 60%;
-}
-
-.controlButton.cancel {
-  background: #ff0000a2 url('../../assets/undo.svg') center / contain no-repeat;
-  background-size: 60% 60%;
+  align-items: center;
+  justify-items: center;
 }
 
 .item {

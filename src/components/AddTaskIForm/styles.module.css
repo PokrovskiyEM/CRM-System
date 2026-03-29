@@ -5,21 +5,11 @@
 }
 
 .input {
-  width: 80%;
+  flex-grow: 1;
   border: none;
   border-bottom: 1px solid gray;
   padding-inline: 5px;
   background-color: transparent;
-}
-
-.addButton {
-  width: 20%;
-  border-radius: 10px;
-  padding-block: 15px;
-  color: white;
-  background-color: #003cffa2;
-  border: none;
-  cursor: pointer;
 }
 
 .error {

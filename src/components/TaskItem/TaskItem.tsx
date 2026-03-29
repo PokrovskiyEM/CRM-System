@@ -1,7 +1,12 @@
 import { memo, useState, type SubmitEvent } from "react";
 import { deleteTodo, updateTodos } from "../../api/todosApi";
+import DeleteIcon from '../../assets/DeleteIcon.svg';
+import EditIcon from '../../assets/EditIcon.svg';
+import SaveIcon from '../../assets/save.svg';
+import UndoIcon from '../../assets/undo.svg';
 import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
 import type { Todo } from "../../types/todo";
+import { IconButton } from "../../ui-kit/IconButton/IconButton";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -84,15 +89,11 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
           <>
             <p className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>{todo.title}</p>
             <div className={styles.controls}>
-              <button
-                className={`${styles.controlButton} ${styles.edit}`}
-                type="button"
-                onClick={startEditHandler}
+              <IconButton
+                icon={EditIcon} onClick={startEditHandler}
               />
-              <button
-                className={`${styles.controlButton} ${styles.delete}`}
-                type="button"
-                onClick={deleteHandler}
+              <IconButton
+                variant="danger" icon={DeleteIcon} onClick={deleteHandler}
               />
             </div>
           </>
@@ -116,14 +117,11 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
               <span className={styles.error}>*{editError}</span>
             )}
             <div className={styles.controls}>
-              <button
-                className={`${styles.controlButton} ${styles.save}`}
-                type="submit"
+              <IconButton
+                variant="primary" type="submit" icon={SaveIcon}
               />
-              <button
-                className={`${styles.controlButton} ${styles.cancel}`}
-                type="button"
-                onClick={cancelEditHandler}
+              <IconButton
+                variant="secondary" icon={UndoIcon} onClick={cancelEditHandler}
               />
             </div>
           </form>

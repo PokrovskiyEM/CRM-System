@@ -1,0 +1,24 @@
+.button {
+  min-width: 100px;
+  padding: 15px 20px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.primary {
+  background-color: var(--color-primary);
+}
+
+.secondary {
+  background-color: var(--color-secondary);
+}
+
+.danger {
+  background-color: var(--color-danger);
+}
+
+.success {
+  background-color: var(--color-success);
+}

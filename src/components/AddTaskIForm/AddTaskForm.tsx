@@ -1,6 +1,7 @@
 import { memo, useState, type SubmitEvent } from "react";
 import { addTodo } from "../../api/todosApi";
 import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
+import { Button } from "../../ui-kit/Button/Button";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -51,12 +52,11 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
             *{validError}
           </span>
         }
-        <button
+        <Button
           type="submit"
-          className={styles.addButton}
         >
-          Add
-        </button>
+          Создать
+        </Button>
       </form>
     </section>
   )
