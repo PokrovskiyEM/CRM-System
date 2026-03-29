@@ -6,10 +6,10 @@ import styles from "./styles.module.css";
 
 interface Props {
   todo: Todo
-  onTaskUpdated: () => Promise<void>
+  onTasksUpdated: () => Promise<void>
 }
 
-export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
+export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [newTitle, setNewTitle] = useState<string>(todo.title)
   const [editError, setEditError] = useState('')
@@ -19,7 +19,7 @@ export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
       await updateTodos(todo.id, {
         isDone: !todo.isDone
       })
-      await onTaskUpdated()
+      await onTasksUpdated()
 
     } catch (error) {
       alert(`Ошибка - ${error}`);
@@ -29,7 +29,7 @@ export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
   const deleteHandler = async () => {
     try {
       await deleteTodo(todo.id)
-      await onTaskUpdated()
+      await onTasksUpdated()
     } catch (error) {
       alert(`Ошибка - ${error}`);
     }
@@ -45,7 +45,7 @@ export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
 
     try {
       await updateTodos(todo.id, { title: trimTitle })
-      await onTaskUpdated()
+      await onTasksUpdated()
       setIsEdit(false)
       setEditError('')
     } catch (error) {

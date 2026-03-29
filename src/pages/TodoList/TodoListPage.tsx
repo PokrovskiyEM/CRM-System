@@ -25,18 +25,17 @@ export function TodoListPage() {
     fetchTodos(filter)
   }, [filter, fetchTodos])
 
-  const onTaskUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
-  const onTaskCreated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
+  const onTasksUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
 
   return (
     <main className={styles.main}>
-      <AddTaskForm onTaskCreated={onTaskCreated} />
+      <AddTaskForm onTasksUpdated={onTasksUpdated} />
       <TasksList
         info={info}
         todos={todos}
         filter={filter}
         onFilterChange={setFilter}
-        onTaskUpdated={onTaskUpdated}
+        onTasksUpdated={onTasksUpdated}
       />
     </main>
   )

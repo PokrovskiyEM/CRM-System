@@ -4,10 +4,10 @@ import { validateInput } from "../../helpers/validateInput";
 import styles from "./styles.module.css";
 
 interface Props {
-  onTaskCreated: () => Promise<void>
+  onTasksUpdated: () => Promise<void>
 }
 
-export const AddTaskForm = memo(({ onTaskCreated }: Props) => {
+export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [validError, setValidError] = useState<string>('')
 
@@ -22,13 +22,12 @@ export const AddTaskForm = memo(({ onTaskCreated }: Props) => {
     }
 
     try {
-
       await addTodo({ title: trimTitle })
 
       setTitle('')
       setValidError('')
 
-      await onTaskCreated()
+      await onTasksUpdated()
     } catch (error) {
       alert(`Ошибка - ${error}`);
     }

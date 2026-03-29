@@ -9,10 +9,10 @@ interface Props {
   info: TodoInfo | undefined
   filter: StatusFilter
   onFilterChange: (filter: StatusFilter) => void
-  onTaskUpdated: () => Promise<void>
+  onTasksUpdated: () => Promise<void>
 }
 
-export const TasksList = memo(({ todos, info, onFilterChange, onTaskUpdated, filter }: Props) => {
+export const TasksList = memo(({ todos, info, onFilterChange, onTasksUpdated, filter }: Props) => {
 
   return (
     <section className={styles.container}>
@@ -20,7 +20,7 @@ export const TasksList = memo(({ todos, info, onFilterChange, onTaskUpdated, fil
         <TasksInfo info={info} onFilterChanged={onFilterChange} filter={filter} />
         <ul className={styles.list}>
           {todos.map((todo) =>
-            <TaskItem key={todo.id} todo={todo} onTaskUpdated={onTaskUpdated} />
+            <TaskItem key={todo.id} todo={todo} onTasksUpdated={onTasksUpdated} />
           )}
         </ul>
       </div>
