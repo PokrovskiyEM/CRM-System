@@ -1,6 +1,6 @@
 import { memo, useState, type SubmitEvent } from "react";
 import { deleteTodo, updateTodos } from "../../api/todosApi";
-import { validateInput } from "../../helpers/validateInput";
+import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
 import type { Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -37,7 +37,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
 
   const saveEditHandler = async () => {
     const trimTitle = newTitle.trim()
-    const error = validateInput(trimTitle)
+    const error = validateTodoTitleInput(trimTitle)
     if (error) {
       setEditError(error)
       return

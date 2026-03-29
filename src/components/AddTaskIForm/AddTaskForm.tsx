@@ -1,6 +1,6 @@
 import { memo, useState, type SubmitEvent } from "react";
 import { addTodo } from "../../api/todosApi";
-import { validateInput } from "../../helpers/validateInput";
+import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -15,7 +15,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
     event.preventDefault()
     const trimTitle = title.trim()
 
-    const validateError = validateInput(trimTitle)
+    const validateError = validateTodoTitleInput(trimTitle)
     if (validateError) {
       setValidError(validateError)
       return
