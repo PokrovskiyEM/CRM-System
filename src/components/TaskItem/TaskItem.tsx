@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useState, type SubmitEvent } from "react";
 import { deleteTodo, updateTodos } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import type { Todo } from "../../types/todo";
@@ -64,6 +64,11 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     setEditError('')
   }
 
+  const submitHandler = async (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    await saveEditing()
+  }
+
   return (
     <li className={styles.item}>
       <input
@@ -72,13 +77,30 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
         checked={todo.isDone}
         onChange={toggleHandler}
       />
-
       {!isEdit
         ? (
-          <p className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>{todo.title}</p>
+          <>
+            <p className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>{todo.title}</p>
+            <div className={styles.controls}>
+              <button
+                className={`${styles.controlButton} ${styles.edit}`}
+                type="button"
+                onClick={startEditing}
+              />
+              <button
+                className={`${styles.controlButton} ${styles.delete}`}
+                type="button"
+                onClick={deleteHandler}
+              />
+            </div>
+          </>
+
         )
         : (
-          <>
+          <form
+            className={styles.editForm}
+            onSubmit={submitHandler}
+          >
             <input
               className={styles.input}
               type="text"
@@ -96,37 +118,19 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
             {editError && (
               <span className={styles.error}>*{editError}</span>
             )}
-          </>
-        )
-      }
-      <div className={styles.controls}>
-        {!isEdit
-          ? (
-            <>
-              <button
-                className={`${styles.controlButton} ${styles.edit}`}
-                onClick={startEditing}
-              ></button>
-              <button
-                className={`${styles.controlButton} ${styles.delete}`}
-                onClick={deleteHandler}
-              ></button>
-            </>
-          )
-          : (
-            <>
+            <div className={styles.controls}>
               <button
                 className={`${styles.controlButton} ${styles.save}`}
-                onClick={saveEditing}
-              ></button>
+              />
               <button
                 className={`${styles.controlButton} ${styles.cancel}`}
+                type="button"
                 onClick={cancelEditing}
-              ></button>
-            </>
-          )
-        }
-      </div>
-    </li>
+              />
+            </div>
+          </form>
+        )
+      }
+    </li >
   )
 })
