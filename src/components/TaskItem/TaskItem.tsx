@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { todosApi } from "../../api/todosApi";
+import { deleteTask, updateTask } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import type { Todo } from "../../types/todo";
 import styles from "./styles.module.css";
@@ -16,7 +16,7 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
 
   const toggleHandler = async () => {
     try {
-      await todosApi.updateTask(task.id, {
+      await updateTask(task.id, {
         isDone: !task.isDone
       })
       await onTaskUpdated()
@@ -28,7 +28,7 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
 
   const deleteHandler = async () => {
     try {
-      await todosApi.deleteTask(task.id)
+      await deleteTask(task.id)
       await onTaskUpdated()
     } catch (error) {
       console.log(`Ошибка - ${error}`);
@@ -44,7 +44,7 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
 
     try {
       const trimTitle = newTitle.trim()
-      await todosApi.updateTask(task.id, { title: trimTitle })
+      await updateTask(task.id, { title: trimTitle })
       await onTaskUpdated()
       setIsEdit(false)
       setEditError('')
