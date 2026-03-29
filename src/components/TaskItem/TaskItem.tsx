@@ -108,7 +108,6 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
               autoFocus
               onChange={(e) => {
                 setNewTitle(e.target.value)
-                setEditError('')
               }}
             />
             {editError && (
