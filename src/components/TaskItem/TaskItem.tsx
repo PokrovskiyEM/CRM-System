@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { deleteTodo, updateTodos } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import type { Todo } from "../../types/todo";
@@ -9,7 +9,7 @@ interface Props {
   onTaskUpdated: () => Promise<void>
 }
 
-export const TaskItem = ({ todo, onTaskUpdated }: Props) => {
+export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [newTitle, setNewTitle] = useState<string>(todo.title)
   const [editError, setEditError] = useState('')
@@ -130,4 +130,4 @@ export const TaskItem = ({ todo, onTaskUpdated }: Props) => {
       </div>
     </li>
   )
-}
+})

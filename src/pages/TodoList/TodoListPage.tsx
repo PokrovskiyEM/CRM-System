@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { getTodos } from "../../api/todosApi";
 import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
 import { TasksList } from "../../components/TasksList/TasksList";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
-import { getTodos } from "../../api/todosApi";
 
 export function TodoListPage() {
   const [filter, setFilter] = useState<StatusFilter>('all')

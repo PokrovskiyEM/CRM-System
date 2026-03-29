@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { memo, useState, type SubmitEvent } from "react";
 import { addTodo } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import styles from "./styles.module.css";
@@ -7,7 +7,7 @@ interface Props {
   onTaskCreated: () => Promise<void>
 }
 
-export const AddTaskForm = ({ onTaskCreated }: Props) => {
+export const AddTaskForm = memo(({ onTaskCreated }: Props) => {
   const [title, setTitle] = useState<string>('')
   const [validError, setValidError] = useState<string>('')
 
@@ -61,4 +61,4 @@ export const AddTaskForm = ({ onTaskCreated }: Props) => {
       </form>
     </section>
   )
-}
+})
