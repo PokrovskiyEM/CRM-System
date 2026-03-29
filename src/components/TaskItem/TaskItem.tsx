@@ -11,7 +11,7 @@ interface Props {
 
 export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [newTitle, setNewTitle] = useState<string>(todo.title)
+  const [title, setTitle] = useState<string>(todo.title)
   const [editError, setEditError] = useState('')
 
   const toggleHandler = async () => {
@@ -36,7 +36,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   }
 
   const saveEditHandler = async () => {
-    const trimTitle = newTitle.trim()
+    const trimTitle = title.trim()
     const error = validateTodoTitleInput(trimTitle)
     if (error) {
       setEditError(error)
@@ -55,7 +55,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   }
 
   const startEditHandler = () => {
-    setNewTitle(todo.title)
+    setTitle(todo.title)
     setEditError('')
     setIsEdit(true)
   }
@@ -105,10 +105,10 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
             <input
               className={styles.input}
               type="text"
-              value={newTitle}
+              value={title}
               autoFocus
               onChange={(e) => {
-                setNewTitle(e.target.value)
+                setTitle(e.target.value)
               }}
             />
             {editError && (
