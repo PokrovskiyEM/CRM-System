@@ -7,14 +7,14 @@ import styles from "./styles.module.css";
 
 export function TodoListPage() {
   const [filter, setFilter] = useState<StatusFilter>('all')
-  const { todos, info, fetchTasks } = useTodos()
+  const { todos, info, fetchTodos } = useTodos()
 
   useEffect(() => {
-    fetchTasks(filter)
-  }, [filter, fetchTasks])
+    fetchTodos(filter)
+  }, [filter, fetchTodos])
 
-  const onTaskUpdated = useCallback(() => fetchTasks(filter), [filter, fetchTasks])
-  const onTaskCreated = useCallback(() => fetchTasks(filter), [filter, fetchTasks])
+  const onTaskUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
+  const onTaskCreated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
 
   return (
     <main className={styles.main}>

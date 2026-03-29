@@ -25,3 +25,7 @@ export interface MetaResponse<T, N> {
 }
 
 export type StatusFilter = 'all' | 'inWork' | 'completed'
+
+export interface GetTodosQueryParams {
+  filter?: StatusFilter
+}

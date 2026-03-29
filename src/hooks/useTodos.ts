@@ -3,13 +3,13 @@ import { getTodos } from "../api/todosApi"
 import type { StatusFilter, Todo, TodoInfo } from "../types/todo"
 
 export const useTodos = () => {
-  const [todos, setTasks] = useState<Todo[]>([])
+  const [todos, setTodos] = useState<Todo[]>([])
   const [info, setInfo] = useState<TodoInfo>()
 
-  const fetchTasks = useCallback(async (filter?: StatusFilter) => {
+  const fetchTodos = useCallback(async (filter?: StatusFilter) => {
     try {
-      const response = await getTodos(filter);
-      setTasks(response.data);
+      const response = await getTodos({ filter });
+      setTodos(response.data);
       setInfo(response.info);
 
     } catch (error) {
@@ -17,5 +17,5 @@ export const useTodos = () => {
     }
   }, []);
 
-  return { todos, info, fetchTasks }
+  return { todos, info, fetchTodos }
 }
