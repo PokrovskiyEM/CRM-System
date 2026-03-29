@@ -83,7 +83,6 @@ export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
               className={styles.input}
               type="text"
               value={newTitle}
-              maxLength={65}
               autoFocus
               onChange={(e) => {
                 setNewTitle(e.target.value)

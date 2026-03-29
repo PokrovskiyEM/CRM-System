@@ -46,7 +46,6 @@ export const AddTaskForm = memo(({ onTaskCreated }: Props) => {
           className={styles.input}
           type="text"
           placeholder="Task To Be Done..."
-          maxLength={65}
         />
         {validError &&
           <span className={styles.error}>
