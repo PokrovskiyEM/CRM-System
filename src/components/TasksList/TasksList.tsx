@@ -17,7 +17,7 @@ export const TasksList = memo(({ todos, info, onFilterChange, onTasksUpdated, fi
   return (
     <section className={styles.container}>
       <div className={styles.wrapper}>
-        <TasksInfo info={info} onFilterChanged={onFilterChange} filter={filter} />
+        <TasksInfo info={info} onFilterChange={onFilterChange} filter={filter} />
         <ul className={styles.list}>
           {todos.map((todo) =>
             <TaskItem key={todo.id} todo={todo} onTasksUpdated={onTasksUpdated} />

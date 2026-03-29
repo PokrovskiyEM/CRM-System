@@ -3,13 +3,13 @@ import styles from "./styles.module.css";
 
 interface Props {
   info: TodoInfo | undefined
-  onFilterChanged: (filter: StatusFilter) => void
+  onFilterChange: (filter: StatusFilter) => void
   filter: StatusFilter
 }
 
-export const TasksInfo = ({ info, onFilterChanged, filter }: Props) => {
+export const TasksInfo = ({ info, onFilterChange, filter }: Props) => {
   const changeFilter = (filter: StatusFilter) => {
-    onFilterChanged(filter)
+    onFilterChange(filter)
   }
 
   return (
