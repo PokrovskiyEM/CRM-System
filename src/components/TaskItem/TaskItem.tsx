@@ -22,7 +22,7 @@ export const TaskItem = ({ todo, onTaskUpdated }: Props) => {
       await onTaskUpdated()
 
     } catch (error) {
-      console.log(`Ошибка - ${error}`);
+      alert(`Ошибка - ${error}`);
     }
   }
 
@@ -31,7 +31,7 @@ export const TaskItem = ({ todo, onTaskUpdated }: Props) => {
       await deleteTodo(todo.id)
       await onTaskUpdated()
     } catch (error) {
-      console.log(`Ошибка - ${error}`);
+      alert(`Ошибка - ${error}`);
     }
   }
 
@@ -49,7 +49,7 @@ export const TaskItem = ({ todo, onTaskUpdated }: Props) => {
       setIsEdit(false)
       setEditError('')
     } catch (error) {
-      console.log(`Ошибка - ${error}`);
+      alert(`Ошибка - ${error}`);
     }
   }
 

@@ -17,7 +17,7 @@ export function TodoListPage() {
       setInfo(response.info);
 
     } catch (error) {
-      console.log(`Ошибка - ${error}`);
+      alert(`Ошибка - ${error}`);
     }
   }, []);
 

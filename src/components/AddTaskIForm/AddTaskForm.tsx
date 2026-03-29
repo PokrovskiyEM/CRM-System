@@ -29,7 +29,7 @@ export const AddTaskForm = ({ onTaskCreated }: Props) => {
 
       await onTaskCreated()
     } catch (error) {
-      console.log(`Ошибка - ${error}`);
+      alert(`Ошибка - ${error}`);
     }
   }
 
