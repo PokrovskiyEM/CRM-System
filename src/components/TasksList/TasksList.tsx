@@ -1,7 +1,7 @@
 import { memo } from "react";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import { TaskItem } from "../TaskItem/TaskItem";
-import { TasksInfo } from "../TasksInfo/TasksInfo";
+import { TasksFilters } from "../TasksFilters/TasksFilters";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -17,7 +17,7 @@ export const TasksList = memo(({ todos, info, onFilterChange, onTasksUpdated, fi
   return (
     <section className={styles.container}>
       <div className={styles.wrapper}>
-        <TasksInfo info={info} onFilterChange={onFilterChange} filter={filter} />
+        <TasksFilters info={info} onFilterChange={onFilterChange} filter={filter} />
         <ul className={styles.list}>
           {todos.map((todo) =>
             <TaskItem key={todo.id} todo={todo} onTasksUpdated={onTasksUpdated} />

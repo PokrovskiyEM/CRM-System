@@ -117,6 +117,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
             <div className={styles.controls}>
               <button
                 className={`${styles.controlButton} ${styles.save}`}
+                type="submit"
               />
               <button
                 className={`${styles.controlButton} ${styles.cancel}`}

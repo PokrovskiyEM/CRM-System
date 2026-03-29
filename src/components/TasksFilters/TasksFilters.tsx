@@ -7,7 +7,7 @@ interface Props {
   filter: StatusFilter
 }
 
-export const TasksInfo = ({ info, onFilterChange, filter }: Props) => {
+export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
   const changeFilter = (filter: StatusFilter) => {
     onFilterChange(filter)
   }
