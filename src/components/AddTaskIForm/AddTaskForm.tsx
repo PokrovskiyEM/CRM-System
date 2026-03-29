@@ -13,15 +13,16 @@ export const AddTaskForm = memo(({ onTaskCreated }: Props) => {
 
   const submitHandler = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const trimTitle = title.trim()
 
-    const validateError = validateInput(title)
+    const validateError = validateInput(trimTitle)
     if (validateError) {
       setValidError(validateError)
       return
     }
 
     try {
-      const trimTitle = title.trim()
+
       await addTodo({ title: trimTitle })
 
       setTitle('')

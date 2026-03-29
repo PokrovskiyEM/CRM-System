@@ -36,14 +36,14 @@ export const TaskItem = memo(({ todo, onTaskUpdated }: Props) => {
   }
 
   const saveEditing = async () => {
-    const error = validateInput(newTitle)
+    const trimTitle = newTitle.trim()
+    const error = validateInput(trimTitle)
     if (error) {
       setEditError(error)
       return
     }
 
     try {
-      const trimTitle = newTitle.trim()
       await updateTodos(todo.id, { title: trimTitle })
       await onTaskUpdated()
       setIsEdit(false)
