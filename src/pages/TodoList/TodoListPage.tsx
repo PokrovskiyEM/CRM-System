@@ -1,13 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
 import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
 import { TasksList } from "../../components/TasksList/TasksList";
-import { useTodos } from "../../hooks/useTodos";
-import type { StatusFilter } from "../../types/todo";
+import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
+import { getTodos } from "../../api/todosApi";
 
 export function TodoListPage() {
   const [filter, setFilter] = useState<StatusFilter>('all')
-  const { todos, info, fetchTodos } = useTodos()
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [info, setInfo] = useState<TodoInfo>()
+
+  const fetchTodos = useCallback(async (filter?: StatusFilter) => {
+    try {
+      const response = await getTodos({ filter });
+      setTodos(response.data);
+      setInfo(response.info);
+
+    } catch (error) {
+      console.log(`Ошибка - ${error}`);
+    }
+  }, []);
 
   useEffect(() => {
     fetchTodos(filter)
