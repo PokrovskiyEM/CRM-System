@@ -25,13 +25,13 @@ export const getTodos = async (queryParams?: GetTodosQueryParams): Promise<MetaR
   return response.json()
 }
 
-export const addTodo = async (data: TodoRequest) => {
+export const addTodo = async (todoRequest: TodoRequest) => {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(todoRequest),
   })
 
   if (!response.ok) {
@@ -39,13 +39,13 @@ export const addTodo = async (data: TodoRequest) => {
   }
 }
 
-export const updateTodos = async (id: number, data: TodoRequest) => {
+export const updateTodos = async (id: number, todoRequest: TodoRequest) => {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(todoRequest),
   })
 
   if (!response.ok) {
