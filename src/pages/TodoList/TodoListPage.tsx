@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 
 export function TodoListPage() {
   const [filter, setFilter] = useState<StatusFilter>('all')
-  const { tasks, info, fetchTasks } = useTodos()
+  const { todos, info, fetchTasks } = useTodos()
 
   useEffect(() => {
     fetchTasks(filter)
@@ -21,7 +21,7 @@ export function TodoListPage() {
       <AddTaskForm onTaskCreated={onTaskCreated} />
       <TasksList
         info={info}
-        tasks={tasks}
+        todos={todos}
         filter={filter}
         onFilterChange={setFilter}
         onTaskUpdated={onTaskUpdated}

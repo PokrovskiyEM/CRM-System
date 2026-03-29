@@ -1,5 +1,5 @@
 import { useState, type SubmitEvent } from "react";
-import { addTask } from "../../api/todosApi";
+import { addTodo } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import styles from "./styles.module.css";
 
@@ -22,7 +22,7 @@ export const AddTaskForm = ({ onTaskCreated }: Props) => {
 
     try {
       const trimTitle = title.trim()
-      await addTask({ title: trimTitle })
+      await addTodo({ title: trimTitle })
 
       setTitle('')
       setValidError('')

@@ -2,7 +2,7 @@ import type { MetaResponse, Todo, TodoInfo, TodoRequest } from "../types/todo";
 
 const BASE_URL = 'https://easydev.club/api/v1/todos'
 
-export const getTasks = async (filter?: 'all' | 'completed' | 'inWork'): Promise<MetaResponse<Todo, TodoInfo>> => {
+export const getTodos = async (filter?: 'all' | 'completed' | 'inWork'): Promise<MetaResponse<Todo, TodoInfo>> => {
   const url = filter ? `${BASE_URL}?filter=${filter}` : BASE_URL
 
   const response = await fetch(url)
@@ -14,7 +14,7 @@ export const getTasks = async (filter?: 'all' | 'completed' | 'inWork'): Promise
   return response.json()
 }
 
-export const addTask = async (data: TodoRequest) => {
+export const addTodo = async (data: TodoRequest) => {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
@@ -28,7 +28,7 @@ export const addTask = async (data: TodoRequest) => {
   }
 }
 
-export const updateTask = async (id: number, data: TodoRequest) => {
+export const updateTodos = async (id: number, data: TodoRequest) => {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
     headers: {
@@ -42,7 +42,7 @@ export const updateTask = async (id: number, data: TodoRequest) => {
   }
 }
 
-export const deleteTask = async (id: number) => {
+export const deleteTodo = async (id: number) => {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'DELETE'
   })

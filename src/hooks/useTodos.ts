@@ -1,14 +1,14 @@
 import { useCallback, useState } from "react"
-import { getTasks } from "../api/todosApi"
+import { getTodos } from "../api/todosApi"
 import type { Todo, TodoInfo } from "../types/todo"
 
 export const useTodos = () => {
-  const [tasks, setTasks] = useState<Todo[]>([])
+  const [todos, setTasks] = useState<Todo[]>([])
   const [info, setInfo] = useState<TodoInfo>()
 
   const fetchTasks = useCallback(async (filter?: 'all' | 'completed' | 'inWork') => {
     try {
-      const response = await getTasks(filter);
+      const response = await getTodos(filter);
       setTasks(response.data);
       setInfo(response.info);
 
@@ -17,5 +17,5 @@ export const useTodos = () => {
     }
   }, []);
 
-  return { tasks, info, fetchTasks }
+  return { todos, info, fetchTasks }
 }

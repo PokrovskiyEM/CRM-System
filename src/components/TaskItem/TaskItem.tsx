@@ -1,23 +1,23 @@
 import { useState } from "react";
-import { deleteTask, updateTask } from "../../api/todosApi";
+import { deleteTodo, updateTodos } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import type { Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
 interface Props {
-  task: Todo
+  todo: Todo
   onTaskUpdated: () => Promise<void>
 }
 
-export const TaskItem = ({ task, onTaskUpdated }: Props) => {
+export const TaskItem = ({ todo, onTaskUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [newTitle, setNewTitle] = useState<string>(task.title)
+  const [newTitle, setNewTitle] = useState<string>(todo.title)
   const [editError, setEditError] = useState('')
 
   const toggleHandler = async () => {
     try {
-      await updateTask(task.id, {
-        isDone: !task.isDone
+      await updateTodos(todo.id, {
+        isDone: !todo.isDone
       })
       await onTaskUpdated()
 
@@ -28,7 +28,7 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
 
   const deleteHandler = async () => {
     try {
-      await deleteTask(task.id)
+      await deleteTodo(todo.id)
       await onTaskUpdated()
     } catch (error) {
       console.log(`Ошибка - ${error}`);
@@ -44,7 +44,7 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
 
     try {
       const trimTitle = newTitle.trim()
-      await updateTask(task.id, { title: trimTitle })
+      await updateTodos(todo.id, { title: trimTitle })
       await onTaskUpdated()
       setIsEdit(false)
       setEditError('')
@@ -54,7 +54,7 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
   }
 
   const startEditing = () => {
-    setNewTitle(task.title)
+    setNewTitle(todo.title)
     setEditError('')
     setIsEdit(true)
   }
@@ -69,13 +69,13 @@ export const TaskItem = ({ task, onTaskUpdated }: Props) => {
       <input
         className={styles.checkbox}
         type="checkbox"
-        checked={task.isDone}
+        checked={todo.isDone}
         onChange={toggleHandler}
       />
 
       {!isEdit
         ? (
-          <p className={`${styles.title} ${task.isDone ? styles.checkedTitle : ''}`}>{task.title}</p>
+          <p className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>{todo.title}</p>
         )
         : (
           <>
