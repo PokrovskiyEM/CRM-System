@@ -25,7 +25,7 @@ export const getTodos = async (queryParams?: GetTodosQueryParams): Promise<MetaR
   return response.json()
 }
 
-export const addTodo = async (todoRequest: TodoRequest) => {
+export const addTodo = async (todoRequest: TodoRequest): Promise<void> => {
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
@@ -39,7 +39,7 @@ export const addTodo = async (todoRequest: TodoRequest) => {
   }
 }
 
-export const updateTodos = async (id: number, todoRequest: TodoRequest) => {
+export const updateTodos = async (id: number, todoRequest: TodoRequest): Promise<void> => {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
     headers: {
@@ -53,7 +53,7 @@ export const updateTodos = async (id: number, todoRequest: TodoRequest) => {
   }
 }
 
-export const deleteTodo = async (id: number) => {
+export const deleteTodo = async (id: number): Promise<void> => {
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: 'DELETE'
   })
