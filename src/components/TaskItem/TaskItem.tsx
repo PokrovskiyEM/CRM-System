@@ -45,10 +45,11 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
 
     try {
       await updateTodos(todo.id, { title: trimTitle })
-      await onTasksUpdated()
 
       setEditError('')
       setIsEdit(false)
+
+      await onTasksUpdated()
     } catch (error) {
       alert(`Ошибка - ${error}`);
     }
