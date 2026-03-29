@@ -35,7 +35,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const saveEditing = async () => {
+  const saveEditHandler = async () => {
     const trimTitle = newTitle.trim()
     const error = validateInput(trimTitle)
     if (error) {
@@ -46,27 +46,28 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     try {
       await updateTodos(todo.id, { title: trimTitle })
       await onTasksUpdated()
-      setIsEdit(false)
+
       setEditError('')
+      setIsEdit(false)
     } catch (error) {
       alert(`Ошибка - ${error}`);
     }
   }
 
-  const startEditing = () => {
+  const startEditHandler = () => {
     setNewTitle(todo.title)
     setEditError('')
     setIsEdit(true)
   }
 
-  const cancelEditing = () => {
-    setIsEdit(false)
+  const cancelEditHandler = () => {
     setEditError('')
+    setIsEdit(false)
   }
 
   const submitHandler = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
-    await saveEditing()
+    await saveEditHandler()
   }
 
   return (
@@ -85,7 +86,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
               <button
                 className={`${styles.controlButton} ${styles.edit}`}
                 type="button"
-                onClick={startEditing}
+                onClick={startEditHandler}
               />
               <button
                 className={`${styles.controlButton} ${styles.delete}`}
@@ -120,7 +121,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
               <button
                 className={`${styles.controlButton} ${styles.cancel}`}
                 type="button"
-                onClick={cancelEditing}
+                onClick={cancelEditHandler}
               />
             </div>
           </form>
