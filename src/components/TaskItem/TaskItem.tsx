@@ -110,10 +110,6 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
                 setNewTitle(e.target.value)
                 setEditError('')
               }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') saveEditing()
-                if (e.key === 'Escape') cancelEditing()
-              }}
             />
             {editError && (
               <span className={styles.error}>*{editError}</span>
