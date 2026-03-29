@@ -1,4 +1,4 @@
-import type { StatusFilter, Todo, TodoInfo } from "../../types/todo.types";
+import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { TasksInfo } from "../TasksInfo/TasksInfo";
 import styles from "./styles.module.css";

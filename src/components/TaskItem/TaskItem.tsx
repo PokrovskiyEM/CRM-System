@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { todosApi } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
-import type { Todo } from "../../types/todo.types";
+import type { Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
 interface Props {

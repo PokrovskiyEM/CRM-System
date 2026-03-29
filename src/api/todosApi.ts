@@ -1,4 +1,4 @@
-import type { MetaResponse, Todo, TodoInfo, TodoRequest } from "../types/todo.types";
+import type { MetaResponse, Todo, TodoInfo, TodoRequest } from "../types/todo";
 
 const BASE_URL = 'https://easydev.club/api/v1/todos'
 

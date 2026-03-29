@@ -1,4 +1,4 @@
-import type { StatusFilter, TodoInfo } from "../../types/todo.types";
+import type { StatusFilter, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
 interface Props {
