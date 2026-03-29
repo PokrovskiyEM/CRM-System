@@ -1,10 +1,21 @@
-import type { MetaResponse, StatusFilter, Todo, TodoInfo, TodoRequest } from "../types/todo";
+import type { GetTodosQueryParams, MetaResponse, Todo, TodoInfo, TodoRequest } from "../types/todo";
 
 const BASE_URL = 'https://easydev.club/api/v1/todos'
 
-export const getTodos = async (filter?: StatusFilter): Promise<MetaResponse<Todo, TodoInfo>> => {
-  const url = filter ? `${BASE_URL}?filter=${filter}` : BASE_URL
+export const getTodos = async (queryParams?: GetTodosQueryParams): Promise<MetaResponse<Todo, TodoInfo>> => {
+  let query = null
 
+  if (queryParams) {
+    const searchParams = new URLSearchParams()
+    Object.entries(queryParams).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, String(value))
+      }
+    })
+    query = searchParams.toString()
+  }
+
+  const url = query ? BASE_URL + '?' + query : BASE_URL
   const response = await fetch(url)
 
   if (!response.ok) {
