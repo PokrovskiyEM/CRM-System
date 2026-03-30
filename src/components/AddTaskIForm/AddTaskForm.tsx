@@ -2,6 +2,7 @@ import { memo, useState, type SubmitEvent } from "react";
 import { addTodo } from "../../api/todosApi";
 import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
 import { Button } from "../../ui-kit/Button/Button";
+import { TextInput } from "../../ui-kit/TextInput/TextInput";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -40,11 +41,10 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
         className={styles.form}
         onSubmit={submitHandler}
       >
-        <input
+        <TextInput
+          border="bottom"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className={styles.input}
-          type="text"
           placeholder="Task To Be Done..."
         />
         {validError &&

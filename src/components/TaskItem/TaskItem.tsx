@@ -6,7 +6,9 @@ import SaveIcon from '../../assets/save.svg';
 import UndoIcon from '../../assets/undo.svg';
 import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
 import type { Todo } from "../../types/todo";
+import { Checkbox } from "../../ui-kit/Checkbox/Checkbox";
 import { IconButton } from "../../ui-kit/IconButton/IconButton";
+import { TextInput } from "../../ui-kit/TextInput/TextInput";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -78,11 +80,10 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
 
   return (
     <li className={styles.item}>
-      <input
-        className={styles.checkbox}
-        type="checkbox"
+      <Checkbox
         checked={todo.isDone}
         onChange={toggleHandler}
+        variant="circle"
       />
       {!isEdit
         ? (
@@ -104,14 +105,11 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
             className={styles.editForm}
             onSubmit={submitHandler}
           >
-            <input
-              className={styles.input}
-              type="text"
-              value={title}
+            <TextInput
+              border="all"
               autoFocus
-              onChange={(e) => {
-                setTitle(e.target.value)
-              }}
+              value={title}
+              onChange={(e) => { setTitle(e.target.value) }}
             />
             {editError && (
               <span className={styles.error}>*{editError}</span>
