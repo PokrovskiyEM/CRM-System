@@ -2,13 +2,10 @@ import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
 import { Form, Input, Button } from "antd";
 import { validateAntdTitle } from "../../helpers/validateAntdTitle";
+import type { FormValues } from "../../types/todo";
 
 interface Props {
   onTasksUpdated: () => Promise<void>
-}
-
-interface FormValues {
-  title: string
 }
 
 export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
@@ -32,6 +29,9 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
         form={form}
         onFinish={finishHandler}
         layout="inline"
+        style={{
+          gap: '10px'
+        }}
       >
         <Form.Item
           name={'title'}
@@ -40,7 +40,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
           ]}
           style={{
             flex: 1,
-            marginBottom: 0,
+            margin: 0,
             borderBottom: '1px solid gray',
             alignContent: 'center'
           }}

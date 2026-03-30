@@ -17,7 +17,7 @@
   padding: 10px;
 }
 
-.item:has(> .editForm) {
+.item:has(> form) {
   grid-template-columns: auto 1fr;
 }
 
@@ -29,19 +29,4 @@
 .checkedTitle {
   color: gray;
   text-decoration: line-through;
-}
-
-.error {
-  color: red;
-  position: absolute;
-  top: 75%;
-  left: 34px;
-  font-size: 14px;
-}
-
-.editForm {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 5px;
 }

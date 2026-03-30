@@ -1,14 +1,9 @@
-import { memo, useState, type SubmitEvent } from "react";
+import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { memo, useState } from "react";
 import { deleteTodo, updateTodos } from "../../api/todosApi";
-import DeleteIcon from '../../assets/DeleteIcon.svg';
-import EditIcon from '../../assets/EditIcon.svg';
-import SaveIcon from '../../assets/save.svg';
-import UndoIcon from '../../assets/undo.svg';
-import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
-import type { Todo } from "../../types/todo";
-import { Checkbox } from "../../ui-kit/Checkbox/Checkbox";
-import { IconButton } from "../../ui-kit/IconButton/IconButton";
-import { TextInput } from "../../ui-kit/TextInput/TextInput";
+import { validateAntdTitle } from "../../helpers/validateAntdTitle";
+import type { FormValues, Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -18,8 +13,7 @@ interface Props {
 
 export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [title, setTitle] = useState<string>(todo.title)
-  const [editError, setEditError] = useState('')
+  const [form] = Form.useForm()
 
   const toggleHandler = async () => {
     try {
@@ -27,7 +21,6 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
         isDone: !todo.isDone
       })
       await onTasksUpdated()
-
     } catch (error) {
       alert(`Ошибка - ${error}`);
     }
@@ -42,20 +35,12 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const saveEditHandler = async () => {
-    const trimTitle = title.trim()
-    const error = validateTodoTitleInput(trimTitle)
-    if (error) {
-      setEditError(error)
-      return
-    }
+  const finishHandler = async (values: FormValues) => {
+    const trimTitle = values.title.trim()
 
     try {
       await updateTodos(todo.id, { title: trimTitle })
-
-      setEditError('')
       setIsEdit(false)
-
       await onTasksUpdated()
     } catch (error) {
       alert(`Ошибка - ${error}`);
@@ -63,19 +48,12 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   }
 
   const startEditHandler = () => {
-    setTitle(todo.title)
-    setEditError('')
+    form.setFieldsValue({ title: todo.title })
     setIsEdit(true)
   }
 
   const cancelEditHandler = () => {
-    setEditError('')
     setIsEdit(false)
-  }
-
-  const submitHandler = async (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    await saveEditHandler()
   }
 
   return (
@@ -83,46 +61,71 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
       <Checkbox
         checked={todo.isDone}
         onChange={toggleHandler}
-        variant="circle"
       />
       {!isEdit
         ? (
           <>
             <p className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>{todo.title}</p>
             <div className={styles.controls}>
-              <IconButton
-                icon={EditIcon} onClick={startEditHandler}
+              <Button
+                size="large"
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={startEditHandler}
               />
-              <IconButton
-                variant="danger" icon={DeleteIcon} onClick={deleteHandler}
+              <Button
+                size="large"
+                type="primary"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={deleteHandler}
               />
             </div>
           </>
-
         )
         : (
-          <form
-            className={styles.editForm}
-            onSubmit={submitHandler}
+          <Form
+            form={form}
+            onFinish={finishHandler}
+            layout="inline"
+            style={{
+              gap: '10px'
+            }}
           >
-            <TextInput
-              border="all"
-              autoFocus
-              value={title}
-              onChange={(e) => { setTitle(e.target.value) }}
-            />
-            {editError && (
-              <span className={styles.error}>*{editError}</span>
-            )}
-            <div className={styles.controls}>
-              <IconButton
-                variant="primary" type="submit" icon={SaveIcon}
+            <Form.Item
+              name={'title'}
+              rules={[
+                { validator: validateAntdTitle }
+              ]}
+              style={{
+                flex: 1,
+                margin: 0,
+                alignContent: 'center'
+              }}
+            >
+              <Input
+                variant="outlined"
+                autoFocus
               />
-              <IconButton
-                variant="secondary" icon={UndoIcon} onClick={cancelEditHandler}
+            </Form.Item>
+            <div className={styles.controls}>
+              <Button
+                type="primary"
+                size="large"
+                htmlType="submit"
+                icon={<SaveOutlined />}
+              />
+              <Button
+                variant="solid"
+                color="magenta"
+                danger
+                size="large"
+                htmlType="button"
+                icon={<UndoOutlined />}
+                onClick={cancelEditHandler}
               />
             </div>
-          </form>
+          </Form>
         )
       }
     </li >
