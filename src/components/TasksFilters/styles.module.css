@@ -1,4 +1,13 @@
-.todoInfo {
-  display: flex;
+.tasksTabs :global(.ant-tabs-nav)::before {
+  border-bottom: none;
+}
+
+.tasksTabs :global(.ant-tabs-tab) {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.tasksTabs :global(.ant-tabs-nav-list) {
+  width: 100%;
   justify-content: space-between;
 }
