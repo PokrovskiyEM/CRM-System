@@ -1,34 +1,25 @@
-import { memo, useState, type SubmitEvent } from "react";
+import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
-import { validateTodoTitleInput } from "../../helpers/validateTodoTitleInput";
-import { Button } from "../../ui-kit/Button/Button";
-import { TextInput } from "../../ui-kit/TextInput/TextInput";
-import styles from "./styles.module.css";
+import { Form, Input, Button } from "antd";
+import { validateAntdTitle } from "../../helpers/validateAntdTitle";
 
 interface Props {
   onTasksUpdated: () => Promise<void>
 }
 
+interface FormValues {
+  title: string
+}
+
 export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
-  const [title, setTitle] = useState<string>('')
-  const [validError, setValidError] = useState<string>('')
+  const [form] = Form.useForm<FormValues>()
 
-  const submitHandler = async (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const trimTitle = title.trim()
-
-    const validateError = validateTodoTitleInput(trimTitle)
-    if (validateError) {
-      setValidError(validateError)
-      return
-    }
+  const finishHandler = async (values: FormValues) => {
+    const trimTitle = values.title.trim()
 
     try {
       await addTodo({ title: trimTitle })
-
-      setTitle('')
-      setValidError('')
-
+      form.resetFields()
       await onTasksUpdated()
     } catch (error) {
       alert(`Ошибка - ${error}`);
@@ -37,27 +28,36 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
 
   return (
     <section>
-      <form
-        className={styles.form}
-        onSubmit={submitHandler}
+      <Form
+        form={form}
+        onFinish={finishHandler}
+        layout="inline"
       >
-        <TextInput
-          border="bottom"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Task To Be Done..."
-        />
-        {validError &&
-          <span className={styles.error}>
-            *{validError}
-          </span>
-        }
+        <Form.Item
+          name={'title'}
+          rules={[
+            { validator: validateAntdTitle }
+          ]}
+          style={{
+            flex: 1,
+            marginBottom: 0,
+            borderBottom: '1px solid gray',
+            alignContent: 'center'
+          }}
+        >
+          <Input
+            placeholder="Task To Be Done..."
+            variant="borderless"
+          />
+        </Form.Item>
         <Button
-          type="submit"
+          type="primary"
+          size="large"
+          htmlType="submit"
         >
           Создать
         </Button>
-      </form>
-    </section>
+      </Form>
+    </section >
   )
 })
