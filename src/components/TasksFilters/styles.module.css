@@ -2,18 +2,3 @@
   display: flex;
   justify-content: space-between;
 }
-
-.button {
-  border-radius: 10px;
-  padding-block: 15px;
-  color: gray;
-  background-color: transparent;
-  font-size: 18px;
-  border: none;
-  cursor: pointer;
-}
-
-.active {
-  color: rgb(0, 110, 255);
-  text-decoration: underline;
-}

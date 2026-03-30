@@ -1,4 +1,5 @@
 import type { StatusFilter, TodoInfo } from "../../types/todo";
+import { Tab } from "../../ui-kit/Tab/Tab";
 import styles from "./styles.module.css";
 
 interface Props {
@@ -14,24 +15,24 @@ export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
 
   return (
     <div className={styles.todoInfo}>
-      <button
-        className={`${styles.button} ${filter === 'all' ? styles.active : ''}`}
+      <Tab
+        isActive={filter === 'all'}
         onClick={() => changeFilter('all')}
       >
         Все({info?.all})
-      </button>
-      <button
-        className={`${styles.button} ${filter === 'inWork' ? styles.active : ''}`}
+      </Tab>
+      <Tab
+        isActive={filter === 'inWork'}
         onClick={() => changeFilter('inWork')}
       >
-        в работе({info?.inWork})
-      </button>
-      <button
-        className={`${styles.button} ${filter === 'completed' ? styles.active : ''}`}
+        В работе({info?.inWork})
+      </Tab>
+      <Tab
+        isActive={filter === 'completed'}
         onClick={() => changeFilter('completed')}
       >
-        сделано({info?.completed})
-      </button>
+        Сделано({info?.completed})
+      </Tab>
     </div >
   )
 }
