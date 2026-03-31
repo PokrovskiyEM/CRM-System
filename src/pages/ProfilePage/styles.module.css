@@ -1,0 +1,9 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  justify-self: center;
+  width: clamp(350px, 70%, 800px);
+  margin-top: 15px;
+  padding: 10px;
+}
