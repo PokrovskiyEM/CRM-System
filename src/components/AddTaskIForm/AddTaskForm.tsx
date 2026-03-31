@@ -46,7 +46,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
           }}
         >
           <Input
-            placeholder="Task To Be Done..."
+            placeholder="Задача, которую необходимо выполнить..."
             variant="borderless"
           />
         </Form.Item>
