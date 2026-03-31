@@ -23,6 +23,12 @@ export function TodoListPage() {
 
   useEffect(() => {
     fetchTodos(filter)
+
+    const intervalId = setInterval(() => {
+      fetchTodos(filter)
+    }, 5000)
+
+    return () => clearInterval(intervalId)
   }, [filter, fetchTodos])
 
   const onTasksUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
