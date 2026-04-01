@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { memo, useState } from "react";
-import { deleteTodo, updateTodos } from "../../api/todosApi";
+import { deleteTodo, updateTodo } from "../../api/todosApi";
 import { validateAntdTitle } from "../../helpers/validateAntdTitle";
 import type { FormValues, Todo } from "../../types/todo";
 import styles from "./styles.module.css";
@@ -13,11 +13,11 @@ interface Props {
 
 export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<FormValues>()
 
   const toggleHandler = async () => {
     try {
-      await updateTodos(todo.id, {
+      await updateTodo(todo.id, {
         isDone: !todo.isDone
       })
       await onTasksUpdated()
@@ -39,7 +39,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     const trimTitle = values.title.trim()
 
     try {
-      await updateTodos(todo.id, { title: trimTitle })
+      await updateTodo(todo.id, { title: trimTitle })
       setIsEdit(false)
       await onTasksUpdated()
     } catch (error) {

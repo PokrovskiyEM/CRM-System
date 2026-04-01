@@ -19,7 +19,7 @@ export const addTodo = async (todoRequest: TodoRequest): Promise<void> => {
   await api.post('/todos', todoRequest)
 }
 
-export const updateTodos = async (id: number, todoRequest: TodoRequest): Promise<void> => {
+export const updateTodo = async (id: number, todoRequest: TodoRequest): Promise<void> => {
   await api.put(`/todos/${id}`, todoRequest)
 }
 
