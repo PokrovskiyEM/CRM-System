@@ -15,10 +15,13 @@ export const authSlice = createSlice({
   reducers: {
     setAuth: (state, action: PayloadAction<boolean>) => {
       state.isAuth = action.payload
+    },
+    logout: (state) => {
+      state.isAuth = false
     }
   },
 })
 
-export const { setAuth } = authSlice.actions
+export const { setAuth, logout } = authSlice.actions
 
 export default authSlice.reducer
