@@ -12,7 +12,7 @@ export const SidebarMenu = () => {
     },
     {
       key: "/profile",
-      label: 'Профиль'
+      label: 'Личный кабинет'
     },
   ]
 

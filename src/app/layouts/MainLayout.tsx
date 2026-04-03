@@ -12,7 +12,7 @@ export function MainLayout() {
     }}>
       <Sider
         theme="light"
-        width={130}
+        width={160}
         style={{
           position: "sticky",
           top: 0,
@@ -22,7 +22,6 @@ export function MainLayout() {
       >
         <SidebarMenu />
       </Sider>
-
       <Content>
         <Outlet />
       </Content>
