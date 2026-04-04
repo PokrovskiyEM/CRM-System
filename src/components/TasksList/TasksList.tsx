@@ -1,4 +1,3 @@
-import { memo } from "react";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { TasksFilters } from "../TasksFilters/TasksFilters";
@@ -12,7 +11,7 @@ interface Props {
   onTasksUpdated: () => Promise<void>
 }
 
-export const TasksList = memo(({ todos, info, onFilterChange, onTasksUpdated, filter }: Props) => {
+export const TasksList = ({ todos, info, onFilterChange, onTasksUpdated, filter }: Props) => {
 
   return (
     <section className={styles.container}>
@@ -26,4 +25,4 @@ export const TasksList = memo(({ todos, info, onFilterChange, onTasksUpdated, fi
       </div>
     </section>
   )
-})
+}
