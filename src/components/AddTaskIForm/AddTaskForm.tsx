@@ -11,7 +11,7 @@ interface Props {
 export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
-  const finishHandler = async (values: FormValues) => {
+  const handleFinish = async (values: FormValues) => {
     const trimTitle = values.title.trim()
 
     try {
@@ -27,7 +27,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
     <section>
       <Form
         form={form}
-        onFinish={finishHandler}
+        onFinish={handleFinish}
         layout="inline"
         style={{
           gap: '10px'

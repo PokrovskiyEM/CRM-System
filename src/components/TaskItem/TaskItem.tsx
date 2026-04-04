@@ -15,7 +15,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
-  const toggleHandler = async () => {
+  const handleToggle = async () => {
     try {
       await updateTodo(todo.id, {
         isDone: !todo.isDone
@@ -26,7 +26,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const deleteHandler = async () => {
+  const handleDelete = async () => {
     try {
       await deleteTodo(todo.id)
       await onTasksUpdated()
@@ -35,7 +35,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const finishHandler = async (values: FormValues) => {
+  const handleFinish = async (values: FormValues) => {
     const trimTitle = values.title.trim()
 
     try {
@@ -47,12 +47,12 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const startEditHandler = () => {
+  const handleStartEdit = () => {
     form.setFieldsValue({ title: todo.title })
     setIsEdit(true)
   }
 
-  const cancelEditHandler = () => {
+  const handleCancelEdit = () => {
     setIsEdit(false)
   }
 
@@ -60,7 +60,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
     <li className={styles.item}>
       <Checkbox
         checked={todo.isDone}
-        onChange={toggleHandler}
+        onChange={handleToggle}
       />
       {!isEdit
         ? (
@@ -71,14 +71,14 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
                 size="large"
                 type="primary"
                 icon={<EditOutlined />}
-                onClick={startEditHandler}
+                onClick={handleStartEdit}
               />
               <Button
                 size="large"
                 type="primary"
                 danger
                 icon={<DeleteOutlined />}
-                onClick={deleteHandler}
+                onClick={handleDelete}
               />
             </div>
           </>
@@ -86,7 +86,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
         : (
           <Form
             form={form}
-            onFinish={finishHandler}
+            onFinish={handleFinish}
             layout="inline"
             style={{
               gap: '10px'
@@ -122,7 +122,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
                 size="large"
                 htmlType="button"
                 icon={<UndoOutlined />}
-                onClick={cancelEditHandler}
+                onClick={handleCancelEdit}
               />
             </div>
           </Form>
