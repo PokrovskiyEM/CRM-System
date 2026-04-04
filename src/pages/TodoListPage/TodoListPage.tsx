@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { getTodos } from "../../api/todosApi";
 import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
@@ -17,7 +18,7 @@ export function TodoListPage() {
       setInfo(response.info);
 
     } catch (error) {
-      alert(`Ошибка - ${error}`);
+      message.error(`Ошибка - ${error}`)
     }
   }, []);
 

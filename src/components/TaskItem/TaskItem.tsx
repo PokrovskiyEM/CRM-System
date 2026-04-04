@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { memo, useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
 import { validateAntdInput } from "../../helpers/validateAntdInput";
@@ -22,7 +22,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
       })
       await onTasksUpdated()
     } catch (error) {
-      alert(`Ошибка - ${error}`);
+      message.error(`Ошибка - ${error}`)
     }
   }
 
@@ -31,7 +31,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
       await deleteTodo(todo.id)
       await onTasksUpdated()
     } catch (error) {
-      alert(`Ошибка - ${error}`);
+      message.error(`Ошибка - ${error}`)
     }
   }
 
@@ -43,7 +43,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
       setIsEdit(false)
       await onTasksUpdated()
     } catch (error) {
-      alert(`Ошибка - ${error}`);
+      message.error(`Ошибка - ${error}`)
     }
   }
 
