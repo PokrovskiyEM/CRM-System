@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router"
-import { ProfilePage } from "../../pages/ProfilePage/TodoListPage"
+import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
 import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
 
 export const AppRouter = () => {
