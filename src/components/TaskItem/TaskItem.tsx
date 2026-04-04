@@ -2,7 +2,7 @@ import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-d
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { memo, useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
-import { validateAntdTitle } from "../../helpers/validateAntdTitle";
+import { validateInput } from "../../helpers/validateInput";
 import type { FormValues, Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -95,7 +95,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
             <Form.Item
               name={'title'}
               rules={[
-                { validator: validateAntdTitle }
+                { validator: validateInput(2, 64) }
               ]}
               style={{
                 flex: 1,
