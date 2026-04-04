@@ -36,7 +36,7 @@ export function ProfilePage() {
     }
   }, [])
 
-  const logoutHandler = async () => {
+  const handleLogout = async () => {
     try {
       await logoutProfile()
       tokenManager.clearToken()
@@ -73,7 +73,7 @@ export function ProfilePage() {
           <Descriptions.Item label={'Телефон'}>{profile.phoneNumber ? profile.phoneNumber : '-'}</Descriptions.Item>
         </Descriptions>
 
-        <Button danger onClick={logoutHandler} >
+        <Button danger onClick={handleLogout} >
           Выйти
         </Button>
       </div >
