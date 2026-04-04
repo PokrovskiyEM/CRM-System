@@ -57,7 +57,7 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
   }
 
   return (
-    <li className={styles.item}>
+    <div className={styles.item}>
       <Checkbox
         checked={todo.isDone}
         onChange={handleToggle}
@@ -128,6 +128,6 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
           </Form>
         )
       }
-    </li >
+    </div >
   )
 })

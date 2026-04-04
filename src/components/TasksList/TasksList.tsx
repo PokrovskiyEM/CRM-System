@@ -1,3 +1,4 @@
+import { Space } from "antd";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { TasksFilters } from "../TasksFilters/TasksFilters";
@@ -17,11 +18,11 @@ export const TasksList = ({ todos, info, onFilterChange, onTasksUpdated, filter 
     <section className={styles.container}>
       <div className={styles.wrapper}>
         <TasksFilters info={info} onFilterChange={onFilterChange} filter={filter} />
-        <ul className={styles.list}>
+        <Space orientation="vertical">
           {todos.map((todo) =>
             <TaskItem key={todo.id} todo={todo} onTasksUpdated={onTasksUpdated} />
           )}
-        </ul>
+        </Space>
       </div>
     </section>
   )
