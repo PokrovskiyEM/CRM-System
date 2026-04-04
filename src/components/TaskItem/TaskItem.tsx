@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
-import { memo, useState } from "react";
+import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
 import type { FormValues, Todo } from "../../types/todo";
@@ -11,7 +11,7 @@ interface Props {
   onTasksUpdated: () => Promise<void>
 }
 
-export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
+export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
@@ -130,4 +130,4 @@ export const TaskItem = memo(({ todo, onTasksUpdated }: Props) => {
       }
     </div >
   )
-})
+}
