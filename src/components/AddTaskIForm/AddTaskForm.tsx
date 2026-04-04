@@ -1,7 +1,7 @@
 import { Button, Form, Input, message } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
-import { validateAntdInput } from "../../helpers/validateAntdInput";
+import { validateInput } from "../../helpers/validateInput";
 import type { FormValues } from "../../types/todo";
 
 interface Props {
@@ -36,7 +36,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
         <Form.Item
           name={'title'}
           rules={[
-            { validator: validateAntdInput(2, 64) }
+            { validator: validateInput(2, 64) }
           ]}
           style={{
             flex: 1,

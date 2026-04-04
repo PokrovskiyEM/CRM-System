@@ -1,4 +1,4 @@
-export const validateAntdInput = (min: number, max: number) => (_: unknown, title?: string) => {
+export const validateInput = (min: number, max: number) => (_: unknown, title?: string) => {
   const trimTitle = title?.trim()
 
   if (!trimTitle) {

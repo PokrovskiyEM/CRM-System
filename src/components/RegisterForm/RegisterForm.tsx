@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signUp } from "../../api/authApi";
 import { useAppSelector } from "../../app/store/store";
-import { validateAntdInput } from "../../helpers/validateAntdInput";
+import { validateInput } from "../../helpers/validateInput";
 import type { UserRegistration } from "../../types/auth";
 
 type FormValues = UserRegistration & {
@@ -73,7 +73,7 @@ export function RegisterForm() {
           name="username"
           required
           rules={[
-            { validator: validateAntdInput(1, 60) },
+            { validator: validateInput(1, 60) },
             { pattern: usernameRegex, message: 'Используйте русский или латинский алфавит' }
           ]}
         >
@@ -84,7 +84,7 @@ export function RegisterForm() {
           name="login"
           required
           rules={[
-            { validator: validateAntdInput(2, 60) },
+            { validator: validateInput(2, 60) },
             { pattern: loginRegex, message: 'Используйте латинский алфавит' }
           ]}
         >
@@ -95,7 +95,7 @@ export function RegisterForm() {
           name="password"
           required
           rules={[
-            { validator: validateAntdInput(6, 60) }
+            { validator: validateInput(6, 60) }
           ]}
         >
           <Input.Password />
