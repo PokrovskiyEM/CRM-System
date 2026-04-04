@@ -11,7 +11,7 @@ export const signUp = async ({
   username,
   password,
   email,
-  phoneNumber
+  phoneNumber = ''
 }: UserRegistration) => {
   const response = await api.post('/auth/signup', {
     login,
@@ -24,6 +24,6 @@ export const signUp = async ({
 }
 
 export const refresh = async (refreshToken: RefreshToken): Promise<Token> => {
-  const response = await api.post<Token>('/auth/refresh', { refreshToken })
+  const response = await api.post<Token>('/auth/refresh', refreshToken)
   return response.data
 }

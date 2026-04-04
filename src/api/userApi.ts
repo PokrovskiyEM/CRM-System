@@ -6,6 +6,6 @@ export const getUserProfile = async (): Promise<Profile> => {
   return response.data
 }
 
-export const logout = async () => {
+export const logoutProfile = async () => {
   await api.post('/user/logout')
 }
