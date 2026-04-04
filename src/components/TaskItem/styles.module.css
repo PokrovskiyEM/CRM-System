@@ -8,7 +8,6 @@
 
 .item {
   display: grid;
-  position: relative;
   grid-template-columns: auto 1fr auto;
   border-radius: 5px;
   align-items: center;
