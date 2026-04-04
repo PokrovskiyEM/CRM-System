@@ -4,6 +4,7 @@ import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
 import { TasksList } from "../../components/TasksList/TasksList";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
+import { message } from "antd";
 
 export function TodoListPage() {
   const [filter, setFilter] = useState<StatusFilter>('all')
@@ -17,7 +18,7 @@ export function TodoListPage() {
       setInfo(response.info);
 
     } catch (error) {
-      alert(`Ошибка - ${error}`);
+      message.error(`Ошибка - ${error}`)
     }
   }, []);
 

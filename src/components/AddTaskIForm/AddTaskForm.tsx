@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { validateAntdTitle } from "../../helpers/validateAntdTitle";
 import type { FormValues } from "../../types/todo";
 
@@ -19,7 +19,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
       form.resetFields()
       await onTasksUpdated()
     } catch (error) {
-      alert(`Ошибка - ${error}`);
+      message.error(`Ошибка - ${error}`)
     }
   }
 
