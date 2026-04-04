@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 
 interface Props {
   todos: Todo[]
-  info: TodoInfo | undefined
+  info?: TodoInfo
   filter: StatusFilter
   onFilterChange: (filter: StatusFilter) => void
   onTasksUpdated: () => Promise<void>
