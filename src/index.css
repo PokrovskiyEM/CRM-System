@@ -1,4 +1,6 @@
-@import './ui-kit/palette.css';
+:root {
+  --color-background: #BAC8CE;
+}
 
 * {
   margin: 0;
