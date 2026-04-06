@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signUp } from "../../api/authApi";
 import { useAppSelector } from "../../app/store/store";
-import { validateInput } from "../../helpers/validateInput";
 import type { UserRegistration } from "../../types/auth";
 
 type FormValues = UserRegistration & {
@@ -73,7 +72,8 @@ export function RegisterForm() {
           name="username"
           required
           rules={[
-            { validator: validateInput(1, 60) },
+            { min: 1, message: 'Минимальная длина текста 1 символ' },
+            { max: 60, message: 'Максимальная длина текста 60 символов' },
             { pattern: usernameRegex, message: 'Используйте русский или латинский алфавит' }
           ]}
         >
@@ -84,7 +84,8 @@ export function RegisterForm() {
           name="login"
           required
           rules={[
-            { validator: validateInput(2, 60) },
+            { min: 2, message: 'Минимальная длина текста 2 символа' },
+            { max: 60, message: 'Максимальная длина текста 60 символов' },
             { pattern: loginRegex, message: 'Используйте латинский алфавит' }
           ]}
         >
@@ -95,7 +96,8 @@ export function RegisterForm() {
           name="password"
           required
           rules={[
-            { validator: validateInput(6, 60) }
+            { min: 6, message: 'Минимальная длина текста 6 символ' },
+            { max: 60, message: 'Максимальная длина текста 60 символов' },
           ]}
         >
           <Input.Password />
