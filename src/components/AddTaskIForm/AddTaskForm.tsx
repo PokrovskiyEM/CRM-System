@@ -36,7 +36,20 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
         <Form.Item
           name={'title'}
           rules={[
-            { validator: validateInput(2, 64) }
+            // { validator: validateInput(2, 64) },
+            { required: true, message: 'Это поле не может быть пустым' },
+            {
+              validator: (_, value) => {
+                const trimmed = value?.trim() || ''
+                if (trimmed.length < 2) {
+                  return Promise.reject(new Error('Минимальная длина текста 2 символа'))
+                }
+                if (trimmed.length > 64) {
+                  return Promise.reject(new Error('Максимальная длина текста 64 символа'))
+                }
+                return Promise.resolve()
+              },
+            },
           ]}
           style={{
             flex: 1,
