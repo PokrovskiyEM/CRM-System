@@ -14,14 +14,20 @@ export const getTodos = async (queryParams?: GetTodosQueryParams): Promise<MetaR
   return response.data
 }
 
-export const addTodo = async (todoRequest: TodoRequest): Promise<void> => {
-  await api.post('/todos', todoRequest)
+export const addTodo = async (todoRequest: TodoRequest): Promise<Todo> => {
+  const response = await api.post<Todo>('/todos', todoRequest)
+
+  return response.data
 }
 
-export const updateTodo = async (id: number, todoRequest: TodoRequest): Promise<void> => {
-  await api.put(`/todos/${id}`, todoRequest)
+export const updateTodo = async (id: number, todoRequest: TodoRequest): Promise<Todo> => {
+  const response = await api.put<Todo>(`/todos/${id}`, todoRequest)
+
+  return response.data
 }
 
-export const deleteTodo = async (id: number): Promise<void> => {
-  await api.delete(`/todos/${id}`)
+export const deleteTodo = async (id: number): Promise<Todo> => {
+  const response = await api.delete<Todo>(`/todos/${id}`)
+
+  return response.data
 }
