@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-d
 import { Button, Checkbox, Form, Input, message, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
-import { validateInput } from '../../helpers/validateInput';
 import type { FormValues, Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -97,20 +96,9 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
             <Form.Item
               name={'title'}
               rules={[
-                // { validator: validateInput(2, 64) },
                 { required: true, message: 'Это поле не может быть пустым' },
-                {
-                  validator: (_, value) => {
-                    const trimmed = value?.trim() || ''
-                    if (trimmed.length < 2) {
-                      return Promise.reject(new Error('Минимальная длина текста 2 символа'))
-                    }
-                    if (trimmed.length > 64) {
-                      return Promise.reject(new Error('Максимальная длина текста 64 символа'))
-                    }
-                    return Promise.resolve()
-                  },
-                },
+                { min: 2, message: 'Минимальная длина текста 2 символа' },
+                { max: 64, message: 'Максимальная длина текста 64 символа' },
               ]}
               style={{
                 flex: 1,
