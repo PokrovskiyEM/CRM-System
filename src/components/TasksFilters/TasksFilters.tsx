@@ -1,4 +1,4 @@
-import { Tabs, type TabsProps } from "antd";
+import { message, Tabs, type TabsProps } from "antd";
 import type { StatusFilter, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -9,8 +9,17 @@ interface Props {
 }
 
 export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
+  function isStatusFilter(key: string): key is StatusFilter {
+    return (
+      key === 'all' || key === 'inWork' || key === 'completed'
+    )
+  }
+
   const handleChange = (key: string) => {
-    onFilterChange(key as StatusFilter)
+    if (isStatusFilter(key)) {
+      onFilterChange(key)
+    }
+    else message.error('Неверный тип фильтра')
   }
 
   const items: TabsProps['items'] = [
