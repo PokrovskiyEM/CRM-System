@@ -1,8 +1,7 @@
-import { Space } from "antd";
+import { Flex, Space } from "antd";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import { TaskItem } from "../TaskItem/TaskItem";
 import { TasksFilters } from "../TasksFilters/TasksFilters";
-import styles from "./styles.module.css";
 
 interface Props {
   todos: Todo[]
@@ -15,15 +14,13 @@ interface Props {
 export const TasksList = ({ todos, info, onFilterChange, onTasksUpdated, filter }: Props) => {
 
   return (
-    <section className={styles.container}>
-      <div className={styles.wrapper}>
-        <TasksFilters info={info} onFilterChange={onFilterChange} filter={filter} />
-        <Space orientation="vertical">
-          {todos.map((todo) =>
-            <TaskItem key={todo.id} todo={todo} onTasksUpdated={onTasksUpdated} />
-          )}
-        </Space>
-      </div>
-    </section>
+    <Flex vertical gap='small'>
+      <TasksFilters info={info} onFilterChange={onFilterChange} filter={filter} />
+      <Space orientation="vertical" style={{ paddingInline: 5 }}>
+        {todos.map((todo) =>
+          <TaskItem key={todo.id} todo={todo} onTasksUpdated={onTasksUpdated} />
+        )}
+      </Space>
+    </Flex>
   )
 }
