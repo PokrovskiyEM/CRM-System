@@ -1,8 +1,8 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Checkbox, Form, Input, message, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
-import { validateInput } from "../../helpers/validateInput";
+import { validateInput } from '../../helpers/validateInput';
 import type { FormValues, Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -65,7 +65,9 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
       {!isEdit
         ? (
           <>
-            <p className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>{todo.title}</p>
+            <Typography.Text className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>
+              {todo.title}
+            </Typography.Text>
             <div className={styles.controls}>
               <Button
                 size="large"
@@ -95,7 +97,20 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
             <Form.Item
               name={'title'}
               rules={[
-                { validator: validateInput(2, 64) }
+                // { validator: validateInput(2, 64) },
+                { required: true, message: 'Это поле не может быть пустым' },
+                {
+                  validator: (_, value) => {
+                    const trimmed = value?.trim() || ''
+                    if (trimmed.length < 2) {
+                      return Promise.reject(new Error('Минимальная длина текста 2 символа'))
+                    }
+                    if (trimmed.length > 64) {
+                      return Promise.reject(new Error('Максимальная длина текста 64 символа'))
+                    }
+                    return Promise.resolve()
+                  },
+                },
               ]}
               style={{
                 flex: 1,
