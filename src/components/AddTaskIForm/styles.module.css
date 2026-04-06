@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  column-gap: 10px;
+  position: relative;
+}
+
+.input {
+  flex-grow: 1;
+  border: none;
+  border-bottom: 1px solid gray;
+  padding-inline: 5px;
+  background-color: transparent;
+}
+
+.error {
+  color: red;
+  position: absolute;
+  top: 100%;
+  font-size: 14px;
+}

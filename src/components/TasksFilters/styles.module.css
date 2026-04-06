@@ -1,0 +1,4 @@
+.todoInfo {
+  display: flex;
+  justify-content: space-between;
+}
