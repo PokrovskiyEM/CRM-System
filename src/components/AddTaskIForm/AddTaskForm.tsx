@@ -1,4 +1,4 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, Flex, Form, Input, message } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
 import { validateInput } from "../../helpers/validateInput";
@@ -24,7 +24,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   }
 
   return (
-    <section>
+    <Flex vertical>
       <Form
         form={form}
         onFinish={handleFinish}
@@ -71,6 +71,6 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
           Создать
         </Button>
       </Form>
-    </section >
+    </Flex >
   )
 })
