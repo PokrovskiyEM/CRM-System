@@ -1,0 +1,33 @@
+.layout {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.content {
+  display: flex;
+  padding: 10px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  border-radius: 34px;
+  background: #ffffff;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image {
+  background: url('/hero.png') center/cover no-repeat;
+}
+
+.form {
+  padding: 35px;
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  width: 100%;
+  max-width: 420px;
+}
