@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Typography } from "antd";
+import { Button, Form, Input, message, Modal, Result, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
@@ -11,11 +11,11 @@ type FormValues = UserRegistration & {
 }
 
 export function RegisterForm() {
+  const [isCreated, setIsCreated] = useState(false)
+
   const usernameRegex = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
   const loginRegex = /^[A-Za-z]+$/
   const numberRegex = /^\+7\d{10}$/
-
-  const [created, setCreated] = useState(false)
 
   const navigate = useNavigate()
   const isAuth = useAppSelector(state => state.auth.isAuth)
@@ -42,8 +42,7 @@ export function RegisterForm() {
     try {
       const status = await signUp(trimmedValues)
       if (status === 201) {
-        setCreated(true)
-        message.success('Регистрация прошла успешно')
+        setIsCreated(true)
       } else {
         message.error('Ошибка регистрации')
       }
@@ -150,16 +149,22 @@ export function RegisterForm() {
             Зарегистрироваться
           </Button>
         </Form.Item>
-
-        {created && (
-          <Typography.Paragraph style={{
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-            <Link to="/login">Перейти на страницу авторизации для входа в систему</Link>
-          </Typography.Paragraph>
-        )}
+        <Typography.Paragraph>
+          Уже есть аккаунт? <Link to="/login">Войти</Link>
+        </Typography.Paragraph>
       </Form >
+
+      <Modal open={isCreated} footer={null} onCancel={() => setIsCreated(false)}>
+        <Result
+          status='success'
+          title='Регистрация прошла успешно'
+          extra={[
+            <Button key='success' type="primary" htmlType="button" onClick={() => navigate('/login')}>
+              Перейти к авторизации
+            </Button>
+          ]}
+        />
+      </Modal >
     </>
   )
 }

@@ -80,9 +80,9 @@ export function LoginForm() {
             Войти
           </Button>
         </Form.Item>
-        <Typography.Text>
+        <Typography.Paragraph>
           Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
-        </Typography.Text>
+        </Typography.Paragraph>
       </Form>
     </>
   )
