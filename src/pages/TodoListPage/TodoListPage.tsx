@@ -35,7 +35,7 @@ export function TodoListPage() {
   const onTasksUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
 
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       <AddTaskForm onTasksUpdated={onTasksUpdated} />
       <TasksList
         info={info}
@@ -44,6 +44,6 @@ export function TodoListPage() {
         onFilterChange={setFilter}
         onTasksUpdated={onTasksUpdated}
       />
-    </main>
+    </div>
   )
 }
