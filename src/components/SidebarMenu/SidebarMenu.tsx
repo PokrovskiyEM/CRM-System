@@ -14,6 +14,10 @@ export const SidebarMenu = () => {
       key: "/profile",
       label: 'Личный кабинет'
     },
+    {
+      key: "/users",
+      label: 'Пользователи'
+    },
   ]
 
   return (

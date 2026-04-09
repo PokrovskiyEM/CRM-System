@@ -11,6 +11,7 @@ import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout"
 import { logout, setAuth } from "../store/Authentification/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
+import { UsersPage } from "../../pages/UsersPage/UsersPage"
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch()
@@ -70,6 +71,7 @@ export const AppRouter = () => {
         <Route element={<MainLayout />}>
           <Route path="/todos" element={<TodoListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/users" element={<UsersPage />} />
         </Route>
       </Route>
 
