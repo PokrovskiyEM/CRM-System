@@ -7,9 +7,9 @@ import { RegisterForm } from "../../components/RegisterForm/RegisterForm"
 import { tokenManager } from "../../helpers/tokenManager"
 import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
 import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
-import { AuthLayout } from "../layouts/AuthLayout"
+import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout"
-import { logout, setAuth } from "../slices/authSlice"
+import { logout, setAuth } from "../store/Authentification/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 
 export const AppRouter = () => {

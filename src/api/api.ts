@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { logout, setAuth } from "../app/slices/authSlice";
+import { logout, setAuth } from "../app/store/Authentification/Slices/authSlice";
 import { store } from "../app/store/store";
 import { tokenManager } from "../helpers/tokenManager";
 

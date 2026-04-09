@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signIn } from "../../api/authApi";
-import { setAuth } from "../../app/slices/authSlice";
+import { setAuth } from "../../app/store/Authentification/Slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { AuthData } from "../../types/auth";

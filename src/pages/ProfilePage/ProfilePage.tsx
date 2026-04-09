@@ -2,10 +2,10 @@ import { Button, Descriptions, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getUserProfile, logoutProfile } from "../../api/userApi";
-import { logout } from "../../app/slices/authSlice";
 import { useAppDispatch } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { Profile } from "../../types/auth";
+import { logout } from "../../app/store/Authentification/Slices/authSlice";
 
 export function ProfilePage() {
   const dispatch = useAppDispatch()
