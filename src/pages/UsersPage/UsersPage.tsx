@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Flex, Input, message, Table, Typography, type GetProp, type TableProps } from "antd";
-import styles from "./styles.module.css";
-import { Roles, type User, type UserFilters } from '../../types/users';
-import { useEffect, useState } from 'react';
+import { Button, Dropdown, Flex, Input, message, Table, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
 import type { SorterResult } from 'antd/es/table/interface';
-import { getUsers, mockData } from '../../api/usersApi';
+import { useCallback, useEffect, useState } from 'react';
+import { getUsers } from '../../api/usersApi';
+import { Roles, type User, type UserFilters } from '../../types/users';
+import styles from "./styles.module.css";
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 
@@ -16,6 +15,7 @@ interface TableParams {
   sortField?: SorterResult<any>['field'];
   sortOrder?: SorterResult<any>['order'];
   filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
+  isBlocked?: boolean
 }
 
 const columns: ColumnsType<User> = [
@@ -23,26 +23,30 @@ const columns: ColumnsType<User> = [
     title: 'Имя пользователя',
     dataIndex: 'username',
     width: 200,
-    sorter: true
+    sorter: true,
   },
   {
     title: 'Email',
     dataIndex: 'email',
-    width: 200,
+    width: 300,
+    sorter: true,
   },
   {
     title: 'Дата регистрации',
     dataIndex: 'date',
     width: 150,
+    render: (date: string) => new Date(date).toLocaleDateString()
   },
   {
     title: 'Статус блокировки',
     dataIndex: 'isBlocked',
+    render: (isBlocked: boolean) => isBlocked ? 'Заблокирован' : 'Не заблокирован'
   },
   {
     title: 'Роли',
     dataIndex: 'roles',
     width: 100,
+    render: (roles: Roles[]) => roles.join(', ')
   },
   {
     title: 'Номер телефона',
@@ -51,18 +55,41 @@ const columns: ColumnsType<User> = [
   },
 ]
 
+const filterItems: MenuProps['items'] = [
+  {
+    key: 'all',
+    label: 'Все пользователи'
+  },
+  {
+    key: 'blocked',
+    label: 'Только заблокированные'
+  },
+  {
+    key: 'active',
+    label: 'Только активные'
+  },
+]
+
 const isNonNullable = <T,>(val: T): val is NonNullable<T> => {
   return val !== undefined && val !== null;
 };
 
-const getUsersParams = (params: TableParams) => {
-  const { pagination, filters, sortField, sortOrder, ...restParams } = params;
+const getUsersParams = (params: TableParams): UserFilters => {
+  const { pagination, sortField, filters, sortOrder, ...restParams } = params;
   const result: Record<string, any> = {};
 
   result.limit = pagination?.pageSize
-  result.page = pagination?.current - 1
+  result.page = (pagination?.current ?? 1) - 1
 
-  if (sortField) {
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (isNonNullable(value)) {
+        result[key] = value;
+      }
+    });
+  }
+
+  if (sortField && sortOrder) {
     result.sortBy = sortField;
     result.sortOrder = sortOrder === 'ascend' ? 'asc' : 'desc';
   }
@@ -77,54 +104,68 @@ const getUsersParams = (params: TableParams) => {
 }
 
 export function UsersPage() {
-  // const [usersData, setUsersData] = useState<User[]>(mockData)
-  const [usersData, setUsersData] = useState<User[]>()
+  const [usersData, setUsersData] = useState<User[]>([])
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
       pageSize: 20,
     },
   })
+  const [selectedFilter, setSelectedFilter] = useState('all')
 
-  const params = getUsersParams(tableParams)
+  const fetchUserData = useCallback(
+    async (queryParams: UserFilters) => {
+      try {
+        const response = await getUsers(queryParams)
+        setUsersData(response.data)
+        setTableParams(prev => {
+          if (prev.pagination?.total === response.meta.totalAmount) {
+            return prev
+          }
 
-  const fetchUserData = async (queryParams: UserFilters) => {
-    try {
-      const response = await getUsers(queryParams)
-      setUsersData(response.data)
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          ...tableParams.pagination,
-          total: response.meta.totalAmount
+          return {
+            ...prev,
+            pagination: {
+              ...prev.pagination,
+              total: response.meta.totalAmount
+            }
+          }
         }
-      })
-    } catch (error) {
-      message.error(`Ошибка - ${error}`)
-    }
-  }
+        )
+      } catch (error) {
+        message.error(`Ошибка - ${error}`)
+      }
+    }, [])
 
   useEffect(() => {
+    const params = getUsersParams(tableParams)
     fetchUserData(params)
-  }, [
-    tableParams.pagination?.current,
-    tableParams.pagination?.pageSize,
-    tableParams?.sortOrder,
-    tableParams?.sortField,
-    JSON.stringify(tableParams.filters),
-  ])
+  }, [tableParams, fetchUserData])
 
   const handleTableChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
-    setTableParams({
+    setTableParams(prev => ({
+      ...prev,
       pagination,
       filters,
       sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
       sortField: Array.isArray(sorter) ? undefined : sorter.field,
-    })
+    }))
+  }
 
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setUsersData([]);
-    }
+  const handleFilterClick: MenuProps['onClick'] = ({ key }) => {
+    setSelectedFilter(key)
+    setTableParams(prev => ({
+      ...prev,
+      pagination: {
+        ...prev.pagination,
+        current: 1
+      },
+      isBlocked: key === 'blocked'
+        ? true
+        : key === 'active'
+          ? false
+          : undefined
+    }))
   }
 
   return (
@@ -140,9 +181,18 @@ export function UsersPage() {
             size='large'
             style={{ minWidth: 350 }}
           />
-          <Button type="primary" icon={<FilterOutlined />} size='large'>
-            Фильтр
-          </Button>
+          <Dropdown
+            menu={{
+              items: filterItems,
+              onClick: handleFilterClick,
+              selectedKeys: [selectedFilter]
+            }}
+            trigger={['click']} arrow
+          >
+            <Button type="primary" icon={<FilterOutlined />} size='large'>
+              Фильтр
+            </Button>
+          </Dropdown>
         </Flex>
       </Flex>
       <Table<User>
