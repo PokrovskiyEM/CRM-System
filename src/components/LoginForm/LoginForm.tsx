@@ -7,6 +7,7 @@ import { setAuth } from "../../app/store/Authentification/Slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { AuthData } from "../../types/auth";
+import { getUserProfile } from "../../api/userApi";
 
 export function LoginForm() {
   const dispatch = useAppDispatch()
@@ -31,7 +32,12 @@ export function LoginForm() {
       tokenManager.setToken(data.accessToken)
       localStorage.setItem('refreshToken', data.refreshToken)
 
-      dispatch(setAuth(true))
+      const profile = await getUserProfile()
+
+      dispatch(setAuth({
+        roles: profile.roles
+      }))
+
       navigate('/todos', { replace: true })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {

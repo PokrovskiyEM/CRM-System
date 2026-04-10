@@ -12,6 +12,9 @@ import { MainLayout } from "../layouts/MainLayout"
 import { logout, setAuth } from "../store/Authentification/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 import { UsersPage } from "../../pages/UsersPage/UsersPage"
+import { RoleProtectedRoute } from "../../components/RoleProtectedRoute/RoleProtectedRoute"
+import { Roles } from "../../types/users"
+import { getUserProfile } from "../../api/userApi"
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch()
@@ -34,7 +37,10 @@ export const AppRouter = () => {
         const accessToken = refreshResponse.accessToken
 
         tokenManager.setToken(accessToken)
-        dispatch(setAuth(true))
+        const profile = await getUserProfile()
+        dispatch(setAuth({
+          roles: profile.roles
+        }))
       } catch {
         tokenManager.clearToken()
         localStorage.removeItem('refreshToken')
@@ -71,12 +77,14 @@ export const AppRouter = () => {
         <Route element={<MainLayout />}>
           <Route path="/todos" element={<TodoListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/users" element={<UsersPage />} />
+
+          <Route element={<RoleProtectedRoute allowedRoles={[Roles.ADMIN, Roles.MODERATOR]} />} >
+            <Route path="/users" element={<UsersPage />} />
+          </Route>
         </Route>
       </Route>
 
       <Route path="*" element={<Navigate to={isAuth ? '/todos' : '/login'} replace />} />
-
     </Routes>
   )
 }

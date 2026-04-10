@@ -1,3 +1,5 @@
+import type { Roles } from "./users";
+
 export interface UserRegistration {
   login: string;
   username: string;
@@ -21,7 +23,7 @@ export interface Profile {
   email: string;
   date: string;
   isBlocked: boolean;
-  roles: Role[];
+  roles: Roles[];
   phoneNumber: string;
 }
 
@@ -40,4 +42,4 @@ export interface Token {
   refreshToken: string
 }
 
-export type Role = 'ADMIN' | 'USER' | 'MODERATOR'
+// export type Role = 'ADMIN' | 'USER' | 'MODERATOR'
