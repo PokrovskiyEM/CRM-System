@@ -1,8 +1,9 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Flex, Input, message, Table, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
-import type { SorterResult } from 'antd/es/table/interface';
-import { useCallback, useEffect, useState } from 'react';
+import type { SorterResult, SortOrder } from 'antd/es/table/interface';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getUsers } from '../../api/usersApi';
+import { useDebounce } from '../../hooks/useDebounce';
 import { Roles, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
 
@@ -16,6 +17,7 @@ interface TableParams {
   sortOrder?: SorterResult<any>['order'];
   filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
   isBlocked?: boolean
+  search?: string
 }
 
 const columns: ColumnsType<User> = [
@@ -70,41 +72,15 @@ const filterItems: MenuProps['items'] = [
   },
 ]
 
-const isNonNullable = <T,>(val: T): val is NonNullable<T> => {
-  return val !== undefined && val !== null;
-};
-
-const getUsersParams = (params: TableParams): UserFilters => {
-  const { pagination, sortField, filters, sortOrder, ...restParams } = params;
-  const result: Record<string, any> = {};
-
-  result.limit = pagination?.pageSize
-  result.page = (pagination?.current ?? 1) - 1
-
-  if (filters) {
-    Object.entries(filters).forEach(([key, value]) => {
-      if (isNonNullable(value)) {
-        result[key] = value;
-      }
-    });
-  }
-
-  if (sortField && sortOrder) {
-    result.sortBy = sortField;
-    result.sortOrder = sortOrder === 'ascend' ? 'asc' : 'desc';
-  }
-
-  Object.entries(restParams).forEach(([key, value]) => {
-    if (isNonNullable(value)) {
-      result[key] = value;
-    }
-  })
-
-  return result
+const apiSortOrder = (order?: SortOrder | undefined) => {
+  if (order === 'ascend') return 'asc'
+  if (order === 'descend') return 'desc'
+  return undefined
 }
 
 export function UsersPage() {
   const [usersData, setUsersData] = useState<User[]>([])
+  const [totalUsers, setTotalUsers] = useState(0)
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -112,35 +88,34 @@ export function UsersPage() {
     },
   })
   const [selectedFilter, setSelectedFilter] = useState('all')
+  const [searchValue, setSearchValue] = useState('')
+
+  const debouncedSearchValue = useDebounce(searchValue, 1000)
 
   const fetchUserData = useCallback(
     async (queryParams: UserFilters) => {
       try {
         const response = await getUsers(queryParams)
         setUsersData(response.data)
-        setTableParams(prev => {
-          if (prev.pagination?.total === response.meta.totalAmount) {
-            return prev
-          }
-
-          return {
-            ...prev,
-            pagination: {
-              ...prev.pagination,
-              total: response.meta.totalAmount
-            }
-          }
-        }
-        )
+        setTotalUsers(response.meta.totalAmount)
       } catch (error) {
         message.error(`Ошибка - ${error}`)
       }
     }, [])
 
+  const query = useMemo(() => ({
+    limit: tableParams.pagination?.pageSize ?? 20,
+    page: (tableParams.pagination?.current ?? 1) - 1,
+    sortBy: tableParams.sortField,
+    sortOrder: apiSortOrder(tableParams.sortOrder),
+    filters: tableParams.filters,
+    isBlocked: tableParams.isBlocked,
+    search: debouncedSearchValue || undefined,
+  }), [tableParams, debouncedSearchValue])
+
   useEffect(() => {
-    const params = getUsersParams(tableParams)
-    fetchUserData(params)
-  }, [tableParams, fetchUserData])
+    fetchUserData(query)
+  }, [query, fetchUserData])
 
   const handleTableChange: TableProps<User>['onChange'] = (pagination, filters, sorter) => {
     setTableParams(prev => ({
@@ -180,6 +155,8 @@ export function UsersPage() {
             prefix={<SearchOutlined />}
             size='large'
             style={{ minWidth: 350 }}
+            value={searchValue}
+            onChange={e => setSearchValue(e.target.value)}
           />
           <Dropdown
             menu={{
@@ -199,7 +176,10 @@ export function UsersPage() {
         columns={columns}
         dataSource={usersData}
         rowKey={(record) => `${record.id}`}
-        pagination={tableParams.pagination}
+        pagination={{
+          ...tableParams.pagination,
+          total: totalUsers
+        }}
         scroll={{ x: 'max-content' }}
         onChange={handleTableChange}
       />
