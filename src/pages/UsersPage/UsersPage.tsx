@@ -74,9 +74,13 @@ export function UsersPage() {
       render: (roles: Roles[]) => (
         <Flex gap='small' align='center' wrap>
           {roles?.map((role) => {
-            const color = (role === 'ADMIN') ? 'red' : (role === 'MODERATOR') ? 'orange' : 'blue'
+            const roleColors = {
+              ADMIN: 'red',
+              MODERATOR: 'orange',
+              USER: 'blue',
+            }
             return (
-              <Tag color={color} key={role}>
+              <Tag color={roleColors[role] || 'purple'} key={role}>
                 {role}
               </Tag>
             )
@@ -284,10 +288,12 @@ export function UsersPage() {
         <Table<User>
           columns={columns}
           dataSource={usersData}
-          rowKey={(record) => `${record.id}`}
+          rowKey='id'
           pagination={{
             ...tableParams.pagination,
-            total: totalUsers
+            total: totalUsers,
+            hideOnSinglePage: true,
+            showSizeChanger: false
           }}
           scroll={{ x: 'max-content' }}
           onChange={handleTableChange}

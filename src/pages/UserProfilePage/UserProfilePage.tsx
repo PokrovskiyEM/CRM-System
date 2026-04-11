@@ -30,7 +30,7 @@ export function UserProfilePage() {
         if (!id) {
           throw new Error("Ошибка чтения id пользователя");
         }
-        const data = await getUserProfileByAdmin(id)
+        const data = await getUserProfileByAdmin(+id)
         if (!isCancelled) {
           setProfile(data)
         }
@@ -63,13 +63,33 @@ export function UserProfilePage() {
   }
 
   const handleFinish = async (values: FormValues) => {
+    if (!profile) {
+      return
+    }
+
+    const updatedValues: FormValues = {}
+    if (values.username !== profile.username) {
+      updatedValues.username = values.username
+    }
+    if (values.email !== profile.email) {
+      updatedValues.email = values.email
+    }
+    if (values.phoneNumber !== profile.phoneNumber) {
+      updatedValues.phoneNumber = values.phoneNumber
+    }
+    if (Object.keys(updatedValues).length === 0) {
+      message.info('Нет изменений')
+      return
+    }
+
     try {
       if (!id) {
         throw new Error("Ошибка чтения id пользователя");
       }
-      const newProfile = await updateUserProfile(id, values)
+      const newProfile = await updateUserProfile(+id, updatedValues)
       setProfile(newProfile);
       setIsEditing(false)
+      message.success(`Данные пользователя #${id} обновлены`)
     } catch (error) {
       message.error(`Ошибка - ${error}`)
     }
@@ -152,7 +172,11 @@ export function UserProfilePage() {
         <Button onClick={handleStartEditing} type="primary">
           Редактировать
         </Button>
-        <Button onClick={() => form.submit()} danger disabled={!isEditing}>
+        <Button
+          onClick={() => form.submit()}
+          danger
+          disabled={!isEditing}
+        >
           Сохранить
         </Button>
         <Button onClick={() => navigate('/users')} >
