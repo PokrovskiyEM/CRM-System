@@ -210,7 +210,6 @@ export function UsersPage() {
   const handleDeleteUser = async (id: number) => {
     try {
       await deleteUser(id)
-      message.success(`Пользователь #${id} удален!`)
 
       await fetchUserData(query)
     } catch (error) {
