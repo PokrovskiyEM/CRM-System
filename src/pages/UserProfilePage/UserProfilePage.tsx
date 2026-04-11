@@ -78,7 +78,6 @@ export function UserProfilePage() {
       updatedValues.phoneNumber = values.phoneNumber
     }
     if (Object.keys(updatedValues).length === 0) {
-      message.info('Нет изменений')
       return
     }
 
