@@ -17,3 +17,7 @@ export const updateUserProfile = async (id: string | number, newProfile: UserReq
   const response = await api.put<User>(`admin/users/${id}`, newProfile)
   return response.data
 }
+
+export const deleteUser = async (id: string | number): Promise<void> => {
+  await api.delete(`/admin/users/${id}`)
+}

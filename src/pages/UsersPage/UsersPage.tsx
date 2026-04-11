@@ -1,12 +1,13 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Flex, Input, message, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
+import { Button, Dropdown, Flex, Input, message, Popconfirm, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { getUsers } from '../../api/adminApi';
+import { deleteUser, getUsers } from '../../api/adminApi';
 import { useDebounce } from '../../hooks/useDebounce';
 import { Roles, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
+import { useAppSelector } from '../../app/store/store';
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 
@@ -21,99 +22,10 @@ interface TableParams {
   search?: string
 }
 
-const columns: ColumnsType<User> = [
-  {
-    title: 'Имя пользователя',
-    dataIndex: 'username',
-    width: 200,
-    sorter: true,
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    width: 300,
-    sorter: true,
-  },
-  {
-    title: 'Дата регистрации',
-    dataIndex: 'date',
-    width: 150,
-    render: (date: string) => new Date(date).toLocaleDateString()
-  },
-  {
-    title: 'Статус блокировки',
-    dataIndex: 'isBlocked',
-    render: (isBlocked: boolean) => isBlocked ? 'Заблокирован' : 'Не заблокирован'
-  },
-  {
-    title: 'Роли',
-    dataIndex: 'roles',
-    width: 150,
-    render: (roles: Roles[]) => (
-      <Flex gap='small' align='center' wrap>
-        {roles.map((role) => {
-          const color = (role === 'ADMIN') ? 'red' : (role === 'MODERATOR') ? 'orange' : 'blue'
-          return (
-            <Tag color={color} key={role}>
-              {role}
-            </Tag>
-          )
-        })}
-      </Flex>
-    )
-  },
-  {
-    title: 'Номер телефона',
-    dataIndex: 'phoneNumber',
-    width: 150,
-  },
-  {
-    title: 'Действия',
-    key: 'actions',
-    width: 400,
-    render: (_, record) => {
-      return (
-        <Space >
-          <Link to={`/users/${record.id}`}>
-            <Button type='primary'>Профиль</Button>
-          </Link>
-          <Button type='primary' danger>
-            Удалить
-          </Button>
-          <Button type='primary'>
-            Изменить роли
-          </Button>
-          <Button type='primary'>
-            {record.isBlocked ? 'Разблокировать' : 'Заблокировать'}
-          </Button>
-        </Space>
-      )
-    }
-  },
-]
-
-const filterItems: MenuProps['items'] = [
-  {
-    key: 'all',
-    label: 'Все пользователи'
-  },
-  {
-    key: 'blocked',
-    label: 'Только заблокированные'
-  },
-  {
-    key: 'active',
-    label: 'Только активные'
-  },
-]
-
-const apiSortOrder = (order?: SortOrder | undefined): 'asc' | 'desc' | undefined => {
-  if (order === 'ascend') return 'asc'
-  if (order === 'descend') return 'desc'
-  return undefined
-}
-
 export function UsersPage() {
+  const { roles } = useAppSelector(state => state.auth)
+  const isAdminAccess = roles.includes(Roles.ADMIN)
+
   const [usersData, setUsersData] = useState<User[]>([])
   const [totalUsers, setTotalUsers] = useState(0)
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -127,6 +39,100 @@ export function UsersPage() {
 
   const debouncedSearchValue = useDebounce(searchValue, 1000)
 
+  const columns: ColumnsType<User> = [
+    {
+      title: 'Имя пользователя',
+      dataIndex: 'username',
+      width: 200,
+      sorter: true,
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      width: 300,
+      sorter: true,
+    },
+    {
+      title: 'Дата регистрации',
+      dataIndex: 'date',
+      width: 150,
+      render: (date: string) => new Date(date).toLocaleDateString()
+    },
+    {
+      title: 'Статус блокировки',
+      dataIndex: 'isBlocked',
+      render: (isBlocked: boolean) => isBlocked ? 'Заблокирован' : 'Не заблокирован'
+    },
+    {
+      title: 'Роли',
+      dataIndex: 'roles',
+      width: 150,
+      render: (roles: Roles[]) => (
+        <Flex gap='small' align='center' wrap>
+          {roles.map((role) => {
+            const color = (role === 'ADMIN') ? 'red' : (role === 'MODERATOR') ? 'orange' : 'blue'
+            return (
+              <Tag color={color} key={role}>
+                {role}
+              </Tag>
+            )
+          })}
+        </Flex>
+      )
+    },
+    {
+      title: 'Номер телефона',
+      dataIndex: 'phoneNumber',
+      width: 150,
+    },
+    {
+      title: 'Действия',
+      key: 'actions',
+      width: 400,
+      render: (_, record) => {
+        return (
+          <Space >
+            <Link to={`/users/${record.id}`}>
+              <Button type='primary'>Профиль</Button>
+            </Link>
+            <Popconfirm
+              title='Удалить пользователя'
+              description='Вы точно хотите удалить данного пользователя?'
+              onConfirm={() => handleDeleteUser(record.id)}
+              okText='Да'
+              cancelText='Нет'
+            >
+              <Button type='primary' danger disabled={!isAdminAccess}>
+                Удалить
+              </Button>
+            </Popconfirm>
+            <Button type='primary'>
+              Изменить роли
+            </Button>
+            <Button type='primary'>
+              {record.isBlocked ? 'Разблокировать' : 'Заблокировать'}
+            </Button>
+          </Space>
+        )
+      }
+    },
+  ]
+
+  const filterItems: MenuProps['items'] = [
+    {
+      key: 'all',
+      label: 'Все пользователи'
+    },
+    {
+      key: 'blocked',
+      label: 'Только заблокированные'
+    },
+    {
+      key: 'active',
+      label: 'Только активные'
+    },
+  ]
+
   const fetchUserData = useCallback(
     async (queryParams: UserFilters) => {
       try {
@@ -137,6 +143,12 @@ export function UsersPage() {
         message.error(`Ошибка - ${error}`)
       }
     }, [])
+
+  const apiSortOrder = (order?: SortOrder | undefined): 'asc' | 'desc' | undefined => {
+    if (order === 'ascend') return 'asc'
+    if (order === 'descend') return 'desc'
+    return undefined
+  }
 
   const query = useMemo(() => ({
     limit: tableParams.pagination?.pageSize ?? 20,
@@ -176,6 +188,17 @@ export function UsersPage() {
           ? false
           : undefined
     }))
+  }
+
+  const handleDeleteUser = async (id: number) => {
+    try {
+      await deleteUser(id)
+      message.success(`Пользователь #${id} удален!`)
+
+      await fetchUserData(query)
+    } catch (error) {
+      message.error(`Ошибка - ${error}`)
+    }
   }
 
   return (
