@@ -1,13 +1,13 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Flex, Input, message, Popconfirm, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
+import { Button, Checkbox, Dropdown, Flex, Input, message, Modal, Popconfirm, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { deleteUser, getUsers } from '../../api/adminApi';
+import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles, type BlockStatus } from '../../api/adminApi';
+import { useAppSelector } from '../../app/store/store';
 import { useDebounce } from '../../hooks/useDebounce';
 import { Roles, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
-import { useAppSelector } from '../../app/store/store';
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 
@@ -35,9 +35,13 @@ export function UsersPage() {
     },
   })
   const [selectedFilter, setSelectedFilter] = useState('all')
-  const [searchValue, setSearchValue] = useState('')
 
+  const [searchValue, setSearchValue] = useState('')
   const debouncedSearchValue = useDebounce(searchValue, 1000)
+
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [selectedRoles, setSelectedRoles] = useState<Roles[]>([])
 
   const columns: ColumnsType<User> = [
     {
@@ -69,7 +73,7 @@ export function UsersPage() {
       width: 150,
       render: (roles: Roles[]) => (
         <Flex gap='small' align='center' wrap>
-          {roles.map((role) => {
+          {roles?.map((role) => {
             const color = (role === 'ADMIN') ? 'red' : (role === 'MODERATOR') ? 'orange' : 'blue'
             return (
               <Tag color={color} key={role}>
@@ -106,12 +110,21 @@ export function UsersPage() {
                 Удалить
               </Button>
             </Popconfirm>
-            <Button type='primary'>
+            <Button type='primary' onClick={() => handleRoleModalOpen(record)} disabled={!isAdminAccess}>
               Изменить роли
             </Button>
-            <Button type='primary'>
-              {record.isBlocked ? 'Разблокировать' : 'Заблокировать'}
-            </Button>
+            {record.isBlocked
+              ? (
+                <Button type='primary' disabled={!isAdminAccess} onClick={() => handleBlockStatus(record.id, 'unblock')}>
+                  Разблокировать
+                </Button>
+              )
+              : (
+                <Button type='primary' onClick={() => handleBlockStatus(record.id, 'block')}>
+                  Заблокировать
+                </Button>
+              )
+            }
           </Space>
         )
       }
@@ -201,46 +214,103 @@ export function UsersPage() {
     }
   }
 
+  const handleBlockStatus = async (id: number, status: BlockStatus) => {
+    try {
+      await setUserBlockStatus(id, status)
+
+      await fetchUserData(query)
+    } catch (error) {
+      message.error(`Ошибка - ${error}`)
+    }
+  }
+
+  const handleRoleModalOpen = (user: User) => {
+    setSelectedUser(user)
+    setSelectedRoles(user.roles)
+    setIsRoleModalOpen(true)
+  }
+
+  const handleRoleModalClose = () => {
+    setIsRoleModalOpen(false)
+    setSelectedUser(null)
+    setSelectedRoles([])
+  }
+
+  const handleChangeRoles = async () => {
+    if (!selectedUser) {
+      return
+    }
+
+    try {
+      await updateUserRoles(selectedUser.id, selectedRoles)
+      handleRoleModalClose()
+
+      await fetchUserData(query)
+    } catch (error) {
+      message.error(`Ошибка - ${error}`)
+    }
+  }
+
   return (
-    <div className={styles.wrapper}>
-      <Flex justify='space-between' align='center'>
-        <Typography.Title level={3} style={{ margin: 0 }}>
-          Пользователи
-        </Typography.Title>
-        <Flex gap='small'>
-          <Input
-            placeholder='Поиск по имени или email'
-            prefix={<SearchOutlined />}
-            size='large'
-            style={{ minWidth: 350 }}
-            value={searchValue}
-            onChange={e => setSearchValue(e.target.value)}
-          />
-          <Dropdown
-            menu={{
-              items: filterItems,
-              onClick: handleFilterClick,
-              selectedKeys: [selectedFilter]
-            }}
-            trigger={['click']} arrow
-          >
-            <Button type="primary" icon={<FilterOutlined />} size='large'>
-              Фильтр
-            </Button>
-          </Dropdown>
+    <>
+      <div className={styles.wrapper}>
+        <Flex justify='space-between' align='center'>
+          <Typography.Title level={3} style={{ margin: 0 }}>
+            Пользователи
+          </Typography.Title>
+          <Flex gap='small'>
+            <Input
+              placeholder='Поиск по имени или email'
+              prefix={<SearchOutlined />}
+              size='large'
+              style={{ minWidth: 350 }}
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+            />
+            <Dropdown
+              menu={{
+                items: filterItems,
+                onClick: handleFilterClick,
+                selectedKeys: [selectedFilter]
+              }}
+              trigger={['click']} arrow
+            >
+              <Button type="primary" icon={<FilterOutlined />} size='large'>
+                Фильтр
+              </Button>
+            </Dropdown>
+          </Flex>
         </Flex>
-      </Flex>
-      <Table<User>
-        columns={columns}
-        dataSource={usersData}
-        rowKey={(record) => `${record.id}`}
-        pagination={{
-          ...tableParams.pagination,
-          total: totalUsers
-        }}
-        scroll={{ x: 'max-content' }}
-        onChange={handleTableChange}
-      />
-    </div>
+        <Table<User>
+          columns={columns}
+          dataSource={usersData}
+          rowKey={(record) => `${record.id}`}
+          pagination={{
+            ...tableParams.pagination,
+            total: totalUsers
+          }}
+          scroll={{ x: 'max-content' }}
+          onChange={handleTableChange}
+        />
+      </div>
+
+      <Modal
+        title={`Выберите роли для пользователя - ${selectedUser?.username}:`}
+        open={isRoleModalOpen}
+        onCancel={handleRoleModalClose}
+        onOk={handleChangeRoles}
+      >
+        <Checkbox.Group
+          value={selectedRoles}
+          onChange={setSelectedRoles}
+        >
+          <Space orientation='vertical'>
+            <Checkbox value={Roles.USER}>{Roles.USER}</Checkbox>
+            <Checkbox value={Roles.MODERATOR}>{Roles.MODERATOR}</Checkbox>
+            <Checkbox value={Roles.ADMIN}>{Roles.ADMIN}</Checkbox>
+          </Space>
+        </Checkbox.Group>
+      </Modal >
+    </>
   )
 }

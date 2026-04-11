@@ -61,7 +61,6 @@ api.interceptors.response.use(
 
       const newAccessToken = refreshResponse.data.accessToken
       tokenManager.setToken(newAccessToken)
-      // store.dispatch(setAuth(true))
 
       originalRequest.headers = originalRequest.headers ?? {}
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
