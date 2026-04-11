@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react"
 import { Navigate, Route, Routes } from "react-router"
 import { refresh } from "../../api/authApi"
+import { getUserProfile } from "../../api/userApi"
 import { LoginForm } from "../../components/LoginForm/LoginForm"
 import { ProtectedRoute } from "../../components/ProtectedRoute/ProtectedRoute"
 import { RegisterForm } from "../../components/RegisterForm/RegisterForm"
+import { RoleProtectedRoute } from "../../components/RoleProtectedRoute/RoleProtectedRoute"
 import { tokenManager } from "../../helpers/tokenManager"
 import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
 import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
+import { UserProfilePage } from "../../pages/UserProfilePage/UserProfilePage"
+import { UsersPage } from "../../pages/UsersPage/UsersPage"
+import { Roles } from "../../types/users"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout"
 import { logout, setAuth } from "../store/Authentification/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
-import { UsersPage } from "../../pages/UsersPage/UsersPage"
-import { RoleProtectedRoute } from "../../components/RoleProtectedRoute/RoleProtectedRoute"
-import { Roles } from "../../types/users"
-import { getUserProfile } from "../../api/userApi"
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(state => state.auth.isAuth)
 
   const [authChecked, setAuthChecked] = useState(false)
+
+  const allowedRoles = [Roles.ADMIN, Roles.MODERATOR]
 
   useEffect(() => {
     let isCancelled = false
@@ -78,8 +81,9 @@ export const AppRouter = () => {
           <Route path="/todos" element={<TodoListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
 
-          <Route element={<RoleProtectedRoute allowedRoles={[Roles.ADMIN, Roles.MODERATOR]} />} >
+          <Route element={<RoleProtectedRoute allowedRoles={allowedRoles} />} >
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/:id" element={<UserProfilePage />} />
           </Route>
         </Route>
       </Route>

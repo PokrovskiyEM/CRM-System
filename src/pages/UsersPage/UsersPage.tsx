@@ -1,8 +1,9 @@
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Flex, Input, message, Table, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
+import { Button, Dropdown, Flex, Input, message, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getUsers } from '../../api/usersApi';
+import { Link } from 'react-router';
+import { getUsers } from '../../api/adminApi';
 import { useDebounce } from '../../hooks/useDebounce';
 import { Roles, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
@@ -47,13 +48,47 @@ const columns: ColumnsType<User> = [
   {
     title: 'Роли',
     dataIndex: 'roles',
-    width: 100,
-    render: (roles: Roles[]) => roles.join(', ')
+    width: 150,
+    render: (roles: Roles[]) => (
+      <Flex gap='small' align='center' wrap>
+        {roles.map((role) => {
+          const color = (role === 'ADMIN') ? 'red' : (role === 'MODERATOR') ? 'orange' : 'blue'
+          return (
+            <Tag color={color} key={role}>
+              {role}
+            </Tag>
+          )
+        })}
+      </Flex>
+    )
   },
   {
     title: 'Номер телефона',
     dataIndex: 'phoneNumber',
     width: 150,
+  },
+  {
+    title: 'Действия',
+    key: 'actions',
+    width: 400,
+    render: (_, record) => {
+      return (
+        <Space >
+          <Link to={`/users/${record.id}`}>
+            <Button type='primary'>Профиль</Button>
+          </Link>
+          <Button type='primary' danger>
+            Удалить
+          </Button>
+          <Button type='primary'>
+            Изменить роли
+          </Button>
+          <Button type='primary'>
+            {record.isBlocked ? 'Разблокировать' : 'Заблокировать'}
+          </Button>
+        </Space>
+      )
+    }
   },
 ]
 

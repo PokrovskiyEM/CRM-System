@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
-  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
   const handleToggle = async () => {
@@ -39,7 +39,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
 
     try {
       await updateTodo(todo.id, { title: trimTitle })
-      setIsEdit(false)
+      setIsEditing(false)
       await onTasksUpdated()
     } catch (error) {
       message.error(`Ошибка - ${error}`)
@@ -48,11 +48,11 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
 
   const handleStartEdit = () => {
     form.setFieldsValue({ title: todo.title })
-    setIsEdit(true)
+    setIsEditing(true)
   }
 
   const handleCancelEdit = () => {
-    setIsEdit(false)
+    setIsEditing(false)
   }
 
   return (
@@ -61,7 +61,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
         checked={todo.isDone}
         onChange={handleToggle}
       />
-      {!isEdit
+      {!isEditing
         ? (
           <>
             <Typography.Text className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>
