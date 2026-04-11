@@ -107,7 +107,7 @@ const filterItems: MenuProps['items'] = [
   },
 ]
 
-const apiSortOrder = (order?: SortOrder | undefined) => {
+const apiSortOrder = (order?: SortOrder | undefined): 'asc' | 'desc' | undefined => {
   if (order === 'ascend') return 'asc'
   if (order === 'descend') return 'desc'
   return undefined
@@ -141,7 +141,7 @@ export function UsersPage() {
   const query = useMemo(() => ({
     limit: tableParams.pagination?.pageSize ?? 20,
     page: (tableParams.pagination?.current ?? 1) - 1,
-    sortBy: tableParams.sortField,
+    sortBy: tableParams.sortField ? String(tableParams.sortField) : undefined,
     sortOrder: apiSortOrder(tableParams.sortOrder),
     filters: tableParams.filters,
     isBlocked: tableParams.isBlocked,

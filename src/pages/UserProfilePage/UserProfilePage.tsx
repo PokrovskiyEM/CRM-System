@@ -2,9 +2,7 @@ import { Button, Descriptions, Form, Input, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getUserProfileByAdmin, updateUserProfile } from "../../api/adminApi";
-import { useAppSelector } from "../../app/store/store";
 import type { Profile } from "../../types/auth";
-import { Roles } from "../../types/users";
 
 interface FormValues {
   username?: string,
@@ -15,8 +13,6 @@ interface FormValues {
 export function UserProfilePage() {
   const navigate = useNavigate()
   const { id } = useParams()
-  const { roles } = useAppSelector(state => state.auth)
-  const isAdminAccess = roles.includes(Roles.ADMIN)
 
   const [isEditing, setIsEditing] = useState(false)
   const [form] = Form.useForm<FormValues>()
@@ -153,7 +149,7 @@ export function UserProfilePage() {
           </Descriptions>
         </Form>
 
-        <Button onClick={handleStartEditing} type="primary" disabled={!isAdminAccess}>
+        <Button onClick={handleStartEditing} type="primary">
           Редактировать
         </Button>
         <Button onClick={() => form.submit()} danger disabled={!isEditing}>
