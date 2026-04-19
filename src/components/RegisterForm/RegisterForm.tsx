@@ -40,7 +40,7 @@ export function RegisterForm() {
     }
 
     try {
-      const status = await signUp(trimmedValues)
+      const { status } = await signUp(trimmedValues)
       if (status === 201) {
         setIsCreated(true)
       } else {

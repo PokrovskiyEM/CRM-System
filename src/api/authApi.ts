@@ -1,3 +1,4 @@
+import type { AxiosResponse } from "axios";
 import type { AuthData, RefreshToken, Token, UserRegistration } from "../types/auth";
 import { api } from "./api";
 
@@ -12,7 +13,7 @@ export const signUp = async ({
   password,
   email,
   phoneNumber = ''
-}: UserRegistration) => {
+}: UserRegistration): Promise<AxiosResponse> => {
   const response = await api.post('/auth/signup', {
     login,
     username,
@@ -20,7 +21,7 @@ export const signUp = async ({
     email,
     phoneNumber
   })
-  return response.status
+  return response
 }
 
 export const refresh = async (refreshToken: RefreshToken): Promise<Token> => {
