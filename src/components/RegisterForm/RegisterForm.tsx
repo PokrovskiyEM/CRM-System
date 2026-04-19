@@ -11,7 +11,7 @@ type FormValues = UserRegistration & {
 }
 
 export const RegisterForm = () => {
-  const [isCreated, setIsCreated] = useState(false)
+  const [isCreated, setIsCreated] = useState<boolean>(false)
 
   const usernameRegex = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
   const loginRegex = /^[A-Za-z]+$/

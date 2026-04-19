@@ -16,7 +16,7 @@ export const AppRouter = () => {
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(state => state.auth.isAuth)
 
-  const [authChecked, setAuthChecked] = useState(false)
+  const [authChecked, setAuthChecked] = useState<boolean>(false)
 
   useEffect(() => {
     let isCancelled = false
