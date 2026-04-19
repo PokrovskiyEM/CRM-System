@@ -16,7 +16,7 @@ export const AppRouter = () => {
   const dispatch = useAppDispatch()
   const isAuth = useAppSelector(state => state.auth.isAuth)
 
-  const [authChecked, setAuthChecked] = useState<boolean>(false)
+  const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false)
 
   useEffect(() => {
     let isCancelled = false
@@ -24,7 +24,7 @@ export const AppRouter = () => {
     const tokenCheck = async () => {
       const refreshToken = localStorage.getItem('refreshToken')
       if (!refreshToken) {
-        if (!isCancelled) { setAuthChecked(true) }
+        if (!isCancelled) { setIsAuthChecked(true) }
         return
       }
 
@@ -41,7 +41,7 @@ export const AppRouter = () => {
       }
       finally {
         if (!isCancelled) {
-          setAuthChecked(true)
+          setIsAuthChecked(true)
         }
       }
     }
@@ -53,7 +53,7 @@ export const AppRouter = () => {
     }
   }, [dispatch])
 
-  if (!authChecked) {
+  if (!isAuthChecked) {
     return null
   }
 
