@@ -24,7 +24,7 @@ export function LoginForm() {
   }
 
 
-  const handleFinish = async (values: AuthData) => {
+  const handleLogin = async (values: AuthData) => {
     try {
       const data = await signIn(values)
 
@@ -50,7 +50,7 @@ export function LoginForm() {
         Вход
       </Typography.Title>
       <Form
-        onFinish={handleFinish}
+        onFinish={handleLogin}
         layout="vertical"
       >
         <Form.Item

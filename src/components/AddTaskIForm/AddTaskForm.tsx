@@ -10,7 +10,7 @@ interface Props {
 export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
-  const handleFinish = async (values: FormValues) => {
+  const handleAddTodo = async (values: FormValues) => {
     const trimTitle = values.title.trim()
 
     try {
@@ -26,7 +26,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
     <Flex vertical>
       <Form
         form={form}
-        onFinish={handleFinish}
+        onFinish={handleAddTodo}
         layout="inline"
         style={{
           gap: '10px'

@@ -15,7 +15,7 @@ export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
     )
   }
 
-  const handleChange = (key: string) => {
+  const handleChangeFilter = (key: string) => {
     if (isStatusFilter(key)) {
       onFilterChange(key)
     }
@@ -44,7 +44,7 @@ export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
       size="large"
       activeKey={filter}
       items={items}
-      onChange={handleChange}
+      onChange={handleChangeFilter}
     />
   )
 }

@@ -34,7 +34,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const handleFinish = async (values: FormValues) => {
+  const handleUpdateTodoItem = async (values: FormValues) => {
     const trimTitle = values.title.trim()
 
     try {
@@ -87,7 +87,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
         : (
           <Form
             form={form}
-            onFinish={handleFinish}
+            onFinish={handleUpdateTodoItem}
             layout="inline"
             style={{
               gap: '10px'

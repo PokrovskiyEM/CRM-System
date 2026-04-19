@@ -30,7 +30,7 @@ export function RegisterForm() {
     return <Navigate to='/todos' replace />
   }
 
-  const handleFinish = async (values: FormValues) => {
+  const handleRegister = async (values: FormValues) => {
     const trimmedValues: UserRegistration = {
       login: values.login.trim(),
       username: values.username.trim(),
@@ -63,7 +63,7 @@ export function RegisterForm() {
         Регистрация
       </Typography.Title>
       <Form
-        onFinish={handleFinish}
+        onFinish={handleRegister}
         layout="vertical"
       >
         <Form.Item
