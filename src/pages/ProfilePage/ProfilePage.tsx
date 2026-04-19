@@ -1,13 +1,13 @@
-import { Button, Descriptions, message } from "antd";
+import { Button, Descriptions, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getUserProfile, logoutProfile } from "../../api/userApi";
+import { logout } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { Profile } from "../../types/auth";
-import { logout } from "../../app/store/Authentification/Slices/authSlice";
 
-export function ProfilePage() {
+export const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -24,7 +24,9 @@ export function ProfilePage() {
         }
       } catch {
         if (!isCancelled) {
-          message.error('Ошибка загрузки данных профиля')
+          notification.error({
+            message: `Ошибка загрузки данных профиля`
+          })
         }
       }
     }
@@ -36,7 +38,7 @@ export function ProfilePage() {
     }
   }, [])
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await logoutProfile()
       tokenManager.clearToken()
@@ -45,7 +47,9 @@ export function ProfilePage() {
 
       navigate('/login', { replace: true })
     } catch {
-      message.error('Ошибка выхода')
+      notification.error({
+        message: `Ошибка выхода`
+      })
     }
   }
 

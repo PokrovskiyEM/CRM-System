@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { notification } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { getTodos } from "../../api/todosApi";
 import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
@@ -6,7 +6,7 @@ import { TasksList } from "../../components/TasksList/TasksList";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
-export function TodoListPage() {
+export const TodoListPage = () => {
   const [filter, setFilter] = useState<StatusFilter>('all')
   const [todos, setTodos] = useState<Todo[]>([])
   const [info, setInfo] = useState<TodoInfo>()
@@ -18,7 +18,9 @@ export function TodoListPage() {
       setInfo(response.info);
 
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        message: `Ошибка - ${error}`
+      })
     }
   }, []);
 

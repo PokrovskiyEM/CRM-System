@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, message } from "antd";
+import { Button, Flex, Form, Input, notification } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
 import type { FormValues } from "../../types/todo";
@@ -10,7 +10,7 @@ interface Props {
 export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
-  const handleFinish = async (values: FormValues) => {
+  const handleAddTodo = async (values: FormValues): Promise<void> => {
     const trimTitle = values.title.trim()
 
     try {
@@ -18,7 +18,9 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
       form.resetFields()
       await onTasksUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        title: `Ошибка - ${error}`
+      })
     }
   }
 
@@ -26,7 +28,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
     <Flex vertical>
       <Form
         form={form}
-        onFinish={handleFinish}
+        onFinish={handleAddTodo}
         layout="inline"
         style={{
           gap: '10px'

@@ -1,11 +1,21 @@
 import type { Roles } from "./users";
 
-export interface UserRegistration {
-  login: string;
+export interface ProfileRequest {
   username: string;
-  password: string;
   email: string;
   phoneNumber: string;
+}
+
+export interface UserRegistration extends ProfileRequest {
+  login: string;
+  password: string;
+}
+
+export interface Profile extends ProfileRequest {
+  id: number;
+  date: string;
+  isBlocked: boolean;
+  roles: Roles[];
 }
 
 export interface AuthData {
@@ -17,22 +27,6 @@ export interface RefreshToken {
   refreshToken: string;
 }
 
-export interface Profile {
-  id: number;
-  username: string;
-  email: string;
-  date: string;
-  isBlocked: boolean;
-  roles: Roles[];
-  phoneNumber: string;
-}
-
-export interface ProfileRequest {
-  username: string;
-  email: string;
-  phoneNumber: string;
-}
-
 export interface PasswordRequest {
   password: string;
 }
@@ -41,5 +35,3 @@ export interface Token {
   accessToken: string
   refreshToken: string
 }
-
-// export type Role = 'ADMIN' | 'USER' | 'MODERATOR'

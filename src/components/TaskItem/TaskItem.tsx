@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message, Typography } from 'antd';
+import { Button, Checkbox, Form, Input, notification, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
 import type { FormValues, Todo } from "../../types/todo";
@@ -14,27 +14,31 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
-  const handleToggle = async () => {
+  const handleToggle = async (): Promise<void> => {
     try {
       await updateTodo(todo.id, {
         isDone: !todo.isDone
       })
       await onTasksUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        message: `Ошибка - ${error}`
+      })
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     try {
       await deleteTodo(todo.id)
       await onTasksUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        message: `Ошибка - ${error}`
+      })
     }
   }
 
-  const handleFinish = async (values: FormValues) => {
+  const handleUpdateTodoItem = async (values: FormValues): Promise<void> => {
     const trimTitle = values.title.trim()
 
     try {
@@ -42,16 +46,18 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
       setIsEditing(false)
       await onTasksUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        message: `Ошибка - ${error}`
+      })
     }
   }
 
-  const handleStartEdit = () => {
+  const handleStartEdit = (): void => {
     form.setFieldsValue({ title: todo.title })
     setIsEditing(true)
   }
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (): void => {
     setIsEditing(false)
   }
 
@@ -87,7 +93,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
         : (
           <Form
             form={form}
-            onFinish={handleFinish}
+            onFinish={handleUpdateTodoItem}
             layout="inline"
             style={{
               gap: '10px'

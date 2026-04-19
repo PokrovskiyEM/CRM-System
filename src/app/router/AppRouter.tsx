@@ -14,14 +14,14 @@ import { UsersPage } from "../../pages/UsersPage/UsersPage"
 import { Roles } from "../../types/users"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout"
-import { logout, setAuth } from "../store/Authentification/Slices/authSlice"
+import { logout, setAuthenticated } from "../store/Authentication/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch()
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
-  const [authChecked, setAuthChecked] = useState(false)
+  const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false)
 
   const allowedRoles = [Roles.ADMIN, Roles.MODERATOR]
 
@@ -31,7 +31,7 @@ export const AppRouter = () => {
     const tokenCheck = async () => {
       const refreshToken = localStorage.getItem('refreshToken')
       if (!refreshToken) {
-        if (!isCancelled) { setAuthChecked(true) }
+        if (!isCancelled) { setIsAuthChecked(true) }
         return
       }
 
@@ -41,7 +41,7 @@ export const AppRouter = () => {
 
         tokenManager.setToken(accessToken)
         const profile = await getUserProfile()
-        dispatch(setAuth({
+        dispatch(setAuthenticated({
           roles: profile.roles
         }))
       } catch {
@@ -51,7 +51,7 @@ export const AppRouter = () => {
       }
       finally {
         if (!isCancelled) {
-          setAuthChecked(true)
+          setIsAuthChecked(true)
         }
       }
     }
@@ -63,13 +63,13 @@ export const AppRouter = () => {
     }
   }, [dispatch])
 
-  if (!authChecked) {
+  if (!isAuthChecked) {
     return null
   }
 
   return (
     <Routes >
-      <Route path="/" element={<Navigate to={isAuth ? '/todos' : '/login'} replace />} />
+      <Route path="/" element={<Navigate to={isAuthenticated ? '/todos' : '/login'} replace />} />
 
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginForm />} />
@@ -88,7 +88,7 @@ export const AppRouter = () => {
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to={isAuth ? '/todos' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={isAuthenticated ? '/todos' : '/login'} replace />} />
     </Routes>
   )
 }

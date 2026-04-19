@@ -1,31 +1,30 @@
-import { Button, Form, Input, message, Typography } from "antd";
+import { Button, Form, Input, notification, Typography } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signIn } from "../../api/authApi";
-import { setAuth } from "../../app/store/Authentification/Slices/authSlice";
+import { setAuthenticated } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { AuthData } from "../../types/auth";
 import { getUserProfile } from "../../api/userApi";
 
-export function LoginForm() {
+export const LoginForm = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuthenticated) {
       navigate('/todos', { replace: true })
     }
-  }, [isAuth, navigate])
+  }, [isAuthenticated, navigate])
 
-  if (isAuth) {
+  if (isAuthenticated) {
     return <Navigate to='/todos' replace />
   }
 
-
-  const handleFinish = async (values: AuthData) => {
+  const handleLogin = async (values: AuthData): Promise<void> => {
     try {
       const data = await signIn(values)
 
@@ -34,17 +33,21 @@ export function LoginForm() {
 
       const profile = await getUserProfile()
 
-      dispatch(setAuth({
+      dispatch(setAuthenticated({
         roles: profile.roles
       }))
 
       navigate('/todos', { replace: true })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        message.error('Неверные логин или пароль')
+        notification.error({
+          title: `Неверные логин или пароль`
+        })
         return
       }
-      message.error('Ошибка входа')
+      notification.error({
+        title: `Ошибка входа}`
+      })
     }
   }
 
@@ -56,7 +59,7 @@ export function LoginForm() {
         Вход
       </Typography.Title>
       <Form
-        onFinish={handleFinish}
+        onFinish={handleLogin}
         layout="vertical"
       >
         <Form.Item

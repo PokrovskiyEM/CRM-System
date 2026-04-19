@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { logout } from "../app/store/Authentification/Slices/authSlice";
+import { logout } from "../app/store/Authentication/Slices/authSlice";
 import { store } from "../app/store/store";
 import { tokenManager } from "../helpers/tokenManager";
 
@@ -13,6 +13,12 @@ export const api = axios.create({
   baseURL: BASE_URL
 })
 
+const handleLogout = () => {
+  tokenManager.clearToken()
+  localStorage.removeItem('refreshToken')
+  store.dispatch(logout())
+}
+
 api.interceptors.request.use((config) => {
   const token = tokenManager.getToken()
   if (token && config.headers) {
@@ -22,27 +28,17 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  res => res,
+  response => response,
   async (error: AxiosError) => {
     const status = error.response?.status
     const originalRequest: RetryConfig | undefined = error.config
 
-    if (!status || !originalRequest) {
-      return Promise.reject(error)
-    }
-
-    if (status !== 401) {
-      return Promise.reject(error)
-    }
-
-    if (originalRequest._retry) {
+    if (!status || !originalRequest || status !== 401 || originalRequest._retry) {
       return Promise.reject(error)
     }
 
     if (originalRequest.url === '/auth/refresh') {
-      tokenManager.clearToken()
-      localStorage.removeItem('refreshToken')
-      store.dispatch(logout())
+      handleLogout()
       return Promise.reject(error)
     }
 
@@ -50,9 +46,7 @@ api.interceptors.response.use(
 
     const refreshToken = localStorage.getItem('refreshToken')
     if (!refreshToken) {
-      tokenManager.clearToken()
-      localStorage.removeItem('refreshToken')
-      store.dispatch(logout())
+      handleLogout()
       return Promise.reject(error)
     }
 
@@ -67,9 +61,7 @@ api.interceptors.response.use(
 
       return api.request(originalRequest)
     } catch {
-      tokenManager.clearToken()
-      localStorage.removeItem('refreshToken')
-      store.dispatch(logout())
+      handleLogout()
       return Promise.reject(error)
     }
   }

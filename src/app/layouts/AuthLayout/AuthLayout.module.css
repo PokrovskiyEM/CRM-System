@@ -12,13 +12,9 @@
   display: grid;
   grid-template-columns: 3fr 2fr;
   border-radius: 34px;
-  background: #ffffff;
+  background: var(--color-background-wrapper);
   width: 100%;
   overflow: hidden;
-}
-
-.image {
-  background: url('/hero.png') center/cover no-repeat;
 }
 
 .form {

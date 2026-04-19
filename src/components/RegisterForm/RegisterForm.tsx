@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Modal, Result, Typography } from "antd";
+import { Button, Form, Input, Modal, notification, Result, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
@@ -10,27 +10,27 @@ type FormValues = UserRegistration & {
   repeatPassword: string
 }
 
-export function RegisterForm() {
-  const [isCreated, setIsCreated] = useState(false)
+const USERNAME_REGEX = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
+const LOGIN_REGEX = /^[A-Za-z]+$/
+const PHONE_NUMBER_REGEX = /^\+7\d{10}$/
 
-  const usernameRegex = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
-  const loginRegex = /^[A-Za-z]+$/
-  const numberRegex = /^\+7\d{10}$/
+export const RegisterForm = () => {
+  const [isCreated, setIsCreated] = useState<boolean>(false)
 
   const navigate = useNavigate()
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuthenticated) {
       navigate('/todos', { replace: true })
     }
-  }, [isAuth, navigate])
+  }, [isAuthenticated, navigate])
 
-  if (isAuth) {
+  if (isAuthenticated) {
     return <Navigate to='/todos' replace />
   }
 
-  const handleFinish = async (values: FormValues) => {
+  const handleRegister = async (values: FormValues): Promise<void> => {
     const trimmedValues: UserRegistration = {
       login: values.login.trim(),
       username: values.username.trim(),
@@ -40,18 +40,24 @@ export function RegisterForm() {
     }
 
     try {
-      const status = await signUp(trimmedValues)
+      const { status } = await signUp(trimmedValues)
       if (status === 201) {
         setIsCreated(true)
       } else {
-        message.error('Ошибка регистрации')
+        notification.error({
+          title: `Ошибка регистрации`
+        })
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        message.error('Логин или почтовый адрес уже существуют')
+        notification.error({
+          title: `Логин или почтовый адрес уже существуют`
+        })
         return
       }
-      message.error('Ошибка регистрации')
+      notification.error({
+        title: `Ошибка регистрации`
+      })
     }
   }
 
@@ -63,7 +69,7 @@ export function RegisterForm() {
         Регистрация
       </Typography.Title>
       <Form
-        onFinish={handleFinish}
+        onFinish={handleRegister}
         layout="vertical"
       >
         <Form.Item
@@ -73,7 +79,7 @@ export function RegisterForm() {
           rules={[
             { min: 1, message: 'Минимальная длина текста 1 символ' },
             { max: 60, message: 'Максимальная длина текста 60 символов' },
-            { pattern: usernameRegex, message: 'Используйте русский или латинский алфавит' }
+            { pattern: USERNAME_REGEX, message: 'Используйте русский или латинский алфавит' }
           ]}
         >
           <Input />
@@ -85,7 +91,7 @@ export function RegisterForm() {
           rules={[
             { min: 2, message: 'Минимальная длина текста 2 символа' },
             { max: 60, message: 'Максимальная длина текста 60 символов' },
-            { pattern: loginRegex, message: 'Используйте латинский алфавит' }
+            { pattern: LOGIN_REGEX, message: 'Используйте латинский алфавит' }
           ]}
         >
           <Input />
@@ -134,7 +140,7 @@ export function RegisterForm() {
           label="Телефон"
           name="phoneNumber"
           rules={[
-            { pattern: numberRegex, message: 'Введите корректный номер телефона' }
+            { pattern: PHONE_NUMBER_REGEX, message: 'Введите корректный номер телефона' }
           ]}
         >
           <Input />

@@ -23,7 +23,7 @@ interface TableParams {
 }
 
 export function UsersPage() {
-  const { roles } = useAppSelector(state => state.auth)
+  const { roles } = useAppSelector(state => state.authenticate)
   const isAdminAccess = roles.includes(Roles.ADMIN)
 
   const [usersData, setUsersData] = useState<User[]>([])
