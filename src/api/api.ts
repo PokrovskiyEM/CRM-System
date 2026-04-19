@@ -33,15 +33,7 @@ api.interceptors.response.use(
     const status = error.response?.status
     const originalRequest: RetryConfig | undefined = error.config
 
-    if (!status || !originalRequest) {
-      return Promise.reject(error)
-    }
-
-    if (status !== 401) {
-      return Promise.reject(error)
-    }
-
-    if (originalRequest._retry) {
+    if (!status || !originalRequest || status !== 401 || originalRequest._retry) {
       return Promise.reject(error)
     }
 
