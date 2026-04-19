@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { notification } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { getTodos } from "../../api/todosApi";
 import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
@@ -18,7 +18,9 @@ export const TodoListPage = () => {
       setInfo(response.info);
 
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        message: `Ошибка - ${error}`
+      })
     }
   }, []);
 

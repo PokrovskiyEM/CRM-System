@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Typography } from "antd";
+import { Button, Form, Input, notification, Typography } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
@@ -35,10 +35,14 @@ export const LoginForm = () => {
       navigate('/todos', { replace: true })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        message.error('Неверные логин или пароль')
+        notification.error({
+          title: `Неверные логин или пароль`
+        })
         return
       }
-      message.error('Ошибка входа')
+      notification.error({
+        title: `Ошибка входа}`
+      })
     }
   }
 

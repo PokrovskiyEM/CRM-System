@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Modal, Result, Typography } from "antd";
+import { Button, Form, Input, Modal, notification, Result, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
@@ -44,14 +44,20 @@ export const RegisterForm = () => {
       if (status === 201) {
         setIsCreated(true)
       } else {
-        message.error('Ошибка регистрации')
+        notification.error({
+          title: `Ошибка регистрации`
+        })
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        message.error('Логин или почтовый адрес уже существуют')
+        notification.error({
+          title: `Логин или почтовый адрес уже существуют`
+        })
         return
       }
-      message.error('Ошибка регистрации')
+      notification.error({
+        title: `Ошибка регистрации`
+      })
     }
   }
 

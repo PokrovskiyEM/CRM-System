@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, message } from "antd";
+import { Button, Flex, Form, Input, notification } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
 import type { FormValues } from "../../types/todo";
@@ -18,7 +18,9 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
       form.resetFields()
       await onTasksUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      notification.error({
+        title: `Ошибка - ${error}`
+      })
     }
   }
 
