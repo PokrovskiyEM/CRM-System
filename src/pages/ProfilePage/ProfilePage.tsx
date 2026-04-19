@@ -2,7 +2,7 @@ import { Button, Descriptions, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getUserProfile, logoutProfile } from "../../api/userApi";
-import { logout } from "../../app/store/Authentification/Slices/authSlice";
+import { logout } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { Profile } from "../../types/auth";

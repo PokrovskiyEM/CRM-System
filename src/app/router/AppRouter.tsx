@@ -9,12 +9,12 @@ import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
 import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout"
-import { logout, setAuth } from "../store/Authentification/Slices/authSlice"
+import { logout, setAuthenticated } from "../store/Authentication/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch()
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
   const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false)
 
@@ -33,7 +33,7 @@ export const AppRouter = () => {
         const accessToken = refreshResponse.accessToken
 
         tokenManager.setToken(accessToken)
-        dispatch(setAuth(true))
+        dispatch(setAuthenticated(true))
       } catch {
         tokenManager.clearToken()
         localStorage.removeItem('refreshToken')
@@ -59,7 +59,7 @@ export const AppRouter = () => {
 
   return (
     <Routes >
-      <Route path="/" element={<Navigate to={isAuth ? '/todos' : '/login'} replace />} />
+      <Route path="/" element={<Navigate to={isAuthenticated ? '/todos' : '/login'} replace />} />
 
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginForm />} />
@@ -73,7 +73,7 @@ export const AppRouter = () => {
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to={isAuth ? '/todos' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={isAuthenticated ? '/todos' : '/login'} replace />} />
 
     </Routes>
   )

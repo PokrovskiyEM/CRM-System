@@ -1,5 +1,5 @@
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { logout, setAuth } from "../app/store/Authentification/Slices/authSlice";
+import { logout, setAuthenticated } from "../app/store/Authentication/Slices/authSlice";
 import { store } from "../app/store/store";
 import { tokenManager } from "../helpers/tokenManager";
 
@@ -55,7 +55,7 @@ api.interceptors.response.use(
 
       const newAccessToken = refreshResponse.data.accessToken
       tokenManager.setToken(newAccessToken)
-      store.dispatch(setAuth(true))
+      store.dispatch(setAuthenticated(true))
 
       originalRequest.headers = originalRequest.headers ?? {}
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signIn } from "../../api/authApi";
-import { setAuth } from "../../app/store/Authentification/Slices/authSlice";
+import { setAuthenticated } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { AuthData } from "../../types/auth";
@@ -11,15 +11,15 @@ import type { AuthData } from "../../types/auth";
 export const LoginForm = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuthenticated) {
       navigate('/todos', { replace: true })
     }
-  }, [isAuth, navigate])
+  }, [isAuthenticated, navigate])
 
-  if (isAuth) {
+  if (isAuthenticated) {
     return <Navigate to='/todos' replace />
   }
 
@@ -31,7 +31,7 @@ export const LoginForm = () => {
       tokenManager.setToken(data.accessToken)
       localStorage.setItem('refreshToken', data.refreshToken)
 
-      dispatch(setAuth(true))
+      dispatch(setAuthenticated(true))
       navigate('/todos', { replace: true })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {

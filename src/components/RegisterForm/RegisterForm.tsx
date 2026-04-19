@@ -18,15 +18,15 @@ export const RegisterForm = () => {
   const numberRegex = /^\+7\d{10}$/
 
   const navigate = useNavigate()
-  const isAuth = useAppSelector(state => state.auth.isAuth)
+  const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuthenticated) {
       navigate('/todos', { replace: true })
     }
-  }, [isAuth, navigate])
+  }, [isAuthenticated, navigate])
 
-  if (isAuth) {
+  if (isAuthenticated) {
     return <Navigate to='/todos' replace />
   }
 
