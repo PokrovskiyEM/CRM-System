@@ -10,12 +10,12 @@ type FormValues = UserRegistration & {
   repeatPassword: string
 }
 
+const USERNAME_REGEX = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
+const LOGIN_REGEX = /^[A-Za-z]+$/
+const PHONE_NUMBER_REGEX = /^\+7\d{10}$/
+
 export const RegisterForm = () => {
   const [isCreated, setIsCreated] = useState<boolean>(false)
-
-  const usernameRegex = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
-  const loginRegex = /^[A-Za-z]+$/
-  const numberRegex = /^\+7\d{10}$/
 
   const navigate = useNavigate()
   const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
@@ -79,7 +79,7 @@ export const RegisterForm = () => {
           rules={[
             { min: 1, message: 'Минимальная длина текста 1 символ' },
             { max: 60, message: 'Максимальная длина текста 60 символов' },
-            { pattern: usernameRegex, message: 'Используйте русский или латинский алфавит' }
+            { pattern: USERNAME_REGEX, message: 'Используйте русский или латинский алфавит' }
           ]}
         >
           <Input />
@@ -91,7 +91,7 @@ export const RegisterForm = () => {
           rules={[
             { min: 2, message: 'Минимальная длина текста 2 символа' },
             { max: 60, message: 'Максимальная длина текста 60 символов' },
-            { pattern: loginRegex, message: 'Используйте латинский алфавит' }
+            { pattern: LOGIN_REGEX, message: 'Используйте латинский алфавит' }
           ]}
         >
           <Input />
@@ -140,7 +140,7 @@ export const RegisterForm = () => {
           label="Телефон"
           name="phoneNumber"
           rules={[
-            { pattern: numberRegex, message: 'Введите корректный номер телефона' }
+            { pattern: PHONE_NUMBER_REGEX, message: 'Введите корректный номер телефона' }
           ]}
         >
           <Input />
