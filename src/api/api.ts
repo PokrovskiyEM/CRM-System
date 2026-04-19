@@ -13,6 +13,12 @@ export const api = axios.create({
   baseURL: BASE_URL
 })
 
+const handleLogout = () => {
+  tokenManager.clearToken()
+  localStorage.removeItem('refreshToken')
+  store.dispatch(logout())
+}
+
 api.interceptors.request.use((config) => {
   const token = tokenManager.getToken()
   if (token && config.headers) {
@@ -22,7 +28,7 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  res => res,
+  response => response,
   async (error: AxiosError) => {
     const status = error.response?.status
     const originalRequest: RetryConfig | undefined = error.config
@@ -40,9 +46,7 @@ api.interceptors.response.use(
     }
 
     if (originalRequest.url === '/auth/refresh') {
-      tokenManager.clearToken()
-      localStorage.removeItem('refreshToken')
-      store.dispatch(logout())
+      handleLogout()
       return Promise.reject(error)
     }
 
@@ -50,9 +54,7 @@ api.interceptors.response.use(
 
     const refreshToken = localStorage.getItem('refreshToken')
     if (!refreshToken) {
-      tokenManager.clearToken()
-      localStorage.removeItem('refreshToken')
-      store.dispatch(logout())
+      handleLogout()
       return Promise.reject(error)
     }
 
@@ -68,9 +70,7 @@ api.interceptors.response.use(
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
       return api.request(originalRequest)
     } catch {
-      tokenManager.clearToken()
-      localStorage.removeItem('refreshToken')
-      store.dispatch(logout())
+      handleLogout()
       return Promise.reject(error)
     }
   }
