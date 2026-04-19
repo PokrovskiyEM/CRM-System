@@ -1,5 +1,7 @@
 :root {
   --color-background: #BAC8CE;
+  --color-background-wrapper: #ffffff;
+  --color-checked-text: gray;
 }
 
 * {
