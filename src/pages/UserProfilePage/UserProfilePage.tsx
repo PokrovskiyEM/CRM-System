@@ -62,7 +62,7 @@ export function UserProfilePage() {
     setIsEditing(true)
   }
 
-  const handleFinish = async (values: FormValues) => {
+  const handleUpdateUserProfileInfo = async (values: FormValues) => {
     if (!profile) {
       return
     }
@@ -114,7 +114,7 @@ export function UserProfilePage() {
       }}>
         <Form
           form={form}
-          onFinish={handleFinish}
+          onFinish={handleUpdateUserProfileInfo}
         >
           <Descriptions bordered column={1}>
             {!isEditing
