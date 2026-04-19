@@ -1,4 +1,4 @@
-import styles from "./BannerImage.module.css"
+import styles from "./styles.module.css"
 
 export const BannerImage = () => {
   return (

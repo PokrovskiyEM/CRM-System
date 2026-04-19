@@ -17,10 +17,6 @@
   overflow: hidden;
 }
 
-.image {
-  background: url('/hero.png') center/cover no-repeat;
-}
-
 .form {
   padding: 35px;
   display: flex;
