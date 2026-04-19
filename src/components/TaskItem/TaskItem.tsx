@@ -14,7 +14,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
-  const handleToggle = async () => {
+  const handleToggle = async (): Promise<void> => {
     try {
       await updateTodo(todo.id, {
         isDone: !todo.isDone
@@ -27,7 +27,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     try {
       await deleteTodo(todo.id)
       await onTasksUpdated()
@@ -38,7 +38,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const handleUpdateTodoItem = async (values: FormValues) => {
+  const handleUpdateTodoItem = async (values: FormValues): Promise<void> => {
     const trimTitle = values.title.trim()
 
     try {
@@ -52,12 +52,12 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
     }
   }
 
-  const handleStartEdit = () => {
+  const handleStartEdit = (): void => {
     form.setFieldsValue({ title: todo.title })
     setIsEdit(true)
   }
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (): void => {
     setIsEdit(false)
   }
 

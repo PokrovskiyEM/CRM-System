@@ -10,7 +10,7 @@ interface Props {
 export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
-  const handleAddTodo = async (values: FormValues) => {
+  const handleAddTodo = async (values: FormValues): Promise<void> => {
     const trimTitle = values.title.trim()
 
     try {

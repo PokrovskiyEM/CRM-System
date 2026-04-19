@@ -24,7 +24,7 @@ export const LoginForm = () => {
   }
 
 
-  const handleLogin = async (values: AuthData) => {
+  const handleLogin = async (values: AuthData): Promise<void> => {
     try {
       const data = await signIn(values)
 

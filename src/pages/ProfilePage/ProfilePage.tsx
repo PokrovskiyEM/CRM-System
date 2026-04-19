@@ -38,7 +38,7 @@ export const ProfilePage = () => {
     }
   }, [])
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await logoutProfile()
       tokenManager.clearToken()

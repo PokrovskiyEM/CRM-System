@@ -15,7 +15,7 @@ export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
     )
   }
 
-  const handleChangeFilter = (key: string) => {
+  const handleChangeFilter = (key: string): void => {
     if (isStatusFilter(key)) {
       onFilterChange(key)
     }

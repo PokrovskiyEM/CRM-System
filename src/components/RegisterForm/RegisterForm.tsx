@@ -30,7 +30,7 @@ export const RegisterForm = () => {
     return <Navigate to='/todos' replace />
   }
 
-  const handleRegister = async (values: FormValues) => {
+  const handleRegister = async (values: FormValues): Promise<void> => {
     const trimmedValues: UserRegistration = {
       login: values.login.trim(),
       username: values.username.trim(),
