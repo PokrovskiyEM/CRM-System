@@ -6,7 +6,7 @@ import { TasksList } from "../../components/TasksList/TasksList";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
-export function TodoListPage() {
+export const TodoListPage = () => {
   const [filter, setFilter] = useState<StatusFilter>('all')
   const [todos, setTodos] = useState<Todo[]>([])
   const [info, setInfo] = useState<TodoInfo>()

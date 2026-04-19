@@ -10,7 +10,7 @@ type FormValues = UserRegistration & {
   repeatPassword: string
 }
 
-export function RegisterForm() {
+export const RegisterForm = () => {
   const [isCreated, setIsCreated] = useState(false)
 
   const usernameRegex = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/

@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { AuthData } from "../../types/auth";
 
-export function LoginForm() {
+export const LoginForm = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isAuth = useAppSelector(state => state.auth.isAuth)

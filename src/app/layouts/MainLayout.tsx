@@ -4,7 +4,7 @@ import { SidebarMenu } from "../../components/SidebarMenu/SidebarMenu";
 
 const { Sider, Content } = Layout;
 
-export function MainLayout() {
+export const MainLayout = () => {
   return (
     <Layout style={{
       minHeight: '100vh',

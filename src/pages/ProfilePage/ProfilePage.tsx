@@ -7,7 +7,7 @@ import { tokenManager } from "../../helpers/tokenManager";
 import type { Profile } from "../../types/auth";
 import { logout } from "../../app/store/Authentification/Slices/authSlice";
 
-export function ProfilePage() {
+export const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
