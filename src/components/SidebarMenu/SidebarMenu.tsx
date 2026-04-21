@@ -3,21 +3,6 @@ import { useLocation, useNavigate } from "react-router";
 import { useAppSelector } from "../../app/store/store";
 import { Roles } from "../../types/users";
 
-const ADMIN_MENU_ITEMS = [
-  {
-    key: "/todos",
-    label: 'Список задач'
-  },
-  {
-    key: "/profile",
-    label: 'Личный кабинет'
-  },
-  {
-    key: "/users",
-    label: 'Пользователи'
-  },
-]
-
 const USER_MENU_ITEMS = [
   {
     key: "/todos",
@@ -26,6 +11,14 @@ const USER_MENU_ITEMS = [
   {
     key: "/profile",
     label: 'Личный кабинет'
+  },
+]
+
+const ADMIN_MENU_ITEMS = [
+  ...USER_MENU_ITEMS,
+  {
+    key: "/users",
+    label: 'Пользователи'
   },
 ]
 
