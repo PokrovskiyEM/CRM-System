@@ -10,7 +10,7 @@ interface FormValues {
   phoneNumber?: string,
 }
 
-export function UserProfilePage() {
+export const UserProfilePage = () => {
   const navigate = useNavigate()
   const { id } = useParams()
 

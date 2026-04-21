@@ -8,13 +8,13 @@ interface Props {
   filter: StatusFilter
 }
 
-function isStatusFilter(key: string): key is StatusFilter {
+const isStatusFilter = (key: string): key is StatusFilter => {
   return (
     key === 'all' || key === 'inWork' || key === 'completed'
   )
 }
 
-export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
+export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
   const handleChangeFilter = (key: string): void => {
     if (isStatusFilter(key)) {
       onFilterChange(key)
@@ -41,7 +41,7 @@ export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
 
   return (
     <Tabs
-      className={styles.tasksTabs}
+      className={styles.todosTabs}
       centered
       size="large"
       activeKey={filter}

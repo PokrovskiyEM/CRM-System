@@ -1,26 +1,25 @@
-import { Button, Flex, Form, Input, notification } from "antd";
+import { Button, Flex, Form, Input } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
+import { handleNotificationError } from "../../helpers/handleNotificationError";
 import type { FormValues } from "../../types/todo";
 
 interface Props {
-  onTasksUpdated: () => Promise<void>
+  onTodosUpdated: () => Promise<void>
 }
 
-export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
+export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
   const handleAddTodo = async (values: FormValues): Promise<void> => {
-    const trimTitle = values.title.trim()
+    const trimmedTitle = values.title.trim()
 
     try {
-      await addTodo({ title: trimTitle })
+      await addTodo({ title: trimmedTitle })
       form.resetFields()
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        title: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 

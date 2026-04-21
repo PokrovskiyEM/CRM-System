@@ -1,16 +1,17 @@
-import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, notification, Typography } from 'antd';
+import { Checkbox, Form, Input, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
+import { handleNotificationError } from '../../helpers/handleNotificationError';
 import type { FormValues, Todo } from "../../types/todo";
+import { TodoItemControls } from '../TodoItemControls/TodoItemControls';
 import styles from "./styles.module.css";
 
 interface Props {
   todo: Todo
-  onTasksUpdated: () => Promise<void>
+  onTodosUpdated: () => Promise<void>
 }
 
-export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
+export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
@@ -19,36 +20,30 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
       await updateTodo(todo.id, {
         isDone: !todo.isDone
       })
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        message: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
   const handleDelete = async (): Promise<void> => {
     try {
       await deleteTodo(todo.id)
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        message: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
   const handleUpdateTodoItem = async (values: FormValues): Promise<void> => {
-    const trimTitle = values.title.trim()
+    const trimmedTitle = values.title.trim()
 
     try {
-      await updateTodo(todo.id, { title: trimTitle })
+      await updateTodo(todo.id, { title: trimmedTitle })
       setIsEditing(false)
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        message: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
@@ -73,21 +68,12 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
             <Typography.Text className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>
               {todo.title}
             </Typography.Text>
-            <div className={styles.controls}>
-              <Button
-                size="large"
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={handleStartEdit}
-              />
-              <Button
-                size="large"
-                type="primary"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={handleDelete}
-              />
-            </div>
+            <TodoItemControls
+              isEditing={false}
+              onStartEdit={handleStartEdit}
+              onCancelEdit={handleCancelEdit}
+              onDelete={handleDelete}
+            />
           </>
         )
         : (
@@ -117,23 +103,12 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
                 autoFocus
               />
             </Form.Item>
-            <div className={styles.controls}>
-              <Button
-                type="primary"
-                size="large"
-                htmlType="submit"
-                icon={<SaveOutlined />}
-              />
-              <Button
-                variant="solid"
-                color="magenta"
-                danger
-                size="large"
-                htmlType="button"
-                icon={<UndoOutlined />}
-                onClick={handleCancelEdit}
-              />
-            </div>
+            <TodoItemControls
+              isEditing
+              onStartEdit={handleStartEdit}
+              onDelete={handleDelete}
+              onCancelEdit={handleCancelEdit}
+            />
           </Form>
         )
       }

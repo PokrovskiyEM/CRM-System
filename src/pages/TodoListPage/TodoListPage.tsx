@@ -1,8 +1,8 @@
-import { notification } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { getTodos } from "../../api/todosApi";
-import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
-import { TasksList } from "../../components/TasksList/TasksList";
+import { AddTodoForm } from "../../components/AddTodoForm/AddTodoForm";
+import { TodosList } from "../../components/TodosList/TodosList";
+import { handleNotificationError } from "../../helpers/handleNotificationError";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -18,9 +18,7 @@ export const TodoListPage = () => {
       setInfo(response.info);
 
     } catch (error) {
-      notification.error({
-        message: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }, []);
 
@@ -34,17 +32,17 @@ export const TodoListPage = () => {
     return () => clearInterval(intervalId)
   }, [filter, fetchTodos])
 
-  const onTasksUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
+  const onTodosUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
 
   return (
     <div className={styles.main}>
-      <AddTaskForm onTasksUpdated={onTasksUpdated} />
-      <TasksList
+      <AddTodoForm onTodosUpdated={onTodosUpdated} />
+      <TodosList
         info={info}
         todos={todos}
         filter={filter}
         onFilterChange={setFilter}
-        onTasksUpdated={onTasksUpdated}
+        onTodosUpdated={onTodosUpdated}
       />
     </div>
   )

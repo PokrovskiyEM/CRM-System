@@ -22,7 +22,7 @@ interface TableParams {
   search?: string
 }
 
-export function UsersPage() {
+export const UsersPage = () => {
   const { roles } = useAppSelector(state => state.authenticate)
   const isAdminAccess = roles.includes(Roles.ADMIN)
 

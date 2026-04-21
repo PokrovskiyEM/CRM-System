@@ -4,6 +4,8 @@ import { SidebarMenu } from "../../components/SidebarMenu/SidebarMenu";
 
 const { Sider, Content } = Layout;
 
+const SIDEBAR_WIDTH = 160
+
 export const MainLayout = () => {
   return (
     <Layout style={{
@@ -12,7 +14,7 @@ export const MainLayout = () => {
     }}>
       <Sider
         theme="light"
-        width={160}
+        width={SIDEBAR_WIDTH}
         style={{
           position: "sticky",
           top: 0,
