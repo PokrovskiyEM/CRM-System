@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles } from '../../api/adminApi';
 import { useAppSelector } from '../../app/store/store';
 import { useDebounce } from '../../hooks/useDebounce';
-import { Role, type BlockStatus, type User, type UserFilters } from '../../types/users';
+import { Role, type ApiSortOrder, type BlockStatus, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -22,7 +22,7 @@ interface TableParams {
   search?: string
 }
 
-const apiSortOrder = (order?: SortOrder | undefined): 'asc' | 'desc' | undefined => {
+const apiSortOrder = (order?: SortOrder | undefined): ApiSortOrder | undefined => {
   if (order === 'ascend') return 'asc'
   if (order === 'descend') return 'desc'
   return undefined

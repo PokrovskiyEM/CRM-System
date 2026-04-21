@@ -1,7 +1,9 @@
+export type ApiSortOrder = 'asc' | 'desc'
+
 export interface UserFilters {
   search?: string;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: ApiSortOrder;
   isBlocked?: boolean;
   limit?: number;  // сколько на странице
   page?: number;  // страницу
@@ -22,7 +24,7 @@ export interface MetaResponse<T> {
   meta: {
     totalAmount: number;
     sortBy: string;
-    sortOrder: 'asc' | 'desc';
+    sortOrder: ApiSortOrder;
   }
 }
 
