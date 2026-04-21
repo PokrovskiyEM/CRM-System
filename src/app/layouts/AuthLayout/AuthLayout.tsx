@@ -9,10 +9,10 @@ export const AuthLayout = () => {
   return (
     <Layout className={styles.layout}>
       <Content className={styles.content}>
-        <div className={styles.wrapper}>
+        <div className={styles.container}>
           <BannerImage />
-          <div className={styles.form}>
-            <div className={styles.inner}>
+          <div className={styles.formSection}>
+            <div className={styles.formContainer}>
               <Outlet />
             </div>
           </div>
