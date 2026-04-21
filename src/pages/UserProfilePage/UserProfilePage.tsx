@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import { getUserProfileByAdmin, updateUserProfile } from "../../api/adminApi";
 import type { Profile } from "../../types/auth";
 import styles from "./styles.module.css"
+import { PHONE_NUMBER_REGEX, USERNAME_REGEX } from "../../constants/regex";
 
 interface FormValues {
   username?: string,
@@ -17,9 +18,6 @@ export const UserProfilePage = () => {
 
   const [isEditing, setIsEditing] = useState(false)
   const [form] = Form.useForm<FormValues>()
-
-  const usernameRegex = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
-  const numberRegex = /^\+7\d{10}$/
 
   const [profile, setProfile] = useState<Profile | null>(null)
 
@@ -124,7 +122,7 @@ export const UserProfilePage = () => {
                     rules={[
                       { min: 1, message: 'Минимальная длина текста 1 символ' },
                       { max: 60, message: 'Максимальная длина текста 60 символов' },
-                      { pattern: usernameRegex, message: 'Используйте русский или латинский алфавит' }
+                      { pattern: USERNAME_REGEX, message: 'Используйте русский или латинский алфавит' }
                     ]}
                   >
                     <Input />
@@ -149,7 +147,7 @@ export const UserProfilePage = () => {
                     name='phoneNumber'
                     required
                     rules={[
-                      { pattern: numberRegex, message: 'Введите корректный номер телефона' }
+                      { pattern: PHONE_NUMBER_REGEX, message: 'Введите корректный номер телефона' }
                     ]}
                   >
                     <Input />
