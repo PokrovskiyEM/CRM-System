@@ -43,3 +43,5 @@ export enum Roles {
   MODERATOR = "MODERATOR",
   USER = "USER"
 }
+
+export type BlockStatus = 'block' | 'unblock'

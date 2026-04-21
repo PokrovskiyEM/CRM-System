@@ -3,10 +3,10 @@ import { Button, Checkbox, Dropdown, Flex, Input, message, Modal, Popconfirm, Sp
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles, type BlockStatus } from '../../api/adminApi';
+import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles } from '../../api/adminApi';
 import { useAppSelector } from '../../app/store/store';
 import { useDebounce } from '../../hooks/useDebounce';
-import { Roles, type User, type UserFilters } from '../../types/users';
+import { Roles, type BlockStatus, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];

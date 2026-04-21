@@ -1,4 +1,4 @@
-import { Roles, type MetaResponse, type User, type UserFilters, type UserRequest } from "../types/users"
+import { Roles, type BlockStatus, type MetaResponse, type User, type UserFilters, type UserRequest } from "../types/users"
 import { api } from "./api"
 
 export const getUsers = async (queryParams?: UserFilters): Promise<MetaResponse<User>> => {
@@ -21,8 +21,6 @@ export const updateUserProfile = async (id: number, newProfile: UserRequest): Pr
 export const deleteUser = async (id: number): Promise<void> => {
   await api.delete(`/admin/users/${id}`)
 }
-
-export type BlockStatus = 'block' | 'unblock'
 
 export const setUserBlockStatus = async (id: number, status: BlockStatus): Promise<User> => {
   const response = await api.post(`/admin/users/${id}/${status}`)
