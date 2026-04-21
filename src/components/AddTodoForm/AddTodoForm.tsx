@@ -4,10 +4,10 @@ import { addTodo } from "../../api/todosApi";
 import type { FormValues } from "../../types/todo";
 
 interface Props {
-  onTasksUpdated: () => Promise<void>
+  onTodosUpdated: () => Promise<void>
 }
 
-export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
+export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
   const handleFinish = async (values: FormValues) => {
@@ -16,7 +16,7 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
     try {
       await addTodo({ title: trimmedTitle })
       form.resetFields()
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
       message.error(`Ошибка - ${error}`)
     }

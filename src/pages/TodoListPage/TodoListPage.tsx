@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getTodos } from "../../api/todosApi";
-import { AddTaskForm } from "../../components/AddTaskIForm/AddTaskForm";
-import { TasksList } from "../../components/TasksList/TasksList";
+import { AddTodoForm } from "../../components/AddTodoForm/AddTodoForm";
+import { TodosList } from "../../components/TodosList/TodosList";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 import { message } from "antd";
@@ -32,17 +32,17 @@ export function TodoListPage() {
     return () => clearInterval(intervalId)
   }, [filter, fetchTodos])
 
-  const onTasksUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
+  const onTodosUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
 
   return (
     <main className={styles.main}>
-      <AddTaskForm onTasksUpdated={onTasksUpdated} />
-      <TasksList
+      <AddTodoForm onTodosUpdated={onTodosUpdated} />
+      <TodosList
         info={info}
         todos={todos}
         filter={filter}
         onFilterChange={setFilter}
-        onTasksUpdated={onTasksUpdated}
+        onTodosUpdated={onTodosUpdated}
       />
     </main>
   )

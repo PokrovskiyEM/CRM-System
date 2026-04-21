@@ -7,10 +7,10 @@ import styles from "./styles.module.css";
 
 interface Props {
   todo: Todo
-  onTasksUpdated: () => Promise<void>
+  onTodosUpdated: () => Promise<void>
 }
 
-export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
+export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
@@ -19,7 +19,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
       await updateTodo(todo.id, {
         isDone: !todo.isDone
       })
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
       message.error(`Ошибка - ${error}`)
     }
@@ -28,7 +28,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
   const handleDelete = async () => {
     try {
       await deleteTodo(todo.id)
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
       message.error(`Ошибка - ${error}`)
     }
@@ -40,7 +40,7 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
     try {
       await updateTodo(todo.id, { title: trimmedTitle })
       setIsEdit(false)
-      await onTasksUpdated()
+      await onTodosUpdated()
     } catch (error) {
       message.error(`Ошибка - ${error}`)
     }

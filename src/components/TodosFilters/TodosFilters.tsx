@@ -8,7 +8,7 @@ interface Props {
   filter: StatusFilter
 }
 
-export const TasksFilters = ({ info, onFilterChange, filter }: Props) => {
+export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
   function isStatusFilter(key: string): key is StatusFilter {
     return (
       key === 'all' || key === 'inWork' || key === 'completed'
