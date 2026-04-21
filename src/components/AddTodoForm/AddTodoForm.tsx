@@ -1,6 +1,7 @@
-import { Button, Flex, Form, Input, message } from "antd";
+import { Button, Flex, Form, Input } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
+import { handleError } from "../../helpers/handleError";
 import type { FormValues } from "../../types/todo";
 
 interface Props {
@@ -18,7 +19,7 @@ export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
       form.resetFields()
       await onTodosUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleError(error)
     }
   }
 

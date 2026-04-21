@@ -1,7 +1,8 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message, Typography } from 'antd';
+import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
+import { handleError } from '../../helpers/handleError';
 import type { FormValues, Todo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -21,7 +22,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
       })
       await onTodosUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleError(error)
     }
   }
 
@@ -30,7 +31,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
       await deleteTodo(todo.id)
       await onTodosUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleError(error)
     }
   }
 
@@ -42,7 +43,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
       setIsEdit(false)
       await onTodosUpdated()
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleError(error)
     }
   }
 
