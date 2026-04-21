@@ -6,7 +6,7 @@ const { Sider, Content } = Layout;
 
 const SIDEBAR_WIDTH = 160
 
-export function MainLayout() {
+export const MainLayout = () => {
   return (
     <Layout style={{
       minHeight: '100vh',

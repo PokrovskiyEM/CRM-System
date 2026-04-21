@@ -8,14 +8,14 @@ interface Props {
   filter: StatusFilter
 }
 
-export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
-  function isStatusFilter(key: string): key is StatusFilter {
-    return (
-      key === 'all' || key === 'inWork' || key === 'completed'
-    )
-  }
+const isStatusFilter = (key: string): key is StatusFilter => {
+  return (
+    key === 'all' || key === 'inWork' || key === 'completed'
+  )
+}
 
-  const handleChange = (key: string) => {
+export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
+  const handleChangeFilter = (key: string) => {
     if (isStatusFilter(key)) {
       onFilterChange(key)
     }
@@ -44,7 +44,7 @@ export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
       size="large"
       activeKey={filter}
       items={items}
-      onChange={handleChange}
+      onChange={handleChangeFilter}
     />
   )
 }

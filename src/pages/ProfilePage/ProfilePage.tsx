@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 
-export function ProfilePage() {
+export const ProfilePage = () => {
   return (
     <main className={styles.main}>
       <div>
