@@ -1,9 +1,9 @@
-import { DeleteOutlined, EditOutlined, SaveOutlined, UndoOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import { Checkbox, Form, Input, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
 import { handleError } from '../../helpers/handleError';
 import type { FormValues, Todo } from "../../types/todo";
+import { TodoItemControls } from '../TodoItemControls/TodoItemControls';
 import styles from "./styles.module.css";
 
 interface Props {
@@ -68,21 +68,12 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
             <Typography.Text className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>
               {todo.title}
             </Typography.Text>
-            <div className={styles.controls}>
-              <Button
-                size="large"
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={handleStartEdit}
-              />
-              <Button
-                size="large"
-                type="primary"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={handleDelete}
-              />
-            </div>
+            <TodoItemControls
+              isEdit={false}
+              onStartEdit={handleStartEdit}
+              onCancelEdit={handleCancelEdit}
+              onDelete={handleDelete}
+            />
           </>
         )
         : (
@@ -112,23 +103,12 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
                 autoFocus
               />
             </Form.Item>
-            <div className={styles.controls}>
-              <Button
-                type="primary"
-                size="large"
-                htmlType="submit"
-                icon={<SaveOutlined />}
-              />
-              <Button
-                variant="solid"
-                color="magenta"
-                danger
-                size="large"
-                htmlType="button"
-                icon={<UndoOutlined />}
-                onClick={handleCancelEdit}
-              />
-            </div>
+            <TodoItemControls
+              isEdit
+              onStartEdit={handleStartEdit}
+              onDelete={handleDelete}
+              onCancelEdit={handleCancelEdit}
+            />
           </Form>
         )
       }
