@@ -13,7 +13,7 @@ import { UserProfilePage } from "../../pages/UserProfilePage/UserProfilePage"
 import { UsersPage } from "../../pages/UsersPage/UsersPage"
 import { Roles } from "../../types/users"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
-import { MainLayout } from "../layouts/MainLayout"
+import { MainLayout } from "../layouts/MainLayout/MainLayout"
 import { logout, setAuthenticated } from "../store/Authentication/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 

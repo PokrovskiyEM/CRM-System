@@ -81,9 +81,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
             form={form}
             onFinish={handleUpdateTodoItem}
             layout="inline"
-            style={{
-              gap: '10px'
-            }}
+            className={styles.form}
           >
             <Form.Item
               name={'title'}
@@ -92,10 +90,9 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
                 { min: 2, message: 'Минимальная длина текста 2 символа' },
                 { max: 64, message: 'Максимальная длина текста 64 символа' },
               ]}
+              className={styles.inputItem}
               style={{
-                flex: 1,
-                margin: 0,
-                alignContent: 'center'
+                flex: 1
               }}
             >
               <Input

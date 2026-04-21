@@ -16,7 +16,10 @@ export const TodosList = ({ todos, info, onFilterChange, onTodosUpdated, filter 
   return (
     <Flex vertical gap='small'>
       <TodosFilters info={info} onFilterChange={onFilterChange} filter={filter} />
-      <Space orientation="vertical" style={{ paddingInline: 5 }}>
+      <Space
+        orientation="vertical"
+        style={{ paddingInline: 5 }}
+      >
         {todos.map((todo) =>
           <TodoItem key={todo.id} todo={todo} onTodosUpdated={onTodosUpdated} />
         )}

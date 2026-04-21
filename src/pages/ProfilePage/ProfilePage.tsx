@@ -6,6 +6,7 @@ import { logout } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { Profile } from "../../types/auth";
+import styles from "./styles.module.css";
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch()
@@ -60,17 +61,8 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      padding: 25,
-    }}>
-      <div style={{
-        width: 500,
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 20
-      }}>
+    <div className={styles.layout}>
+      <div className={styles.content}>
         <Descriptions bordered column={1}>
           <Descriptions.Item label={'Имя пользователя'}>{profile.username}</Descriptions.Item>
           <Descriptions.Item label={'Email'}>{profile.email}</Descriptions.Item>

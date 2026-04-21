@@ -1,0 +1,11 @@
+.layout {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.sideBarContainer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid var(--border-color);
+}

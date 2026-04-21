@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getUserProfileByAdmin, updateUserProfile } from "../../api/adminApi";
 import type { Profile } from "../../types/auth";
+import styles from "./styles.module.css"
 
 interface FormValues {
   username?: string,
@@ -101,17 +102,8 @@ export const UserProfilePage = () => {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      padding: 25,
-    }}>
-      <div style={{
-        width: 500,
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 20
-      }}>
+    <div className={styles.layout}>
+      <div className={styles.content}>
         <Form
           form={form}
           onFinish={handleUpdateUserProfileInfo}
@@ -126,7 +118,7 @@ export const UserProfilePage = () => {
               : <>
                 <Descriptions.Item label={'Имя пользователя'}>
                   <Form.Item
-                    style={{ marginBottom: 'auto' }}
+                    className={styles.autoMarginBottom}
                     name='username'
                     required
                     rules={[
@@ -140,7 +132,7 @@ export const UserProfilePage = () => {
                 </Descriptions.Item>
                 <Descriptions.Item label={'Email'}>
                   <Form.Item
-                    style={{ marginBottom: 'auto' }}
+                    className={styles.autoMarginBottom}
                     name='email'
                     required
                     rules={[
@@ -153,7 +145,7 @@ export const UserProfilePage = () => {
                 </Descriptions.Item>
                 <Descriptions.Item label={'Телефон'}>
                   <Form.Item
-                    style={{ marginBottom: 'auto' }}
+                    className={styles.autoMarginBottom}
                     name='phoneNumber'
                     required
                     rules={[

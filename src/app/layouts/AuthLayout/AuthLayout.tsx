@@ -1,7 +1,7 @@
 import { Layout } from "antd"
 import { Outlet } from "react-router"
 import { BannerImage } from "../../../components/BannerImage/BannerImage"
-import styles from "./AuthLayout.module.css"
+import styles from "./styles.module.css"
 
 const { Content } = Layout
 
