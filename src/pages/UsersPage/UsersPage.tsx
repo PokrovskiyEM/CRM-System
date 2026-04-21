@@ -22,10 +22,22 @@ interface TableParams {
   search?: string
 }
 
+const FILTER_KEYS = {
+  ALL: 'all',
+  BLOCKED: 'blocked',
+  ACTIVE: 'active',
+} as const
+
+type SelectedFilter = typeof FILTER_KEYS[keyof typeof FILTER_KEYS]
+
 const apiSortOrder = (order?: SortOrder | undefined): ApiSortOrder | undefined => {
   if (order === 'ascend') return 'asc'
   if (order === 'descend') return 'desc'
   return undefined
+}
+
+const isSelectedFilter = (key: string): key is SelectedFilter => {
+  return key === 'all' || key === 'blocked' || key === 'active'
 }
 
 export const UsersPage = () => {
@@ -33,19 +45,19 @@ export const UsersPage = () => {
   const isAdminAccess = roles.includes(Role.ADMIN)
 
   const [usersData, setUsersData] = useState<User[]>([])
-  const [totalUsers, setTotalUsers] = useState(0)
+  const [totalUsers, setTotalUsers] = useState<number>(0)
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
       pageSize: 20,
     },
   })
-  const [selectedFilter, setSelectedFilter] = useState('all')
+  const [selectedFilter, setSelectedFilter] = useState<SelectedFilter>('all')
 
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState<string>('')
   const debouncedSearchValue = useDebounce(searchValue, 1000)
 
-  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false)
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState<boolean>(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [selectedRoles, setSelectedRoles] = useState<Role[]>([])
 
@@ -143,15 +155,15 @@ export const UsersPage = () => {
 
   const filterItems: MenuProps['items'] = [
     {
-      key: 'all',
+      key: FILTER_KEYS.ALL,
       label: 'Все пользователи'
     },
     {
-      key: 'blocked',
+      key: FILTER_KEYS.BLOCKED,
       label: 'Только заблокированные'
     },
     {
-      key: 'active',
+      key: FILTER_KEYS.ACTIVE,
       label: 'Только активные'
     },
   ]
@@ -192,7 +204,9 @@ export const UsersPage = () => {
   }
 
   const handleFilterClick: MenuProps['onClick'] = ({ key }) => {
-    setSelectedFilter(key)
+    if (isSelectedFilter(key)) {
+      setSelectedFilter(key)
+    }
     setTableParams(prev => ({
       ...prev,
       pagination: {

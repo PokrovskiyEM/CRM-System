@@ -16,7 +16,7 @@ export const UserProfilePage = () => {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
   const [profile, setProfile] = useState<Profile | null>(null)
