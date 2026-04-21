@@ -1,4 +1,4 @@
-import { Button, Descriptions, notification } from "antd";
+import { Button, Descriptions, notification, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getUserProfile, logoutProfile } from "../../api/userApi";
@@ -56,7 +56,11 @@ export const ProfilePage = () => {
 
   if (!profile) {
     return (
-      <div>Не удалось загрузить профиль</div>
+      <Typography.Title
+        level={4}
+      >
+        Не удалось загрузить профиль
+      </Typography.Title>
     )
   }
 
