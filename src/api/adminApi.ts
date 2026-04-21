@@ -1,4 +1,4 @@
-import { Roles, type BlockStatus, type MetaResponse, type User, type UserFilters, type UserRequest } from "../types/users"
+import { Role, type BlockStatus, type MetaResponse, type User, type UserFilters, type UserRequest } from "../types/users"
 import { api } from "./api"
 
 export const getUsers = async (queryParams?: UserFilters): Promise<MetaResponse<User>> => {
@@ -27,7 +27,7 @@ export const setUserBlockStatus = async (id: number, status: BlockStatus): Promi
   return response.data
 }
 
-export const updateUserRoles = async (id: number, newRoles: Roles[]): Promise<User> => {
+export const updateUserRoles = async (id: number, newRoles: Role[]): Promise<User> => {
   const response = await api.post(`/admin/users/${id}/rights`, { roles: newRoles })
   return response.data
 }

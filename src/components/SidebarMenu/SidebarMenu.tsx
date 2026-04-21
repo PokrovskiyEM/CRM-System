@@ -1,7 +1,7 @@
 import { Menu, type MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router";
 import { useAppSelector } from "../../app/store/store";
-import { Roles } from "../../types/users";
+import { Role } from "../../types/users";
 
 const USER_MENU_ITEMS = [
   {
@@ -28,7 +28,7 @@ export const SidebarMenu = () => {
 
   const roles = useAppSelector(state => state.authenticate.roles)
 
-  const canViewUsers = roles.some(role => role === Roles.ADMIN || role === Roles.MODERATOR)
+  const canViewUsers = roles.some(role => role === Role.ADMIN || role === Role.MODERATOR)
 
   const handleNavigateTo: MenuProps['onClick'] = ({ key }) => {
     navigate(key)

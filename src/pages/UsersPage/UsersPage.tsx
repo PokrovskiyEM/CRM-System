@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles } from '../../api/adminApi';
 import { useAppSelector } from '../../app/store/store';
 import { useDebounce } from '../../hooks/useDebounce';
-import { Roles, type BlockStatus, type User, type UserFilters } from '../../types/users';
+import { Role, type BlockStatus, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -22,9 +22,15 @@ interface TableParams {
   search?: string
 }
 
+const apiSortOrder = (order?: SortOrder | undefined): 'asc' | 'desc' | undefined => {
+  if (order === 'ascend') return 'asc'
+  if (order === 'descend') return 'desc'
+  return undefined
+}
+
 export const UsersPage = () => {
   const { roles } = useAppSelector(state => state.authenticate)
-  const isAdminAccess = roles.includes(Roles.ADMIN)
+  const isAdminAccess = roles.includes(Role.ADMIN)
 
   const [usersData, setUsersData] = useState<User[]>([])
   const [totalUsers, setTotalUsers] = useState(0)
@@ -41,7 +47,7 @@ export const UsersPage = () => {
 
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [selectedRoles, setSelectedRoles] = useState<Roles[]>([])
+  const [selectedRoles, setSelectedRoles] = useState<Role[]>([])
 
   const columns: ColumnsType<User> = [
     {
@@ -71,7 +77,7 @@ export const UsersPage = () => {
       title: 'Роли',
       dataIndex: 'roles',
       width: 150,
-      render: (roles: Roles[]) => (
+      render: (roles: Role[]) => (
         <Flex gap='small' align='center' wrap>
           {roles?.map((role) => {
             const roleColors = {
@@ -160,12 +166,6 @@ export const UsersPage = () => {
         message.error(`Ошибка - ${error}`)
       }
     }, [])
-
-  const apiSortOrder = (order?: SortOrder | undefined): 'asc' | 'desc' | undefined => {
-    if (order === 'ascend') return 'asc'
-    if (order === 'descend') return 'desc'
-    return undefined
-  }
 
   const query = useMemo(() => ({
     limit: tableParams.pagination?.pageSize ?? 20,
@@ -310,9 +310,9 @@ export const UsersPage = () => {
           onChange={setSelectedRoles}
         >
           <Space orientation='vertical'>
-            <Checkbox value={Roles.USER}>{Roles.USER}</Checkbox>
-            <Checkbox value={Roles.MODERATOR}>{Roles.MODERATOR}</Checkbox>
-            <Checkbox value={Roles.ADMIN}>{Roles.ADMIN}</Checkbox>
+            <Checkbox value={Role.USER}>{Role.USER}</Checkbox>
+            <Checkbox value={Role.MODERATOR}>{Role.MODERATOR}</Checkbox>
+            <Checkbox value={Role.ADMIN}>{Role.ADMIN}</Checkbox>
           </Space>
         </Checkbox.Group>
       </Modal >

@@ -1,10 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import type { Roles } from '../../../../types/users'
+import type { Role } from '../../../../types/users'
 
 interface AuthenticateState {
   isAuthenticated: boolean,
-  roles: Roles[]
+  roles: Role[]
 }
 
 const initialState: AuthenticateState = {
@@ -16,7 +16,7 @@ export const authSlice = createSlice({
   name: 'authenticate',
   initialState,
   reducers: {
-    setAuthenticated: (state: AuthenticateState, action: PayloadAction<{ roles: Roles[] }>): void => {
+    setAuthenticated: (state: AuthenticateState, action: PayloadAction<{ roles: Role[] }>): void => {
       state.isAuthenticated = true
       state.roles = action.payload.roles
     },

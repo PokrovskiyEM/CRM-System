@@ -11,7 +11,7 @@ import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
 import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
 import { UserProfilePage } from "../../pages/UserProfilePage/UserProfilePage"
 import { UsersPage } from "../../pages/UsersPage/UsersPage"
-import { Roles } from "../../types/users"
+import { Role } from "../../types/users"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout/MainLayout"
 import { logout, setAuthenticated } from "../store/Authentication/Slices/authSlice"
@@ -23,7 +23,7 @@ export const AppRouter = () => {
 
   const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false)
 
-  const allowedRoles = [Roles.ADMIN, Roles.MODERATOR]
+  const allowedRoles = [Role.ADMIN, Role.MODERATOR]
 
   useEffect(() => {
     let isCancelled = false

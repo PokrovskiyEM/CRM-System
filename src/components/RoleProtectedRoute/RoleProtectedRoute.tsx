@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router"
 import { useAppSelector } from "../../app/store/store"
-import type { Roles } from "../../types/users"
+import type { Role } from "../../types/users"
 
 interface Props {
-  allowedRoles: Roles[]
+  allowedRoles: Role[]
 }
 
 export const RoleProtectedRoute = ({ allowedRoles }: Props) => {

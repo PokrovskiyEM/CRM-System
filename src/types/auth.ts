@@ -1,4 +1,4 @@
-import type { Roles } from "./users";
+import type { Role } from "./users";
 
 export interface ProfileRequest {
   username: string;
@@ -15,7 +15,7 @@ export interface Profile extends ProfileRequest {
   id: number;
   date: string;
   isBlocked: boolean;
-  roles: Roles[];
+  roles: Role[];
 }
 
 export interface AuthData {
@@ -31,7 +31,7 @@ export interface PasswordRequest {
   password: string;
 }
 
-export interface Token {
+export interface Tokens {
   accessToken: string
   refreshToken: string
 }
