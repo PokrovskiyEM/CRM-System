@@ -14,7 +14,7 @@ export const getUserProfileByAdmin = async (id: number): Promise<User> => {
 }
 
 export const updateUserProfile = async (id: number, newProfile: UserRequest): Promise<User> => {
-  const response = await api.put<User>(`admin/users/${id}`, newProfile)
+  const response = await api.put<User>(`/admin/users/${id}`, newProfile)
   return response.data
 }
 
