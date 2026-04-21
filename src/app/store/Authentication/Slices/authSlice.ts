@@ -16,11 +16,11 @@ export const authSlice = createSlice({
   name: 'authenticate',
   initialState,
   reducers: {
-    setAuthenticated: (state, action: PayloadAction<{ roles: Roles[] }>): void => {
+    setAuthenticated: (state: AuthenticateState, action: PayloadAction<{ roles: Roles[] }>): void => {
       state.isAuthenticated = true
       state.roles = action.payload.roles
     },
-    logout: (state): void => {
+    logout: (state: AuthenticateState): void => {
       state.isAuthenticated = false
       state.roles = []
     }
