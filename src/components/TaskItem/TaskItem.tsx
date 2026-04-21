@@ -35,10 +35,10 @@ export const TaskItem = ({ todo, onTasksUpdated }: Props) => {
   }
 
   const handleFinish = async (values: FormValues) => {
-    const trimTitle = values.title.trim()
+    const trimmedTitle = values.title.trim()
 
     try {
-      await updateTodo(todo.id, { title: trimTitle })
+      await updateTodo(todo.id, { title: trimmedTitle })
       setIsEdit(false)
       await onTasksUpdated()
     } catch (error) {

@@ -11,10 +11,10 @@ export const AddTaskForm = memo(({ onTasksUpdated }: Props) => {
   const [form] = Form.useForm<FormValues>()
 
   const handleFinish = async (values: FormValues) => {
-    const trimTitle = values.title.trim()
+    const trimmedTitle = values.title.trim()
 
     try {
-      await addTodo({ title: trimTitle })
+      await addTodo({ title: trimmedTitle })
       form.resetFields()
       await onTasksUpdated()
     } catch (error) {
