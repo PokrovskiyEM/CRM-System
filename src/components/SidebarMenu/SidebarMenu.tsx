@@ -1,14 +1,16 @@
+import { Menu, type MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router";
-import { Menu } from "antd";
 
-const MENU_ITEMS = [
+type MenuItem = Required<MenuProps>['items'][number];
+
+const MENU_ITEMS: MenuItem[] = [
   {
     key: "/todos",
     label: 'Список задач'
   },
   {
     key: "/profile",
-    label: 'Личный кабинет'
+    label: 'Профиль'
   },
 ]
 
@@ -16,11 +18,15 @@ export const SidebarMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const handleNavigateTo: MenuProps['onClick'] = ({ key }) => {
+    navigate(key)
+  }
+
   return (
     <Menu
       selectedKeys={[location.pathname]}
       items={MENU_ITEMS}
-      onClick={({ key }) => navigate(key)}
+      onClick={handleNavigateTo}
     />
   )
 }
