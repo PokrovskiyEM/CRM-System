@@ -3,7 +3,7 @@ import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
 import { handleNotificationError } from "../../helpers/handleNotificationError";
 import type { FormValues } from "../../types/todo";
-import styles from "./styles.module.css"
+import styles from "./styles.module.css";
 
 interface Props {
   onTodosUpdated: () => Promise<void>

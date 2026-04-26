@@ -3,11 +3,11 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signIn } from "../../api/authApi";
+import { getUserProfile } from "../../api/userApi";
 import { setAuthenticated } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
 import type { AuthData } from "../../types/auth";
-import { getUserProfile } from "../../api/userApi";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch()
