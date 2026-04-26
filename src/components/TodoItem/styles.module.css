@@ -1,0 +1,23 @@
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  border-radius: 5px;
+  align-items: center;
+  column-gap: 10px;
+  background-color: white;
+  padding: 10px;
+}
+
+.item:has(> form) {
+  grid-template-columns: auto 1fr;
+}
+
+.title {
+  min-width: 0;
+  word-break: break-word;
+}
+
+.checkedTitle {
+  color: gray;
+  text-decoration: line-through;
+}

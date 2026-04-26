@@ -29,3 +29,7 @@ export type StatusFilter = 'all' | 'inWork' | 'completed'
 export interface GetTodosQueryParams {
   filter?: StatusFilter
 }
+
+export interface FormValues {
+  title: string
+}

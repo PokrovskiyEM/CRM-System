@@ -1,0 +1,8 @@
+.tasksTabs :global(.ant-tabs-nav)::before {
+  border-bottom: none;
+}
+
+.tasksTabs :global(.ant-tabs-nav-list) {
+  width: 100%;
+  justify-content: space-around;
+}

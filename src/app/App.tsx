@@ -1,7 +1,7 @@
-import { TodoListPage } from "../pages/TodoListPage/TodoListPage";
+import { AppRouter } from "./router/AppRouter";
 
-export function App() {
+export const App = () => {
   return (
-    <TodoListPage />
+    <AppRouter />
   )
 }

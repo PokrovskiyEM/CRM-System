@@ -1,64 +1,34 @@
+import axios from "axios";
 import type { GetTodosQueryParams, MetaResponse, Todo, TodoInfo, TodoRequest } from "../types/todo";
 
-const BASE_URL = 'https://easydev.club/api/v1/todos'
+const BASE_URL = 'https://easydev.club/api/v1'
+
+const api = axios.create({
+  baseURL: BASE_URL
+})
 
 export const getTodos = async (queryParams?: GetTodosQueryParams): Promise<MetaResponse<Todo, TodoInfo>> => {
-  let query = null
-
-  if (queryParams) {
-    const searchParams = new URLSearchParams()
-    Object.entries(queryParams).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        searchParams.append(key, String(value))
-      }
-    })
-    query = searchParams.toString()
-  }
-
-  const url = query ? BASE_URL + '?' + query : BASE_URL
-  const response = await fetch(url)
-
-  if (!response.ok) {
-    throw new Error(`Error status: ${response.status}`);
-  }
-
-  return response.json()
-}
-
-export const addTodo = async (todoRequest: TodoRequest): Promise<void> => {
-  const response = await fetch(BASE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body: JSON.stringify(todoRequest),
+  const response = await api.get<MetaResponse<Todo, TodoInfo>>('/todos', {
+    params: queryParams
   })
 
-  if (!response.ok) {
-    throw new Error(`Error status: ${response.status}`);
-  }
+  return response.data
 }
 
-export const updateTodos = async (id: number, todoRequest: TodoRequest): Promise<void> => {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body: JSON.stringify(todoRequest),
-  })
+export const addTodo = async (todoRequest: TodoRequest): Promise<Todo> => {
+  const response = await api.post<Todo>('/todos', todoRequest)
 
-  if (!response.ok) {
-    throw new Error(`Error status: ${response.status}`);
-  }
+  return response.data
 }
 
-export const deleteTodo = async (id: number): Promise<void> => {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: 'DELETE'
-  })
+export const updateTodo = async (id: number, todoRequest: TodoRequest): Promise<Todo> => {
+  const response = await api.put<Todo>(`/todos/${id}`, todoRequest)
 
-  if (!response.ok) {
-    throw new Error(`Error status: ${response.status}`);
-  }
+  return response.data
+}
+
+export const deleteTodo = async (id: number): Promise<Todo> => {
+  const response = await api.delete<Todo>(`/todos/${id}`)
+
+  return response.data
 }
