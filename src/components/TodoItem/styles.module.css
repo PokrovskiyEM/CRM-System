@@ -18,6 +18,6 @@
 }
 
 .checkedTitle {
-  color: gray;
+  color: var(--color-checked-text);
   text-decoration: line-through;
 }
