@@ -1,7 +1,6 @@
-import { Checkbox, Form, Input, Typography } from 'antd';
+import { Checkbox, Form, Input, notification, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
-import { handleError } from '../../helpers/handleError';
 import type { FormValues, Todo } from "../../types/todo";
 import { TodoItemControls } from '../TodoItemControls/TodoItemControls';
 import styles from "./styles.module.css";
@@ -22,7 +21,9 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
       })
       await onTodosUpdated()
     } catch (error) {
-      handleError(error)
+      notification.error({
+        title: `Ошибка - ${error}`
+      })
     }
   }
 
@@ -31,7 +32,9 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
       await deleteTodo(todo.id)
       await onTodosUpdated()
     } catch (error) {
-      handleError(error)
+      notification.error({
+        title: `Ошибка - ${error}`
+      })
     }
   }
 
@@ -43,7 +46,9 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
       setIsEdit(false)
       await onTodosUpdated()
     } catch (error) {
-      handleError(error)
+      notification.error({
+        title: `Ошибка - ${error}`
+      })
     }
   }
 
