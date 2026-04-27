@@ -1,9 +1,9 @@
 import type { AxiosResponse } from "axios";
-import type { AuthData, RefreshToken, Token, UserRegistration } from "../types/auth";
+import type { AuthData, RefreshToken, Tokens, UserRegistration } from "../types/auth";
 import { api } from "./api";
 
-export const signIn = async ({ login, password }: AuthData): Promise<Token> => {
-  const response = await api.post<Token>('/auth/signin', { login, password })
+export const signIn = async ({ login, password }: AuthData): Promise<Tokens> => {
+  const response = await api.post<Tokens>('/auth/signin', { login, password })
   return response.data
 }
 
@@ -24,7 +24,7 @@ export const signUp = async ({
   return response
 }
 
-export const refresh = async (refreshToken: RefreshToken): Promise<Token> => {
-  const response = await api.post<Token>('/auth/refresh', refreshToken)
+export const refresh = async (refreshToken: RefreshToken): Promise<Tokens> => {
+  const response = await api.post<Tokens>('/auth/refresh', refreshToken)
   return response.data
 }

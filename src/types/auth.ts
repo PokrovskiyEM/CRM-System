@@ -1,3 +1,5 @@
+import type { Role } from "./users";
+
 export interface ProfileRequest {
   username: string;
   email: string;
@@ -29,9 +31,7 @@ export interface PasswordRequest {
   password: string;
 }
 
-export interface Token {
+export interface Tokens {
   accessToken: string
   refreshToken: string
 }
-
-export type Role = 'ADMIN' | 'USER' | 'MODERATOR'

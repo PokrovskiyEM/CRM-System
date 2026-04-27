@@ -1,7 +1,9 @@
-import { Button, Flex, Form, Input, notification } from "antd";
+import { Button, Flex, Form, Input } from "antd";
 import { memo } from "react";
 import { addTodo } from "../../api/todosApi";
+import { handleNotificationError } from "../../helpers/handleNotificationError";
 import type { FormValues } from "../../types/todo";
+import styles from "./styles.module.css";
 
 interface Props {
   onTodosUpdated: () => Promise<void>
@@ -18,9 +20,7 @@ export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
       form.resetFields()
       await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        title: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
@@ -30,9 +30,7 @@ export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
         form={form}
         onFinish={handleAddTodo}
         layout="inline"
-        style={{
-          gap: '10px'
-        }}
+        className={styles.form}
       >
         <Form.Item
           name={'title'}
@@ -41,11 +39,9 @@ export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
             { min: 2, message: 'Минимальная длина текста 2 символа' },
             { max: 64, message: 'Максимальная длина текста 64 символа' },
           ]}
+          className={styles.inputItem}
           style={{
-            flex: 1,
-            margin: 0,
-            borderBottom: '1px solid gray',
-            alignContent: 'center'
+            flex: 1
           }}
         >
           <Input

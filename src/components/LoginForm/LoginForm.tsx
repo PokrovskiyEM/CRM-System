@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signIn } from "../../api/authApi";
+import { getUserProfile } from "../../api/userApi";
 import { setAuthenticated } from "../../app/store/Authentication/Slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/store/store";
 import { tokenManager } from "../../helpers/tokenManager";
@@ -23,7 +24,6 @@ export const LoginForm = () => {
     return <Navigate to='/todos' replace />
   }
 
-
   const handleLogin = async (values: AuthData): Promise<void> => {
     try {
       const data = await signIn(values)
@@ -31,7 +31,12 @@ export const LoginForm = () => {
       tokenManager.setToken(data.accessToken)
       localStorage.setItem('refreshToken', data.refreshToken)
 
-      dispatch(setAuthenticated(true))
+      const profile = await getUserProfile()
+
+      dispatch(setAuthenticated({
+        roles: profile.roles
+      }))
+
       navigate('/todos', { replace: true })
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
@@ -41,7 +46,7 @@ export const LoginForm = () => {
         return
       }
       notification.error({
-        title: `Ошибка входа}`
+        title: `Ошибка входа`
       })
     }
   }

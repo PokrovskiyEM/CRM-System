@@ -1,6 +1,7 @@
-import { Checkbox, Form, Input, notification, Typography } from 'antd';
+import { Checkbox, Form, Input, Typography } from 'antd';
 import { useState } from "react";
 import { deleteTodo, updateTodo } from "../../api/todosApi";
+import { handleNotificationError } from '../../helpers/handleNotificationError';
 import type { FormValues, Todo } from "../../types/todo";
 import { TodoItemControls } from '../TodoItemControls/TodoItemControls';
 import styles from "./styles.module.css";
@@ -11,54 +12,48 @@ interface Props {
 }
 
 export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
-  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
   const [form] = Form.useForm<FormValues>()
 
-  const handleToggle = async () => {
+  const handleToggle = async (): Promise<void> => {
     try {
       await updateTodo(todo.id, {
         isDone: !todo.isDone
       })
       await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        title: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (): Promise<void> => {
     try {
       await deleteTodo(todo.id)
       await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        title: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
-  const handleFinish = async (values: FormValues) => {
+  const handleUpdateTodoItem = async (values: FormValues): Promise<void> => {
     const trimmedTitle = values.title.trim()
 
     try {
       await updateTodo(todo.id, { title: trimmedTitle })
-      setIsEdit(false)
+      setIsEditing(false)
       await onTodosUpdated()
     } catch (error) {
-      notification.error({
-        title: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }
 
-  const handleStartEdit = () => {
+  const handleStartEdit = (): void => {
     form.setFieldsValue({ title: todo.title })
-    setIsEdit(true)
+    setIsEditing(true)
   }
 
-  const handleCancelEdit = () => {
-    setIsEdit(false)
+  const handleCancelEdit = (): void => {
+    setIsEditing(false)
   }
 
   return (
@@ -67,14 +62,14 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
         checked={todo.isDone}
         onChange={handleToggle}
       />
-      {!isEdit
+      {!isEditing
         ? (
           <>
             <Typography.Text className={`${styles.title} ${todo.isDone ? styles.checkedTitle : ''}`}>
               {todo.title}
             </Typography.Text>
             <TodoItemControls
-              isEdit={false}
+              isEditing={false}
               onStartEdit={handleStartEdit}
               onCancelEdit={handleCancelEdit}
               onDelete={handleDelete}
@@ -84,11 +79,9 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
         : (
           <Form
             form={form}
-            onFinish={handleFinish}
+            onFinish={handleUpdateTodoItem}
             layout="inline"
-            style={{
-              gap: '10px'
-            }}
+            className={styles.form}
           >
             <Form.Item
               name={'title'}
@@ -97,10 +90,9 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
                 { min: 2, message: 'Минимальная длина текста 2 символа' },
                 { max: 64, message: 'Максимальная длина текста 64 символа' },
               ]}
+              className={styles.inputItem}
               style={{
-                flex: 1,
-                margin: 0,
-                alignContent: 'center'
+                flex: 1
               }}
             >
               <Input
@@ -109,7 +101,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
               />
             </Form.Item>
             <TodoItemControls
-              isEdit
+              isEditing
               onStartEdit={handleStartEdit}
               onDelete={handleDelete}
               onCancelEdit={handleCancelEdit}

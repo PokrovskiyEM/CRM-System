@@ -8,7 +8,7 @@
   padding: 10px;
 }
 
-.wrapper {
+.container {
   display: grid;
   grid-template-columns: 3fr 2fr;
   border-radius: 34px;
@@ -17,13 +17,13 @@
   overflow: hidden;
 }
 
-.form {
+.formSection {
   padding: 35px;
   display: flex;
   align-items: center;
 }
 
-.inner {
+.formContainer {
   width: 100%;
   max-width: 420px;
 }

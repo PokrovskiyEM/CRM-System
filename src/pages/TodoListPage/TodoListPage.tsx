@@ -1,8 +1,8 @@
-import { notification } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { getTodos } from "../../api/todosApi";
 import { AddTodoForm } from "../../components/AddTodoForm/AddTodoForm";
 import { TodosList } from "../../components/TodosList/TodosList";
+import { handleNotificationError } from "../../helpers/handleNotificationError";
 import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
@@ -18,9 +18,7 @@ export const TodoListPage = () => {
       setInfo(response.info);
 
     } catch (error) {
-      notification.error({
-        message: `Ошибка - ${error}`
-      })
+      handleNotificationError(error)
     }
   }, []);
 
@@ -37,7 +35,7 @@ export const TodoListPage = () => {
   const onTodosUpdated = useCallback(() => fetchTodos(filter), [filter, fetchTodos])
 
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       <AddTodoForm onTodosUpdated={onTodosUpdated} />
       <TodosList
         info={info}
@@ -46,6 +44,6 @@ export const TodoListPage = () => {
         onFilterChange={setFilter}
         onTodosUpdated={onTodosUpdated}
       />
-    </main>
+    </div>
   )
 }

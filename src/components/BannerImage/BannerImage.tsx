@@ -1,7 +1,9 @@
-import styles from "./styles.module.css"
+const HERO_IMAGE = "/hero.png";
 
 export const BannerImage = () => {
   return (
-    <div className={styles.image} />
+    <div style={{
+      background: `url(${HERO_IMAGE}) center/cover no-repeat`
+    }} />
   )
 }

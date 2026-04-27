@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react"
 import { Navigate, Route, Routes } from "react-router"
 import { refresh } from "../../api/authApi"
+import { getUserProfile } from "../../api/userApi"
 import { LoginForm } from "../../components/LoginForm/LoginForm"
 import { ProtectedRoute } from "../../components/ProtectedRoute/ProtectedRoute"
 import { RegisterForm } from "../../components/RegisterForm/RegisterForm"
+import { RoleProtectedRoute } from "../../components/RoleProtectedRoute/RoleProtectedRoute"
 import { tokenManager } from "../../helpers/tokenManager"
 import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
 import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
+import { UserProfilePage } from "../../pages/UserProfilePage/UserProfilePage"
+import { UsersPage } from "../../pages/UsersPage/UsersPage"
+import { Role } from "../../types/users"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
-import { MainLayout } from "../layouts/MainLayout"
+import { MainLayout } from "../layouts/MainLayout/MainLayout"
 import { logout, setAuthenticated } from "../store/Authentication/Slices/authSlice"
 import { useAppDispatch, useAppSelector } from "../store/store"
 
@@ -17,6 +22,8 @@ export const AppRouter = () => {
   const isAuthenticated = useAppSelector(state => state.authenticate.isAuthenticated)
 
   const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false)
+
+  const allowedRoles = [Role.ADMIN, Role.MODERATOR]
 
   useEffect(() => {
     let isCancelled = false
@@ -33,7 +40,10 @@ export const AppRouter = () => {
         const accessToken = refreshResponse.accessToken
 
         tokenManager.setToken(accessToken)
-        dispatch(setAuthenticated(true))
+        const profile = await getUserProfile()
+        dispatch(setAuthenticated({
+          roles: profile.roles
+        }))
       } catch {
         tokenManager.clearToken()
         localStorage.removeItem('refreshToken')
@@ -70,11 +80,15 @@ export const AppRouter = () => {
         <Route element={<MainLayout />}>
           <Route path="/todos" element={<TodoListPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+
+          <Route element={<RoleProtectedRoute allowedRoles={allowedRoles} />} >
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/:id" element={<UserProfilePage />} />
+          </Route>
         </Route>
       </Route>
 
       <Route path="*" element={<Navigate to={isAuthenticated ? '/todos' : '/login'} replace />} />
-
     </Routes>
   )
 }

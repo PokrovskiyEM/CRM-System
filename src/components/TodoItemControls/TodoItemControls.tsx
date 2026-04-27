@@ -3,21 +3,21 @@ import { Button } from "antd";
 import styles from "./styles.module.css";
 
 interface Props {
-  isEdit: boolean
+  isEditing: boolean
   onStartEdit: () => void
   onDelete: () => void
   onCancelEdit: () => void
 }
 
 export const TodoItemControls = ({
-  isEdit,
+  isEditing,
   onStartEdit,
   onDelete,
   onCancelEdit,
 }: Props) => {
   return (
     <div className={styles.controls}>
-      {!isEdit ? (
+      {!isEditing ? (
         <>
           <Button
             size="large"

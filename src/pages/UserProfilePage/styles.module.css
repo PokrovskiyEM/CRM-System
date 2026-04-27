@@ -1,0 +1,16 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+}
+
+.content {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.autoMarginBottom {
+  margin-bottom: auto;
+}

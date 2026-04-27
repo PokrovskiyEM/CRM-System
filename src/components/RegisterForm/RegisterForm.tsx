@@ -4,15 +4,12 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { signUp } from "../../api/authApi";
 import { useAppSelector } from "../../app/store/store";
+import { LOGIN_REGEX, PHONE_NUMBER_REGEX, USERNAME_REGEX } from "../../constants/regex";
 import type { UserRegistration } from "../../types/auth";
 
 type FormValues = UserRegistration & {
   repeatPassword: string
 }
-
-const USERNAME_REGEX = /^(?:[A-Za-z]+|[А-Яа-яЁё]+)$/
-const LOGIN_REGEX = /^[A-Za-z]+$/
-const PHONE_NUMBER_REGEX = /^\+7\d{10}$/
 
 export const RegisterForm = () => {
   const [isCreated, setIsCreated] = useState<boolean>(false)

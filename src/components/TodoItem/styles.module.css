@@ -21,3 +21,12 @@
   color: var(--color-checked-text);
   text-decoration: line-through;
 }
+
+.form {
+  gap: '10px';
+}
+
+.inputItem {
+  margin: 0;
+  align-content: center;
+}

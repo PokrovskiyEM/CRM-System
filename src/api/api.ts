@@ -1,10 +1,14 @@
-import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { logout, setAuthenticated } from "../app/store/Authentication/Slices/authSlice";
+import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+import { logout } from "../app/store/Authentication/Slices/authSlice";
 import { store } from "../app/store/store";
 import { tokenManager } from "../helpers/tokenManager";
 
-interface RetryConfig extends AxiosRequestConfig {
+interface RetryConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
+}
+
+interface RefreshResponse {
+  accessToken: string
 }
 
 export const BASE_URL = 'https://easydev.club/api/v1'
@@ -19,7 +23,7 @@ const handleLogout = () => {
   store.dispatch(logout())
 }
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = tokenManager.getToken()
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`
@@ -28,7 +32,7 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  response => response,
+  (response: AxiosResponse) => response,
   async (error: AxiosError) => {
     const status = error.response?.status
     const originalRequest: RetryConfig | undefined = error.config
@@ -44,22 +48,21 @@ api.interceptors.response.use(
 
     originalRequest._retry = true
 
-    const refreshToken = localStorage.getItem('refreshToken')
+    const refreshToken: string | null = localStorage.getItem('refreshToken')
     if (!refreshToken) {
       handleLogout()
       return Promise.reject(error)
     }
 
     try {
-      const refreshResponse = await api.post('/auth/refresh', { refreshToken })
+      const refreshResponse = await api.post<RefreshResponse>('/auth/refresh', { refreshToken })
 
       const newAccessToken = refreshResponse.data.accessToken
       tokenManager.setToken(newAccessToken)
-      store.dispatch(setAuthenticated(true))
 
       originalRequest.headers = originalRequest.headers ?? {}
-
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+
       return api.request(originalRequest)
     } catch {
       handleLogout()

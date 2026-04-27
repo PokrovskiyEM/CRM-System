@@ -22,7 +22,6 @@ export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
     else notification.error({
       message: `Неверный тип фильтра`
     })
-
   }
 
   const items: TabsProps['items'] = [
@@ -42,7 +41,7 @@ export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {
 
   return (
     <Tabs
-      className={styles.tasksTabs}
+      className={styles.todosTabs}
       centered
       size="large"
       activeKey={filter}
