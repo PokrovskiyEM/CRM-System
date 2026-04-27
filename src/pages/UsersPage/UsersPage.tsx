@@ -8,6 +8,7 @@ import { useAppSelector } from '../../app/store/store';
 import { useDebounce } from '../../hooks/useDebounce';
 import { Role, type ApiSortOrder, type BlockStatus, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
+import { handleNotificationError } from '../../helpers/handleNotificationError';
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 
@@ -175,7 +176,7 @@ export const UsersPage = () => {
         setUsersData(response.data)
         setTotalUsers(response.meta.totalAmount)
       } catch (error) {
-        message.error(`Ошибка - ${error}`)
+        handleNotificationError(error)
       }
     }, [])
 
@@ -227,7 +228,7 @@ export const UsersPage = () => {
 
       await fetchUserData(query)
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleNotificationError(error)
     }
   }
 
@@ -237,7 +238,7 @@ export const UsersPage = () => {
 
       await fetchUserData(query)
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleNotificationError(error)
     }
   }
 
@@ -264,7 +265,7 @@ export const UsersPage = () => {
 
       await fetchUserData(query)
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleNotificationError(error)
     }
   }
 

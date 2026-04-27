@@ -1,15 +1,33 @@
-import { Button, Descriptions, Form, Input, message } from "antd";
+import { Button, Descriptions, Form, Input, message, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getUserProfileByAdmin, updateUserProfile } from "../../api/adminApi";
-import type { Profile } from "../../types/auth";
-import styles from "./styles.module.css"
 import { PHONE_NUMBER_REGEX, USERNAME_REGEX } from "../../constants/regex";
+import { handleNotificationError } from "../../helpers/handleNotificationError";
+import type { Profile } from "../../types/auth";
+import styles from "./styles.module.css";
 
 interface FormValues {
   username?: string,
   email?: string,
   phoneNumber?: string,
+}
+
+const getChangedFields = <T extends object>(original: T, updated: Partial<T>): Partial<T> => {
+  const result: Partial<T> = {}
+
+  const keys = Object.keys(updated) as (keyof T)[]
+
+  keys.forEach(key => {
+    const originalValue = original[key]
+    const updatedValue = updated[key]
+
+    if (updatedValue !== originalValue) {
+      result[key] = updatedValue
+    }
+  })
+
+  return result
 }
 
 export const UserProfilePage = () => {
@@ -35,7 +53,9 @@ export const UserProfilePage = () => {
         }
       } catch {
         if (!isCancelled) {
-          message.error('Ошибка загрузки данных профиля')
+          notification.error({
+            title: `Данные профиля отсутствуют`
+          })
         }
       }
     }
@@ -49,7 +69,9 @@ export const UserProfilePage = () => {
 
   const handleStartEditing = () => {
     if (!profile) {
-      message.error('Данные профиля отсутствуют')
+      notification.error({
+        title: `Данные профиля отсутствуют`
+      })
       return
     }
 
@@ -66,19 +88,7 @@ export const UserProfilePage = () => {
       return
     }
 
-    const updatedValues: FormValues = {}
-    if (values.username !== profile.username) {
-      updatedValues.username = values.username
-    }
-    if (values.email !== profile.email) {
-      updatedValues.email = values.email
-    }
-    if (values.phoneNumber !== profile.phoneNumber) {
-      updatedValues.phoneNumber = values.phoneNumber
-    }
-    if (Object.keys(updatedValues).length === 0) {
-      return
-    }
+    const updatedValues = getChangedFields<Profile>(profile, values)
 
     try {
       if (!id) {
@@ -89,7 +99,7 @@ export const UserProfilePage = () => {
       setIsEditing(false)
       message.success(`Данные пользователя #${id} обновлены`)
     } catch (error) {
-      message.error(`Ошибка - ${error}`)
+      handleNotificationError(error)
     }
   }
 

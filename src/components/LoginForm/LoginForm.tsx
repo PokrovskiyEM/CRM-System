@@ -46,7 +46,7 @@ export const LoginForm = () => {
         return
       }
       notification.error({
-        title: `Ошибка входа}`
+        title: `Ошибка входа`
       })
     }
   }
