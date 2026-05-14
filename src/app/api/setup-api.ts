@@ -48,7 +48,6 @@ export const setupApiInterceptors = (): void => {
       }
 
       try {
-        // const refreshResponse = await api.post<Tokens>('/auth/refresh', { refreshToken })
         const refreshResponse = await refresh({ refreshToken })
 
         const newAccessToken = refreshResponse.accessToken
