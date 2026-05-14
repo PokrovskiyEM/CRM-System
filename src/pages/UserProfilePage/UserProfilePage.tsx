@@ -1,10 +1,10 @@
+import type { Profile } from "@/entities/session/model/types";
+import { getUserProfileByAdmin, updateUserProfile } from "@/entities/user/api/admin-api";
+import { PHONE_NUMBER_REGEX, USERNAME_REGEX } from "@/shared/config/regex";
+import { handleNotificationError } from "@/shared/lib/handle-notification-error";
 import { Button, Descriptions, Form, Input, message, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getUserProfileByAdmin, updateUserProfile } from "../../api/adminApi";
-import { PHONE_NUMBER_REGEX, USERNAME_REGEX } from "../../constants/regex";
-import { handleNotificationError } from "../../helpers/handleNotificationError";
-import type { Profile } from "../../types/auth";
 import styles from "./styles.module.css";
 
 interface FormValues {

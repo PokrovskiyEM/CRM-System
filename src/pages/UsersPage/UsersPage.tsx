@@ -1,14 +1,15 @@
+import { Role } from '@/entities/session/model/types';
+import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles } from '@/entities/user/api/admin-api';
+import { type ApiSortOrder, type BlockStatus, type User, type UserFilters } from '@/entities/user/model/types';
+import { handleNotificationError } from '@/shared/lib/handle-notification-error';
+import { useAppSelector } from '@/shared/lib/store/selectors';
+import { useDebounce } from '@/shared/lib/use-debounce';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Dropdown, Flex, Input, message, Modal, Popconfirm, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
+import { Button, Checkbox, Dropdown, Flex, Input, Modal, Popconfirm, Space, Table, Tag, Typography, type GetProp, type MenuProps, type TableProps } from "antd";
 import type { SorterResult, SortOrder } from 'antd/es/table/interface';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { deleteUser, getUsers, setUserBlockStatus, updateUserRoles } from '../../api/adminApi';
-import { useAppSelector } from '../../app/store/store';
-import { useDebounce } from '../../hooks/useDebounce';
-import { Role, type ApiSortOrder, type BlockStatus, type User, type UserFilters } from '../../types/users';
 import styles from "./styles.module.css";
-import { handleNotificationError } from '../../helpers/handleNotificationError';
 
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 

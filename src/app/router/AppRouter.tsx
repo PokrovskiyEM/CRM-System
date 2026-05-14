@@ -1,21 +1,21 @@
+import { refresh } from "@/entities/session/api/auth-api"
+import { getUserProfile } from "@/entities/session/api/profile-api"
+import { logout, setAuthenticated } from "@/entities/session/model/auth-slice"
+import { Role } from "@/entities/session/model/types"
+import { ProtectedRoute } from "@/entities/session/ui/ProtectedRoute/ProtectedRoute"
+import { RoleProtectedRoute } from "@/entities/session/ui/RoleProtectedRoute/RoleProtectedRoute"
+import { LoginForm } from "@/features/auth-login/ui/LoginForm/LoginForm"
+import { RegisterForm } from "@/features/auth-register/ui/RegisterForm/RegisterForm"
+import { ProfilePage } from "@/pages/ProfilePage/ProfilePage"
+import { TodoListPage } from "@/pages/TodoListPage/TodoListPage"
+import { UserProfilePage } from "@/pages/UserProfilePage/UserProfilePage"
+import { UsersPage } from "@/pages/UsersPage/UsersPage"
+import { useAppDispatch, useAppSelector } from "@/shared/lib/store/selectors"
+import { tokenManager } from "@/shared/lib/token-manager"
 import { useEffect, useState } from "react"
 import { Navigate, Route, Routes } from "react-router"
-import { refresh } from "../../api/authApi"
-import { getUserProfile } from "../../api/userApi"
-import { LoginForm } from "../../components/LoginForm/LoginForm"
-import { ProtectedRoute } from "../../components/ProtectedRoute/ProtectedRoute"
-import { RegisterForm } from "../../components/RegisterForm/RegisterForm"
-import { RoleProtectedRoute } from "../../components/RoleProtectedRoute/RoleProtectedRoute"
-import { tokenManager } from "../../helpers/tokenManager"
-import { ProfilePage } from "../../pages/ProfilePage/ProfilePage"
-import { TodoListPage } from "../../pages/TodoListPage/TodoListPage"
-import { UserProfilePage } from "../../pages/UserProfilePage/UserProfilePage"
-import { UsersPage } from "../../pages/UsersPage/UsersPage"
-import { Role } from "../../types/users"
 import { AuthLayout } from "../layouts/AuthLayout/AuthLayout"
 import { MainLayout } from "../layouts/MainLayout/MainLayout"
-import { logout, setAuthenticated } from "../store/Authentication/Slices/authSlice"
-import { useAppDispatch, useAppSelector } from "../store/store"
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch()
@@ -23,7 +23,10 @@ export const AppRouter = () => {
 
   const [isAuthChecked, setIsAuthChecked] = useState<boolean>(false)
 
-  const allowedRoles = [Role.ADMIN, Role.MODERATOR]
+  const allowedRoles = [
+    Role.ADMIN,
+    Role.MODERATOR
+  ]
 
   useEffect(() => {
     let isCancelled = false

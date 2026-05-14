@@ -1,6 +1,6 @@
+import { BannerImage } from "@/shared/ui/banner-image/BannerImage/BannerImage"
 import { Layout } from "antd"
 import { Outlet } from "react-router"
-import { BannerImage } from "../../../components/BannerImage/BannerImage"
 import styles from "./styles.module.css"
 
 const { Content } = Layout

@@ -1,11 +1,11 @@
+import { getUserProfile, logoutProfile } from "@/entities/session/api/profile-api";
+import { logout } from "@/entities/session/model/auth-slice";
+import type { Profile } from "@/entities/session/model/types";
+import { useAppDispatch } from "@/shared/lib/store/selectors";
+import { tokenManager } from "@/shared/lib/token-manager";
 import { Button, Descriptions, notification, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getUserProfile, logoutProfile } from "../../api/userApi";
-import { logout } from "../../app/store/Authentication/Slices/authSlice";
-import { useAppDispatch } from "../../app/store/store";
-import { tokenManager } from "../../helpers/tokenManager";
-import type { Profile } from "../../types/auth";
 import styles from "./styles.module.css";
 
 export const ProfilePage = () => {

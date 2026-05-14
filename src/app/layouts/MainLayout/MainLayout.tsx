@@ -1,7 +1,7 @@
+import { SidebarMenu } from "@/widgets/sidebar-menu/SidebarMenu/SidebarMenu";
 import { Layout } from "antd";
 import { Outlet } from "react-router";
-import { SidebarMenu } from "../../../components/SidebarMenu/SidebarMenu";
-import styles from "./styles.module.css"
+import styles from "./styles.module.css";
 
 const { Sider, Content } = Layout;
 

@@ -1,9 +1,9 @@
+import { getTodos } from "@/entities/todo/api/todos-public-api";
+import type { StatusFilter, Todo, TodoInfo } from "@/entities/todo/model/types";
+import { AddTodoForm } from "@/features/todo-add/ui/AddTodoForm/AddTodoForm";
+import { handleNotificationError } from "@/shared/lib/handle-notification-error";
+import { TodosList } from "@/widgets/todo-list/TodosList/TodosList";
 import { useCallback, useEffect, useState } from "react";
-import { getTodos } from "../../api/todosApi";
-import { AddTodoForm } from "../../components/AddTodoForm/AddTodoForm";
-import { TodosList } from "../../components/TodosList/TodosList";
-import { handleNotificationError } from "../../helpers/handleNotificationError";
-import type { StatusFilter, Todo, TodoInfo } from "../../types/todo";
 import styles from "./styles.module.css";
 
 export const TodoListPage = () => {
