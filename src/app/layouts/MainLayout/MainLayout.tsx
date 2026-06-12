@@ -1,4 +1,4 @@
-import { SidebarMenu } from "@/widgets/sidebar-menu/SidebarMenu/SidebarMenu";
+import SidebarMenu from "@/widgets/sidebar-menu";
 import { Layout } from "antd";
 import { Outlet } from "react-router";
 import styles from "./styles.module.css";

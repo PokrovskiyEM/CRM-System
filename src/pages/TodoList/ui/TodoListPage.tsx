@@ -2,7 +2,7 @@ import { getTodos } from "@/entities/todo/api/todos-public-api";
 import type { StatusFilter, Todo, TodoInfo } from "@/entities/todo/model/types";
 import { AddTodoForm } from "@/features/todo-add/ui/AddTodoForm/AddTodoForm";
 import { handleNotificationError } from "@/shared/lib/handle-notification-error";
-import { TodosList } from "@/widgets/todo-list/TodosList/TodosList";
+import TodosList from "@/widgets/todo-list";
 import { useCallback, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 
