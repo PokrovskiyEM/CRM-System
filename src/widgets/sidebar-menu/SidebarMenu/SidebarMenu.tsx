@@ -20,6 +20,10 @@ const ADMIN_MENU_ITEMS = [
     key: "/users",
     label: 'Пользователи'
   },
+  {
+    key: "/finance",
+    label: 'Финансовая аналитика'
+  },
 ]
 
 export const SidebarMenu = () => {

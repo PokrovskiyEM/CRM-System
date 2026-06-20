@@ -1,3 +1,4 @@
+import { isStatusFilter } from "@/entities/todo/model/isStatusFilter";
 import type { StatusFilter, TodoInfo } from "@/entities/todo/model/types";
 import { notification, Tabs, type TabsProps } from "antd";
 import styles from "./styles.module.css";
@@ -6,12 +7,6 @@ interface Props {
   info?: TodoInfo
   onFilterChange: (filter: StatusFilter) => void
   filter: StatusFilter
-}
-
-const isStatusFilter = (key: string): key is StatusFilter => {
-  return (
-    key === 'all' || key === 'inWork' || key === 'completed'
-  )
 }
 
 export const TodosFilters = ({ info, onFilterChange, filter }: Props) => {

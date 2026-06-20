@@ -6,6 +6,7 @@ import { ProtectedRoute } from "@/entities/session/ui/ProtectedRoute/ProtectedRo
 import { RoleProtectedRoute } from "@/entities/session/ui/RoleProtectedRoute/RoleProtectedRoute"
 import { LoginForm } from "@/features/auth-login/ui/LoginForm/LoginForm"
 import { RegisterForm } from "@/features/auth-register/ui/RegisterForm/RegisterForm"
+import FinanceAnalyticsPage from "@/pages/FinanceAnalytics"
 import ProfilePage from "@/pages/Profile"
 import TodoListPage from "@/pages/TodoList"
 import UserProfilePage from "@/pages/UserProfile"
@@ -87,6 +88,7 @@ export const AppRouter = () => {
           <Route element={<RoleProtectedRoute allowedRoles={allowedRoles} />} >
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/:id" element={<UserProfilePage />} />
+            <Route path="/finance" element={<FinanceAnalyticsPage />} />
           </Route>
         </Route>
       </Route>

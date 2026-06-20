@@ -1,0 +1,15 @@
+.deficitValue {
+  color: #cf1322;
+  font-weight: 600;
+}
+
+.cashGapSection {
+  margin-top: 8px;
+}
+
+.cashGapTitle {
+  margin: 0 0 12px;
+  color: rgb(0 0 0 / 88%);
+  font-size: 16px;
+  font-weight: 600;
+}

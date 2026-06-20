@@ -1,0 +1,16 @@
+.content {
+  position: relative;
+  min-height: 120px;
+}
+
+.fetchingOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 24px;
+  background: rgb(255 255 255 / 55%);
+  pointer-events: none;
+}
