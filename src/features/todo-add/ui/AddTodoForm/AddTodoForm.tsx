@@ -27,11 +27,13 @@ export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
     control,
     handleSubmit,
     reset,
+    formState: { isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: "",
     },
+    mode: "onBlur",
   });
 
   const handleAddTodo = async (values: FormData): Promise<void> => {
@@ -70,6 +72,7 @@ export const AddTodoForm = memo(({ onTodosUpdated }: Props) => {
         type="primary"
         size="large"
         htmlType="submit"
+        loading={isSubmitting}
       >
         Создать
       </Button>

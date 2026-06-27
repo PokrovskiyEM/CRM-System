@@ -26,12 +26,14 @@ export const LoginForm = () => {
   const {
     control,
     handleSubmit,
+    formState: { isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       login: "",
       password: "",
     },
+    mode: "onBlur",
   });
 
   useEffect(() => {
@@ -81,6 +83,7 @@ export const LoginForm = () => {
 
       <Form
         layout="vertical"
+        onFinish={handleSubmit(handleLogin)}
       >
         <Controller
           name="login"
@@ -119,9 +122,9 @@ export const LoginForm = () => {
         <Form.Item>
           <Button
             type="primary"
-            htmlType="button"
+            htmlType="submit"
+            loading={isSubmitting}
             style={{ width: "100%" }}
-            onClick={handleSubmit(handleLogin)}
           >
             Войти
           </Button>
