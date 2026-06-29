@@ -57,7 +57,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
   }
 
   return (
-    <div className={styles.item}>
+    <div className={styles.item} data-testid='todo-item'>
       <Checkbox
         checked={todo.isDone}
         onChange={handleToggle}
@@ -98,6 +98,7 @@ export const TodoItem = ({ todo, onTodosUpdated }: Props) => {
               <Input
                 variant="outlined"
                 autoFocus
+                data-testid='edit-input'
               />
             </Form.Item>
             <TodoItemControls

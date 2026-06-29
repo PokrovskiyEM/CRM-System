@@ -24,6 +24,7 @@ export const TodoItemControls = ({
             type="primary"
             icon={<EditOutlined />}
             onClick={onStartEdit}
+            data-testid="edit-button"
           />
           <Button
             size="large"
@@ -31,6 +32,7 @@ export const TodoItemControls = ({
             danger
             icon={<DeleteOutlined />}
             onClick={onDelete}
+            data-testid="delete-button"
           />
         </>
       ) : (
@@ -40,6 +42,7 @@ export const TodoItemControls = ({
             size="large"
             htmlType="submit"
             icon={<SaveOutlined />}
+            data-testid="save-button"
           />
           <Button
             variant="solid"
@@ -49,6 +52,7 @@ export const TodoItemControls = ({
             htmlType="button"
             icon={<UndoOutlined />}
             onClick={onCancelEdit}
+            data-testid="cancel-button"
           />
         </>
       )}

@@ -15,44 +15,73 @@ vi.mock("axios", () => ({
 
 import {
   addTodo,
-  // getTodos,
+  getTodos,
   // updateTodo,
   // deleteTodo,
 } from "./todos-public-api";
-
-// {
-//     id: number;
-//     title: string;
-//     created: string;
-//     isDone: boolean;
-// }[]
-
 
 describe('todos-public-api', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  test('добавляем задачу', async () => {
-    const todo = {
-      id: 29317,
-      title: "TestTask",
-      created: "2026-06-20T14:12:51.520886Z",
-      isDone: false
-    }
 
-    mockApi.post.mockResolvedValue({
-      data: todo
+  describe('getTodos', () => {
+    const getTodosResponse = {
+      todos: [],
+      info: {
+        all: 0,
+        completed: 0,
+        inWork: 0,
+      },
+    };
+
+    test.each([
+      ['all'],
+      ['inWork'],
+      ['completed']
+    ])('передаем фильтр "%s" в параметрах', async (filter) => {
+      mockApi.get.mockResolvedValue({
+        data: getTodosResponse,
+      })
+
+      const res = await getTodos({ filter })
+
+      expect(mockApi.get).toHaveBeenCalledWith('/todos', {
+        params: { filter }
+      })
+
+      expect(mockApi.get).toHaveBeenCalledTimes(1);
+
+      expect(res).toEqual(getTodosResponse)
     })
-
-    const res = await addTodo({
-      title: "TestTask"
-    })
-
-    expect(mockApi.post).toHaveBeenCalledWith('/todos', {
-      title: "TestTask"
-    })
-
-    expect(res).toEqual(todo)
   })
+
+  describe('addTodo', () => {
+    test('передаем заголовок задачи в параметрах', async () => {
+      const todo = {
+        id: 29317,
+        title: "TestTask",
+        created: "2026-06-20T14:12:51.520886Z",
+        isDone: false
+      }
+
+      mockApi.post.mockResolvedValue({
+        data: todo
+      })
+
+      const res = await addTodo({
+        title: "TestTask"
+      })
+
+      expect(mockApi.post).toHaveBeenCalledWith('/todos', {
+        title: "TestTask"
+      })
+
+      expect(mockApi.post).toHaveBeenCalledTimes(1);
+
+      expect(res).toEqual(todo)
+    })
+  })
+
 })
